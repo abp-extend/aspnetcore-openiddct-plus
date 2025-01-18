@@ -1,0 +1,52 @@
+# Build artifacts
+bin/
+obj/
+
+# Rider project files
+.idea/
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Logs
+*.log
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Visual Studio Code
+.vscode/
+
+# ASP.NET Core Secret Manager
+*.secrets.json
+
+# Node modules (if using Node.js tools)
+node_modules/
+
+# Packages
+*.nupkg
+*.snupkg
+*.dSYM/
+
+# Enable this if you have NuGet Package Restore turned on.
+# packages/
+
+# Others
+*.swp
+*.lock.json
+*.lock
+*.pdb
+
+# Dotnet Tools
+dotnet-tools.json
+
+# Azure DevOps files
+.vs/
+
+# Local development
+.env
