@@ -19,7 +19,7 @@ A comprehensive solution for ASP.NET Core Identity with OpenIddict, featuring ad
 
 
 ## Technologies
-- **ASP.NET Core 5**: A cross-platform, high-performance framework for building modern, cloud-based, Internet-connected applications.
+- **ASP.NET Core**: A cross-platform, high-performance framework for building modern, cloud-based, Internet-connected applications.
 - **Openiddict**: An easy-to-use library for adding OpenID Connect and OAuth 2.0 support to your applications.
 - **Entity Framework Core**: A lightweight, extensible, open-source, and cross-platform version of the popular Entity Framework data access technology.
 - **TailwindCss**: A free and open-source CSS utility framework and highly customizable design.
