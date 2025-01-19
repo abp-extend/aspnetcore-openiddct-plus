@@ -13,7 +13,7 @@ A comprehensive solution for ASP.NET Core Identity with OpenIddict, featuring ad
 ## Getting Started
 1. Clone the repository.
 2. Open the solution in Rider or Your choice of an editor.
-3. Run the migrations.
+3. Run the migrations [initial-migration](initial-migration.ps1)
 4. Run the application.
 4. Navigate to `https://localhost:5001` to access the admin panel.
 

@@ -16,8 +16,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetCoreOpeniddictPlus.Co
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetCoreOpeniddictPlus.Identity", "AspNetCoreOpeniddictPlus.Identity\AspNetCoreOpeniddictPlus.Identity.csproj", "{60011D6B-1B81-4431-9549-D54CF78E6F0C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetCoreOpeniddictPlus.Persistence", "AspNetCoreOpeniddictPlus.Persistence\AspNetCoreOpeniddictPlus.Persistence.csproj", "{A247DC96-63E4-4DB8-9F27-AB5780C0D577}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,7 +28,6 @@ Global
 		{6C7D55D3-70EE-498E-BC7E-4DB880FF60CE} = {DFD12B2F-94D0-4891-B672-8936ADDD6641}
 		{B996251A-C84E-4372-AC4C-F0F1AA73369D} = {DFD12B2F-94D0-4891-B672-8936ADDD6641}
 		{60011D6B-1B81-4431-9549-D54CF78E6F0C} = {DFD12B2F-94D0-4891-B672-8936ADDD6641}
-		{A247DC96-63E4-4DB8-9F27-AB5780C0D577} = {DFD12B2F-94D0-4891-B672-8936ADDD6641}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{6C7D55D3-70EE-498E-BC7E-4DB880FF60CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -45,9 +42,8 @@ Global
 		{60011D6B-1B81-4431-9549-D54CF78E6F0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{60011D6B-1B81-4431-9549-D54CF78E6F0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{60011D6B-1B81-4431-9549-D54CF78E6F0C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A247DC96-63E4-4DB8-9F27-AB5780C0D577}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A247DC96-63E4-4DB8-9F27-AB5780C0D577}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A247DC96-63E4-4DB8-9F27-AB5780C0D577}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A247DC96-63E4-4DB8-9F27-AB5780C0D577}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(RiderSharedRunConfigurations) = postSolution
+		File = AspNetCoreOpeniddictPlus.Web\.run\AspNetCoreOpeniddictPlus.Web_ https.run.xml
 	EndGlobalSection
 EndGlobal
