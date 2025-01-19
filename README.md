@@ -18,6 +18,10 @@ A comprehensive solution for ASP.NET Core Identity with OpenIddict, featuring ad
 4. Navigate to `https://localhost:5001` to access the admin panel.
 
 
+## openid configuration
+https://localhost:7006/.well-known/openid-configuration
+
+
 ## Technologies
 - **ASP.NET Core**: A cross-platform, high-performance framework for building modern, cloud-based, Internet-connected applications.
 - **Openiddict**: An easy-to-use library for adding OpenID Connect and OAuth 2.0 support to your applications.
