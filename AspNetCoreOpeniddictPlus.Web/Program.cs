@@ -1,9 +1,15 @@
 using AspNetCoreOpeniddictPlus.Core.Extensions;
 using AspNetCoreOpeniddictPlus.Identity.Entities;
 using AspNetCoreOpeniddictPlus.Web.Persistence;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Host.UseSerilog((context, configuration) =>
+{
+    configuration.ReadFrom.Configuration(context.Configuration);
+});
 
 // Add services to the container.
 builder.Services.AddRazorPages();
@@ -16,7 +22,15 @@ builder.Services.AddIdentity<OpeniddictPlusUser, OpeniddictPlusRole>()
     .AddDefaultTokenProviders();
 
 builder.Services.AddOpeniddictPlusServer<OpeniddictPlusDbContext>();
-
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.AccessDeniedPath = "/Account/Login";
+        options.LoginPath = "/Account/Login";
+        options.LogoutPath = "/Account/Logout";
+        options.SlidingExpiration = true;
+        options.ExpireTimeSpan = TimeSpan.FromHours(8);
+    });
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
@@ -29,9 +43,9 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.UseSerilogRequestLogging();
 app.UseRouting();
 
 app.UseAuthentication();
