@@ -12,5 +12,34 @@
         <Link>.dockerignore</Link>
       </Content>
     </ItemGroup>
+    
+ 
+
+    <ItemGroup>
+        <UpToDateCheckBuilt Include="wwwroot/css/site.css" Set="Css" />
+        <UpToDateCheckBuilt Include="tailwind.config.js" Set="Css" />
+    </ItemGroup>
+    
+ 
+
+    <ItemGroup>
+      <ProjectReference Include="..\AspNetCoreOpeniddictPlus.Core\AspNetCoreOpeniddictPlus.Core.csproj" />
+      <ProjectReference Include="..\AspNetCoreOpeniddictPlus.Identity\AspNetCoreOpeniddictPlus.Identity.csproj" />
+    </ItemGroup>
+    
+ 
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.1">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+    </ItemGroup>
+    
+ 
+
+    <ItemGroup>
+      <Folder Include="Migrations\" />
+    </ItemGroup>
 
 </Project>
