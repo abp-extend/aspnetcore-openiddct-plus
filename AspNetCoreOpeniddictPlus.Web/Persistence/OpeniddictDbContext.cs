@@ -1,8 +1,9 @@
 using AspNetCoreOpeniddictPlus.Identity.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 namespace AspNetCoreOpeniddictPlus.Web.Persistence;
 
-public class OpeniddictPlusDbContext(DbContextOptions<OpeniddictPlusDbContext> options) : DbContext(options)
+public class OpeniddictPlusDbContext(DbContextOptions<OpeniddictPlusDbContext> options) : IdentityDbContext(options)
 {
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
