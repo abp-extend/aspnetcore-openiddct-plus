@@ -1,0 +1,37 @@
+﻿@page
+@model LoginWith2faModel
+@{
+    ViewData["Title"] = "Two-factor authentication";
+}
+
+<div class="flex flex-col justify-center items-center mx-auto max-w-screen-sm mt-28">
+    <div class="w-full bg-white shadow-md rounded-lg p-6">
+        <p class="mb-4 text-gray-700">Your login is protected with an authenticator app. Enter your authenticator code below.</p>
+        <form method="post" asp-route-returnUrl="@Model.ReturnUrl" class="space-y-6">
+            <input asp-for="RememberMe" type="hidden" />
+            <div asp-validation-summary="ModelOnly" class="text-red-600" role="alert"></div>
+            <div>
+                <label asp-for="Input.TwoFactorCode" class="block text-sm font-medium text-gray-700">Authenticator Code</label>
+                <input asp-for="Input.TwoFactorCode" class="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" autocomplete="off" />
+                <span asp-validation-for="Input.TwoFactorCode" class="text-red-600 text-sm"></span>
+            </div>
+            <div class="flex items-center">
+                <input asp-for="Input.RememberMachine" class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500" />
+                <label asp-for="Input.RememberMachine" class="ml-2 block text-sm text-gray-700">
+                    @Html.DisplayNameFor(m => m.Input.RememberMachine)
+                </label>
+            </div>
+            <div>
+                <button type="submit" class="w-full py-2 px-4 bg-blue-700 text-white font-semibold rounded-lg shadow-md hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Log in</button>
+            </div>
+        </form>
+        <p class="mt-4 text-gray-700">
+            Don't have access to your authenticator device? You can
+            <a id="recovery-code-login" asp-page="./LoginWithRecoveryCode" asp-route-returnUrl="@Model.ReturnUrl" class="text-blue-600 hover:underline">log in with a recovery code</a>.
+        </p>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial"/>
+}

@@ -1,0 +1,33 @@
+﻿@page
+@model IndexModel
+@{
+    Layout = "_Layout.cshtml";
+    
+    ViewData["Title"] = "Profile";
+    ViewData["ActivePage"] = ManageNavPages.Index;
+}
+
+<div class="flex flex-col justify-center items-center mx-auto max-w-screen-sm">
+    <div class="w-full bg-white shadow-md rounded-lg p-6">
+        <section>
+            <partial name="_StatusMessage" for="StatusMessage"/>
+            <form id="profile-form" method="post" class="space-y-6">
+                <div asp-validation-summary="ModelOnly" class="text-red-600" role="alert"></div>
+                <div>
+                    <label asp-for="Username" class="block text-sm font-medium text-gray-700">Username</label>
+                    <input asp-for="Username" class="mt-1 block w-full rounded-md border border-gray-300 bg-gray-100 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" placeholder="Please choose your username." disabled/>
+                </div>
+                <div>
+                    <label asp-for="Input.PhoneNumber" class="block text-sm font-medium text-gray-700">Phone Number</label>
+                    <input asp-for="Input.PhoneNumber" class="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" placeholder="Please enter your phone number."/>
+                    <span asp-validation-for="Input.PhoneNumber" class="text-red-600 text-sm"></span>
+                </div>
+                <button id="update-profile-button" type="submit" class="w-full py-2 px-4 bg-blue-700 text-white font-semibold rounded-lg shadow-md hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Save</button>
+            </form>
+        </section>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial"/>
+}

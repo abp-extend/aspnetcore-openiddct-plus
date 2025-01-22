@@ -8,38 +8,110 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Content Include="..\.dockerignore">
-        <Link>.dockerignore</Link>
-      </Content>
+        <Content Include="..\.dockerignore">
+            <Link>.dockerignore</Link>
+        </Content>
     </ItemGroup>
-    
- 
+
 
     <ItemGroup>
-        <UpToDateCheckBuilt Include="wwwroot/css/site.css" Set="Css" />
-        <UpToDateCheckBuilt Include="tailwind.config.js" Set="Css" />
+        <UpToDateCheckBuilt Include="wwwroot/css/site.css" Set="Css"/>
+        <UpToDateCheckBuilt Include="tailwind.config.js" Set="Css"/>
     </ItemGroup>
-    
- 
+
 
     <ItemGroup>
-      <ProjectReference Include="..\AspNetCoreOpeniddictPlus.Core\AspNetCoreOpeniddictPlus.Core.csproj" />
-      <ProjectReference Include="..\AspNetCoreOpeniddictPlus.Identity\AspNetCoreOpeniddictPlus.Identity.csproj" />
+        <ProjectReference Include="..\AspNetCoreOpeniddictPlus.Core\AspNetCoreOpeniddictPlus.Core.csproj"/>
+        <ProjectReference Include="..\AspNetCoreOpeniddictPlus.Identity\AspNetCoreOpeniddictPlus.Identity.csproj"/>
     </ItemGroup>
-    
- 
+
 
     <ItemGroup>
-      <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.1">
-        <PrivateAssets>all</PrivateAssets>
-        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      </PackageReference>
+        <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="9.0.1"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.1">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
     </ItemGroup>
-    
- 
 
     <ItemGroup>
-      <Folder Include="Migrations\" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.1">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="9.0.0"/>
+        <PackageReference Include="Serilog.AspNetCore" Version="8.0.3"/>
+    </ItemGroup>
+
+
+    <ItemGroup>
+        <Folder Include="Migrations\"/>
+    </ItemGroup>
+
+
+    <ItemGroup>
+        <_ContentIncludedByDefault Remove="Pages\Pages\Account\Manage\ChangePassword.cshtml"/>
+        <_ContentIncludedByDefault Remove="Pages\Pages\Account\Manage\DeletePersonalData.cshtml"/>
+        <_ContentIncludedByDefault Remove="Pages\Pages\Account\Manage\Disable2fa.cshtml"/>
+        <_ContentIncludedByDefault Remove="Pages\Pages\Account\Manage\DownloadPersonalData.cshtml"/>
+        <_ContentIncludedByDefault Remove="Pages\Pages\Account\Manage\Email.cshtml"/>
+        <_ContentIncludedByDefault Remove="Pages\Pages\Account\Manage\EnableAuthenticator.cshtml"/>
+        <_ContentIncludedByDefault Remove="Pages\Pages\Account\Manage\ExternalLogins.cshtml"/>
+        <_ContentIncludedByDefault Remove="Pages\Pages\Account\Manage\GenerateRecoveryCodes.cshtml"/>
+        <_ContentIncludedByDefault Remove="Pages\Pages\Account\Manage\Index.cshtml"/>
+        <_ContentIncludedByDefault Remove="Pages\Pages\Account\Manage\PersonalData.cshtml"/>
+        <_ContentIncludedByDefault Remove="Pages\Pages\Account\Manage\ResetAuthenticator.cshtml"/>
+        <_ContentIncludedByDefault Remove="Pages\Pages\Account\Manage\SetPassword.cshtml"/>
+        <_ContentIncludedByDefault Remove="Pages\Pages\Account\Manage\ShowRecoveryCodes.cshtml"/>
+        <_ContentIncludedByDefault Remove="Pages\Pages\Account\Manage\TwoFactorAuthentication.cshtml"/>
+        <_ContentIncludedByDefault Remove="Pages\Pages\Account\Manage\_Layout.cshtml"/>
+        <_ContentIncludedByDefault Remove="Pages\Pages\Account\Manage\_ManageNav.cshtml"/>
+        <_ContentIncludedByDefault Remove="Pages\Pages\Account\Manage\_StatusMessage.cshtml"/>
+        <_ContentIncludedByDefault Remove="Pages\Pages\Account\Manage\_ViewImports.cshtml"/>
+        <_ContentIncludedByDefault Remove="Pages\Account\Register\Index.cshtml"/>
+        <_ContentIncludedByDefault Remove="Pages\Account\Manage\ChangePassword.cshtml"/>
+        <_ContentIncludedByDefault Remove="Pages\Account\Manage\DeletePersonalData.cshtml"/>
+        <_ContentIncludedByDefault Remove="Pages\Account\Manage\Disable2fa.cshtml"/>
+        <_ContentIncludedByDefault Remove="Pages\Account\Manage\DownloadPersonalData.cshtml"/>
+        <_ContentIncludedByDefault Remove="Pages\Account\Manage\Email.cshtml"/>
+        <_ContentIncludedByDefault Remove="Pages\Account\Manage\EnableAuthenticator.cshtml"/>
+        <_ContentIncludedByDefault Remove="Pages\Account\Manage\ExternalLogins.cshtml"/>
+        <_ContentIncludedByDefault Remove="Pages\Account\Manage\GenerateRecoveryCodes.cshtml"/>
+        <_ContentIncludedByDefault Remove="Pages\Account\Manage\Index.cshtml"/>
+        <_ContentIncludedByDefault Remove="Pages\Account\Manage\PersonalData.cshtml"/>
+        <_ContentIncludedByDefault Remove="Pages\Account\Manage\ResetAuthenticator.cshtml"/>
+        <_ContentIncludedByDefault Remove="Pages\Account\Manage\SetPassword.cshtml"/>
+        <_ContentIncludedByDefault Remove="Pages\Account\Manage\ShowRecoveryCodes.cshtml"/>
+        <_ContentIncludedByDefault Remove="Pages\Account\Manage\TwoFactorAuthentication.cshtml"/>
+        <_ContentIncludedByDefault Remove="Pages\Account\Manage\_Layout.cshtml"/>
+        <_ContentIncludedByDefault Remove="Pages\Account\Manage\_ManageNav.cshtml"/>
+        <_ContentIncludedByDefault Remove="Pages\Account\Manage\_StatusMessage.cshtml"/>
+        <_ContentIncludedByDefault Remove="Pages\Account\Manage\_ViewImports.cshtml"/>
+        <_ContentIncludedByDefault Remove="Pages\Account\AccessDenied.cshtml"/>
+        <_ContentIncludedByDefault Remove="Pages\Account\ConfirmEmail.cshtml"/>
+        <_ContentIncludedByDefault Remove="Pages\Account\ConfirmEmailChange.cshtml"/>
+        <_ContentIncludedByDefault Remove="Pages\Account\ExternalLogin.cshtml"/>
+        <_ContentIncludedByDefault Remove="Pages\Account\ForgotPassword.cshtml"/>
+        <_ContentIncludedByDefault Remove="Pages\Account\ForgotPasswordConfirmation.cshtml"/>
+        <_ContentIncludedByDefault Remove="Pages\Account\Lockout.cshtml"/>
+        <_ContentIncludedByDefault Remove="Pages\Account\Login.cshtml"/>
+        <_ContentIncludedByDefault Remove="Pages\Account\LoginWith2fa.cshtml"/>
+        <_ContentIncludedByDefault Remove="Pages\Account\LoginWithRecoveryCode.cshtml"/>
+        <_ContentIncludedByDefault Remove="Pages\Account\Logout.cshtml"/>
+        <_ContentIncludedByDefault Remove="Pages\Account\Register.cshtml"/>
+        <_ContentIncludedByDefault Remove="Pages\Account\RegisterConfirmation.cshtml"/>
+        <_ContentIncludedByDefault Remove="Pages\Account\ResendEmailConfirmation.cshtml"/>
+        <_ContentIncludedByDefault Remove="Pages\Account\ResetPassword.cshtml"/>
+        <_ContentIncludedByDefault Remove="Pages\Account\ResetPasswordConfirmation.cshtml"/>
+        <_ContentIncludedByDefault Remove="Pages\Account\Shared\_Layout.cshtml"/>
+        <_ContentIncludedByDefault Remove="Pages\Account\_StatusMessage.cshtml"/>
+        <_ContentIncludedByDefault Remove="Pages\Error.cshtml"/>
+        <_ContentIncludedByDefault Remove="Pages\Index.cshtml"/>
+        <_ContentIncludedByDefault Remove="Pages\Privacy.cshtml"/>
+        <_ContentIncludedByDefault Remove="Pages\Shared\_Layout.cshtml"/>
+        <_ContentIncludedByDefault Remove="Pages\Shared\_ValidationScriptsPartial.cshtml"/>
+        <_ContentIncludedByDefault Remove="Pages\_ViewImports.cshtml"/>
+        <_ContentIncludedByDefault Remove="Pages\_ViewStart.cshtml"/>
     </ItemGroup>
 
 </Project>

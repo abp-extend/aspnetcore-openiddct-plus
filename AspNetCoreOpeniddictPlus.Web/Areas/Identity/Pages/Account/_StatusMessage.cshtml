@@ -1,0 +1,21 @@
+﻿@model string
+
+@{
+    var bgColor = new Dictionary<string, string>
+    {
+        { "danger", "bg-red-500" },
+        { "success", "bg-green-500" }
+    };
+}
+@if (!string.IsNullOrEmpty(Model))
+{
+    var statusMessageClass = Model.StartsWith("Error") ? "danger" : "success";
+    <div class="p-4 mb-4 text-sm text-white @bgColor[statusMessageClass] rounded-lg relative" role="alert">
+        <button
+            type="button" class="absolute top-2 right-2 text-gray-500 hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300" aria-label="Close">
+            &times;
+        </button>
+        @Model
+    </div>
+
+}

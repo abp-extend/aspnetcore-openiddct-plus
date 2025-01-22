@@ -1,4 +1,6 @@
+using AspNetCoreOpeniddictPlus.Core.Services;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,8 +24,9 @@ public static class OpeniddictPlus
 
         return services;
     }
-    
-    public static IServiceCollection AddOpeniddictPlusServer<TDbContext>(this IServiceCollection services) where TDbContext: DbContext
+
+    public static IServiceCollection AddOpeniddictPlusServer<TDbContext>(this IServiceCollection services)
+        where TDbContext : DbContext
     {
         var env = services.BuildServiceProvider().GetService<IWebHostEnvironment>();
         services
@@ -50,15 +53,19 @@ public static class OpeniddictPlus
                     .AllowDeviceAuthorizationFlow()
                     .AllowRefreshTokenFlow();
                 if (env != null && env.IsDevelopment())
-                {
                     options.AddDevelopmentEncryptionCertificate()
                         .AddDevelopmentSigningCertificate();
-                }
 
                 options
                     .UseAspNetCore()
                     .EnableTokenEndpointPassthrough();
             });
+        return services;
+    }
+
+    public static IServiceCollection AddEmailSender(this IServiceCollection services)
+    {
+        services.AddTransient<IEmailSender, EmailSender>();
         return services;
     }
 }

@@ -1,18 +1,14 @@
+using AspNetCoreOpeniddictPlus.Identity.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace AspNetCoreOpeniddictPlus.Web.Pages;
 
-public class IndexModel : PageModel
+public class Index(SignInManager<OpeniddictPlusUser> signInManager, ILogger<Index> logger) : PageModel
 {
-    private readonly ILogger<IndexModel> _logger;
-
-    public IndexModel(ILogger<IndexModel> logger)
+    public IActionResult OnGet()
     {
-        _logger = logger;
-    }
-
-    public void OnGet()
-    {
+        return Redirect(signInManager.IsSignedIn(User) ? "/Identity/Account/Manage" : "/Identity/Account/Login");
     }
 }

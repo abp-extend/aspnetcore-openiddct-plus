@@ -1,0 +1,66 @@
+﻿@page
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Openiddict Plus Login";
+}
+
+<div class="flex flex-col justify-center items-center mx-auto max-w-screen-sm mt-28">
+    <div class="w-full bg-white shadow-md rounded-lg p-6">
+        <section>
+            <partial name="_LogoPartial"/>
+            <form id="account" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-red-600 mb-4" role="alert"></div>
+                <div class="mb-6">
+                    <label asp-for="Input.Email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
+                    <input asp-for="Input.Email"
+                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                           autocomplete="username" aria-required="true" placeholder="name@example.com"/>
+                    <span asp-validation-for="Input.Email" class="text-red-600 text-sm"></span>
+                </div>
+                <div class="mb-6">
+                    <label asp-for="Input.Password"
+                           class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
+                    <input asp-for="Input.Password"
+                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                           autocomplete="current-password" aria-required="true" placeholder="password"/>
+                    <span asp-validation-for="Input.Password" class="text-red-600 text-sm"></span>
+                </div>
+                <div class="flex items-start mb-5">
+                    <div class="flex items-center h-5">
+                        <input id="remember" asp-for="Input.RememberMe" type="checkbox"
+                               class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800"/>
+                    </div>
+                    <label for="remember" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Remember
+                        me</label>
+                </div>
+                <button type="submit"
+                        class="text-white w-full bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm  px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                    Login
+                </button>
+                <div class="text-base text-center pt-5 space-y-2">
+                    <p>
+                        <a id="forgot-password" asp-page="./ForgotPassword" class="text-indigo-600 hover:underline">Forgot
+                            your password?</a>
+                    </p>
+                    <p>
+                        <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl"
+                           class="text-indigo-600 hover:underline">Register as a new user</a>
+                    </p>
+                    <p>
+                        <a id="resend-confirmation" asp-page="./ResendEmailConfirmation"
+                           class="text-indigo-600 hover:underline">Resend email confirmation</a>
+                    </p>
+                </div>
+            </form>
+        </section>
+    </div>
+
+    <partial name="_ExternalServicePartial"/>
+</div>
+
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial"/>
+}

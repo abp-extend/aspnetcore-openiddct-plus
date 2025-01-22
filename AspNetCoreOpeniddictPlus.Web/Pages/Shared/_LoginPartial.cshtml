@@ -1,0 +1,28 @@
+@using AspNetCoreOpeniddictPlus.Identity.Entities
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@inject SignInManager<OpeniddictPlusUser> SignInManager
+@inject UserManager<OpeniddictPlusUser> UserManager
+
+<ul class="flex space-x-4">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <li class="">
+            <a id="manage" class="text-gray-700 hover:text-gray-900 font-medium" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
+        </li>
+        <li class="">
+            <form id="logoutForm" class="inline" asp-area="Identity" asp-page="/Account/Logout" 
+                  asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                <button id="logout" type="submit" class="text-gray-700 hover:text-gray-900 font-medium bg-transparent border-0 cursor-pointer">Logout</button>
+            </form>
+        </li>
+    }
+    else
+    {
+        <li class="">
+            <a class="text-gray-700 hover:text-gray-900 font-medium" id="register" asp-area="Identity" asp-page="/Account/Register">Register</a>
+        </li>
+        <li class="">
+            <a class="text-gray-700 hover:text-gray-900 font-medium" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
+        </li>
+    }
+</ul>
