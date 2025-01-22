@@ -19,7 +19,8 @@
         @if (Model.RequirePassword)
         {
             <div class="form-floating mb-3">
-                <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="Please enter your password." />
+                <input asp-for="Input.Password" class="form-control" autocomplete="current-password"
+                       aria-required="true" placeholder="Please enter your password."/>
                 <label asp-for="Input.Password" class="form-label"></label>
                 <span asp-validation-for="Input.Password" class="text-danger"></span>
             </div>
@@ -29,5 +30,5 @@
 </div>
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
+    <partial name="_ValidationScriptsPartial"/>
 }

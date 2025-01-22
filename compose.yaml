@@ -1,6 +1,6 @@
 ﻿services:
-  aspnetcoreopeniddictplus.web:
-    image: aspnetcoreopeniddictplus.web
-    build:
-      context: .
-      dockerfile: AspNetCoreOpeniddictPlus.Web/Dockerfile
+    aspnetcoreopeniddictplus.web:
+        image: aspnetcoreopeniddictplus.web
+        build:
+            context: .
+            dockerfile: AspNetCoreOpeniddictPlus.Web/Dockerfile

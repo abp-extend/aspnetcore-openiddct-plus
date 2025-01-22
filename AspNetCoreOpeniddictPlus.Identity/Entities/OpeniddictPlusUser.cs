@@ -4,5 +4,4 @@ namespace AspNetCoreOpeniddictPlus.Identity.Entities;
 
 public class OpeniddictPlusUser : IdentityUser
 {
-    
 }

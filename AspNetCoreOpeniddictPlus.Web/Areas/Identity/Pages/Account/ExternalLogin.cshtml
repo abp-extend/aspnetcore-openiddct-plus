@@ -4,30 +4,25 @@
     ViewData["Title"] = "Register";
 }
 
-<h1>@ViewData["Title"]</h1>
-<h2 id="external-login-title">Associate your @Model.ProviderDisplayName account.</h2>
-<hr />
+<div class="flex flex-col justify-center items-center mx-auto max-w-screen-sm mt-28">
+    <div class="w-full bg-white shadow-md rounded-lg p-6">
+        <h2 id="external-login-title" class="text-2xl font-bold mb-4 text-gray-700">Associate your @Model.ProviderDisplayName account</h2>
+        <p id="external-login-description" class="mb-4 text-gray-700">
+            You've successfully authenticated with <strong>@Model.ProviderDisplayName</strong>. Please enter an email address for this site below and click the Register button to finish logging in.
+        </p>
 
-<p id="external-login-description" class="text-info">
-    You've successfully authenticated with <strong>@Model.ProviderDisplayName</strong>.
-    Please enter an email address for this site below and click the Register button to finish
-    logging in.
-</p>
-
-<div class="row">
-    <div class="col-md-4">
-        <form asp-page-handler="Confirmation" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.Email" class="form-control" autocomplete="email" placeholder="Please enter your email."/>
-                <label asp-for="Input.Email" class="form-label"></label>
-                <span asp-validation-for="Input.Email" class="text-danger"></span>
+        <form asp-page-handler="Confirmation" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="space-y-6">
+            <div asp-validation-summary="ModelOnly" class="text-red-600" role="alert"></div>
+            <div>
+                <label asp-for="Input.Email" class="block text-sm font-medium text-gray-700">Email</label>
+                <input asp-for="Input.Email" class="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" autocomplete="email" placeholder="Please enter your email." />
+                <span asp-validation-for="Input.Email" class="text-red-600 text-sm"></span>
             </div>
-            <button type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
+            <button type="submit" class="w-full py-2 px-4 bg-blue-700 text-white font-semibold rounded-lg shadow-md hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Register</button>
         </form>
     </div>
 </div>
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
+    <partial name="_ValidationScriptsPartial"/>
 }

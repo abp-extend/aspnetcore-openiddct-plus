@@ -4,18 +4,15 @@ using AspNetCoreOpeniddictPlus.Web.Persistence;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Serilog;
-using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Host.UseSerilog((context, configuration) =>
-{
-    configuration.ReadFrom.Configuration(context.Configuration);
-});
+builder.Host.UseSerilog((context, configuration) => { configuration.ReadFrom.Configuration(context.Configuration); });
 
 builder.Services.AddOpeniddictPlusDbContext<OpeniddictPlusDbContext>();
 
-builder.Services.AddIdentity<OpeniddictPlusUser, OpeniddictPlusRole>(options =>
+builder.Services
+    .AddIdentity<OpeniddictPlusUser, OpeniddictPlusRole>(options =>
     {
         options.SignIn.RequireConfirmedAccount = true;
         options.User.RequireUniqueEmail = true;
@@ -24,8 +21,11 @@ builder.Services.AddIdentity<OpeniddictPlusUser, OpeniddictPlusRole>(options =>
     .AddEntityFrameworkStores<OpeniddictPlusDbContext>()
     .AddDefaultTokenProviders();
 
-builder.Services.AddOpeniddictPlusServer<OpeniddictPlusDbContext>();
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+builder.Services
+    .AddOpeniddictPlusServer<OpeniddictPlusDbContext>()
+    .AddEmailSender();
+builder.Services
+    .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
         options.AccessDeniedPath = "/Identity/Account/AccessDenied";
@@ -35,15 +35,13 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.ExpireTimeSpan = TimeSpan.FromHours(8);
     });
 
+
 builder.Services.AddRazorPages();
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseDeveloperExceptionPage();
-}
+if (app.Environment.IsDevelopment()) app.UseDeveloperExceptionPage();
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {

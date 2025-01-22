@@ -1,29 +1,63 @@
-﻿@{
-    if (ViewData.TryGetValue("ParentLayout", out var parentLayout) && parentLayout !=  null)
-    {
-        Layout = parentLayout.ToString();
-    }
-    else
-    {
-        Layout = "Shared/_Layout";
-    }
-}
+﻿
+@using Microsoft.AspNetCore.Mvc.ViewEngines
+@inject IWebHostEnvironment Environment
+@inject ICompositeViewEngine Engine
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>@ViewData["Title"] - AspNetCore OpeniddictPlus</title>
 
-<h1>Manage your account</h1>
+    <environment include="Development">
+        <link rel="stylesheet" href="~/css/site.min.css"/>
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true"/>
+    </environment>
+</head>
+<body class="grid h-svh">
 
-<div>
-    <h2>Change your account settings</h2>
-    <hr />
-    <div class="row">
-        <div class="col-md-3">
-            <partial name="_ManageNav" />
-        </div>
-        <div class="col-md-9">
-            @RenderBody()
+<div class="container mx-auto px-4">
+    <partial name="_CookieConsentPartial" optional/>
+    <h1>Manage your account</h1>
+
+    <div>
+        <h2>Change your account settings</h2>
+        <div class="row">
+            <div class="col-md-3">
+                <partial name="_ManageNav"/>
+            </div>
+            <div class="col-md-9">
+                @RenderBody()
+
+
+            </div>
         </div>
     </div>
 </div>
+<footer class="border-t py-3 text-gray-500">
+    <div class="container mx-auto px-4">
+        &copy; 2025 - AspNetCoreOpeniddictPlus.Web
+        @{
+            var foundPrivacy = Url.Page("/Privacy", new { area = "" });
+        }
+        @if (foundPrivacy != null)
+        {
+            <a asp-area="" asp-page="/Privacy" class="text-blue-500 hover:underline">Privacy</a>
+        }
+    </div>
+</footer>
 
-@section Scripts {
-    @RenderSection("Scripts", required: false)
-}
+<environment include="Development">
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
+    <script src="~/Identity/js/site.js" asp-append-version="true"></script>
+</environment>
+<environment exclude="Development">
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
+    <script src="~/Identity/js/site.js" asp-append-version="true"></script>
+</environment>
+
+@await RenderSectionAsync("Scripts", false)
+</body>
+</html>
