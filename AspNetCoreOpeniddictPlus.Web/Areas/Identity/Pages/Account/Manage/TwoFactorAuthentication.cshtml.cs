@@ -60,7 +60,11 @@ public class TwoFactorAuthenticationModel : PageModel
     public async Task<IActionResult> OnGetAsync()
     {
         var user = await _userManager.GetUserAsync(User);
-        if (user == null) return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+        if (user == null)
+        {
+            _logger.LogWarning($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            return Redirect("/Identity/Account/Login");
+        }
 
         HasAuthenticator = await _userManager.GetAuthenticatorKeyAsync(user) != null;
         Is2faEnabled = await _userManager.GetTwoFactorEnabledAsync(user);
@@ -73,7 +77,11 @@ public class TwoFactorAuthenticationModel : PageModel
     public async Task<IActionResult> OnPostAsync()
     {
         var user = await _userManager.GetUserAsync(User);
-        if (user == null) return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+        if (user == null)
+        {
+            _logger.LogWarning($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            return Redirect("/Identity/Account/Login");
+        }
 
         await _signInManager.ForgetTwoFactorClientAsync();
         StatusMessage =

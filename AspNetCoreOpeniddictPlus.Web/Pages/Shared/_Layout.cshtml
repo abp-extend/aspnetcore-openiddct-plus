@@ -15,7 +15,7 @@
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true"/>
     </environment>
 </head>
-<body class="grid h-svh">
+<body class="grid rid-rows-[auto_1fr_auto] h-svh">
 
 <div class="container mx-auto px-4">
     <partial name="_CookieConsentPartial" optional/>
@@ -23,9 +23,9 @@
         @RenderBody()
     </main>
 </div>
-<footer class="border-t py-3 text-gray-500">
+<footer class="border-t py-3 text-gray-500 text-center">
     <div class="container mx-auto px-4">
-        &copy; 2025 - AspNetCoreOpeniddictPlus.Web
+        &copy; 2025 - AspNetCore OpeniddictPlus 
         @{
             var foundPrivacy = Url.Page("/Privacy", new { area = "" });
         }

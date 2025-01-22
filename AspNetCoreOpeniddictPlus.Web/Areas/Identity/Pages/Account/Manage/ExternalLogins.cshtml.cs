@@ -16,15 +16,17 @@ public class ExternalLoginsModel : PageModel
     private readonly SignInManager<OpeniddictPlusUser> _signInManager;
     private readonly UserManager<OpeniddictPlusUser> _userManager;
     private readonly IUserStore<OpeniddictPlusUser> _userStore;
+    private readonly ILogger<ExternalLoginsModel> _logger;
 
     public ExternalLoginsModel(
         UserManager<OpeniddictPlusUser> userManager,
         SignInManager<OpeniddictPlusUser> signInManager,
-        IUserStore<OpeniddictPlusUser> userStore)
+        IUserStore<OpeniddictPlusUser> userStore, ILogger<ExternalLoginsModel> logger)
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _userStore = userStore;
+        _logger = logger;
     }
 
     /// <summary>
@@ -55,7 +57,9 @@ public class ExternalLoginsModel : PageModel
     public async Task<IActionResult> OnGetAsync()
     {
         var user = await _userManager.GetUserAsync(User);
-        if (user == null) return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+        if (user == null) { 
+            _logger.LogWarning($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            return Redirect("/Identity/Account/Login");}
 
         CurrentLogins = await _userManager.GetLoginsAsync(user);
         OtherLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync())
@@ -73,7 +77,11 @@ public class ExternalLoginsModel : PageModel
     public async Task<IActionResult> OnPostRemoveLoginAsync(string loginProvider, string providerKey)
     {
         var user = await _userManager.GetUserAsync(User);
-        if (user == null) return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+        if (user == null)
+        {
+            _logger.LogWarning($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            return Redirect("/Identity/Account/Login");
+        }
 
         var result = await _userManager.RemoveLoginAsync(user, loginProvider, providerKey);
         if (!result.Succeeded)
@@ -103,7 +111,11 @@ public class ExternalLoginsModel : PageModel
     public async Task<IActionResult> OnGetLinkLoginCallbackAsync()
     {
         var user = await _userManager.GetUserAsync(User);
-        if (user == null) return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+        if (user == null)
+        {
+            _logger.LogWarning($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            return Redirect("/Identity/Account/Login");
+        }
 
         var userId = await _userManager.GetUserIdAsync(user);
         var info = await _signInManager.GetExternalLoginInfoAsync(userId);

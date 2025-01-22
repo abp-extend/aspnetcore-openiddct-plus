@@ -5,6 +5,7 @@
 
 using System.ComponentModel.DataAnnotations;
 using AspNetCoreOpeniddictPlus.Identity.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -15,13 +16,16 @@ public class IndexModel : PageModel
 {
     private readonly SignInManager<OpeniddictPlusUser> _signInManager;
     private readonly UserManager<OpeniddictPlusUser> _userManager;
+    private readonly ILogger<IndexModel> _logger;
 
     public IndexModel(
         UserManager<OpeniddictPlusUser> userManager,
-        SignInManager<OpeniddictPlusUser> signInManager)
+        SignInManager<OpeniddictPlusUser> signInManager,
+        ILogger<IndexModel> logger)
     {
         _userManager = userManager;
         _signInManager = signInManager;
+        _logger = logger;
     }
 
     /// <summary>
@@ -60,7 +64,11 @@ public class IndexModel : PageModel
     public async Task<IActionResult> OnGetAsync()
     {
         var user = await _userManager.GetUserAsync(User);
-        if (user == null) return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+        if (user == null)
+        {
+            _logger.LogWarning($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            return Redirect("/Identity/Account/Login");
+        }
 
         await LoadAsync(user);
         return Page();
@@ -69,7 +77,11 @@ public class IndexModel : PageModel
     public async Task<IActionResult> OnPostAsync()
     {
         var user = await _userManager.GetUserAsync(User);
-        if (user == null) return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+        if (user == null)
+        {
+            _logger.LogWarning($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            return Redirect("/Identity/Account/Login");
+        }
 
         if (!ModelState.IsValid)
         {

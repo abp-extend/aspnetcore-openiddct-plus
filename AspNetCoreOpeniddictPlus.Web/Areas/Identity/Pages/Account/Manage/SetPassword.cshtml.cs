@@ -15,13 +15,15 @@ public class SetPasswordModel : PageModel
 {
     private readonly SignInManager<OpeniddictPlusUser> _signInManager;
     private readonly UserManager<OpeniddictPlusUser> _userManager;
+    private readonly ILogger<SetPasswordModel> _logger;
 
     public SetPasswordModel(
         UserManager<OpeniddictPlusUser> userManager,
-        SignInManager<OpeniddictPlusUser> signInManager)
+        SignInManager<OpeniddictPlusUser> signInManager, ILogger<SetPasswordModel> logger)
     {
         _userManager = userManager;
         _signInManager = signInManager;
+        _logger = logger;
     }
 
     /// <summary>
@@ -41,7 +43,11 @@ public class SetPasswordModel : PageModel
     public async Task<IActionResult> OnGetAsync()
     {
         var user = await _userManager.GetUserAsync(User);
-        if (user == null) return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+        if (user == null)
+        {
+            _logger.LogWarning($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            return Redirect("/Identity/Account/Login");
+        }
 
         var hasPassword = await _userManager.HasPasswordAsync(user);
 
@@ -55,7 +61,12 @@ public class SetPasswordModel : PageModel
         if (!ModelState.IsValid) return Page();
 
         var user = await _userManager.GetUserAsync(User);
-        if (user == null) return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+        if (user == null) 
+        { 
+            _logger.LogWarning($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            return Redirect("/Identity/Account/Login");
+            
+        }
 
         var addPasswordResult = await _userManager.AddPasswordAsync(user, Input.NewPassword);
         if (!addPasswordResult.Succeeded)

@@ -7,41 +7,37 @@
 }
 
 
-<partial name="_StatusMessage" for="StatusMessage"/>
-<div class="row">
-    <div class="col-md-6">
-        <form id="email-form" method="post">
-            <div asp-validation-summary="All" class="text-danger" role="alert"></div>
-            @if (Model.IsEmailConfirmed)
-            {
-                <div class="form-floating mb-3 input-group">
-                    <input asp-for="Email" class="form-control" placeholder="Please enter your email." disabled/>
-                    <div class="input-group-append">
-                        <span class="h-100 input-group-text text-success font-weight-bold">✓</span>
+<div class="flex flex-col justify-center items-center mx-auto max-w-screen-sm">
+    <div class="w-full bg-white shadow-md rounded-lg p-6">
+        <section>
+            <partial name="_StatusMessage" for="StatusMessage"/>
+
+            <form id="email-form" method="post" class="space-y-6">
+                <div asp-validation-summary="All" class="text-red-600" role="alert"></div>
+                @if (Model.IsEmailConfirmed)
+                {
+                    <div class="flex items-center space-x-2">
+                        <input asp-for="Email" class="block w-full rounded-md border border-gray-300 bg-gray-100 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" placeholder="Please enter your email." disabled />
+                        <span class="text-green-600 font-bold">✓</span>
                     </div>
-                    <label asp-for="Email" class="form-label"></label>
+                }
+                else
+                {
+                    <div class="space-y-2">
+                        <label asp-for="Email" class="block text-sm font-medium text-gray-700">Your current email address</label>
+                        <input asp-for="Email" class="block w-full rounded-md border border-gray-300 bg-gray-100 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" placeholder="Please enter your email." disabled/>
+                        <button id="email-verification" type="submit" asp-page-handler="SendVerificationEmail" class="text-blue-600 hover:underline">Send verification email</button>
+                    </div>
+                }
+                <div>
+                    <label asp-for="Input.NewEmail" class="block text-sm font-medium text-gray-700">New Email</label>
+                    <input asp-for="Input.NewEmail" class="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" autocomplete="email" aria-required="true" placeholder="Please enter new email." />
+                    <span asp-validation-for="Input.NewEmail" class="text-red-600 text-sm"></span>
                 </div>
-            }
-            else
-            {
-                <div class="form-floating mb-3">
-                    <input asp-for="Email" class="form-control" placeholder="Please enter your email." disabled/>
-                    <label asp-for="Email" class="form-label"></label>
-                    <button id="email-verification" type="submit" asp-page-handler="SendVerificationEmail"
-                            class="btn btn-link">Send verification email
-                    </button>
-                </div>
-            }
-            <div class="form-floating mb-3">
-                <input asp-for="Input.NewEmail" class="form-control" autocomplete="email" aria-required="true"
-                       placeholder="Please enter new email."/>
-                <label asp-for="Input.NewEmail" class="form-label"></label>
-                <span asp-validation-for="Input.NewEmail" class="text-danger"></span>
-            </div>
-            <button id="change-email-button" type="submit" asp-page-handler="ChangeEmail"
-                    class="w-100 btn btn-lg btn-primary">Change email
-            </button>
-        </form>
+                <button id="change-email-button" type="submit" asp-page-handler="ChangeEmail" class="w-full py-2 px-4 bg-blue-700 text-white font-semibold rounded-lg shadow-md hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Change email</button>
+            </form>
+
+        </section>
     </div>
 </div>
 

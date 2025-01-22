@@ -24,7 +24,11 @@ public class PersonalDataModel : PageModel
     public async Task<IActionResult> OnGet()
     {
         var user = await _userManager.GetUserAsync(User);
-        if (user == null) return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+        if (user == null)
+        {
+            _logger.LogWarning($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            return Redirect("/Identity/Account/Login");
+        }
 
         return Page();
     }

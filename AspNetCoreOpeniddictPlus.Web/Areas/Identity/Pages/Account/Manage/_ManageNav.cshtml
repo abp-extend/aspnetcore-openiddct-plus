@@ -1,23 +1,52 @@
 @using AspNetCoreOpeniddictPlus.Identity.Entities
 @inject SignInManager<OpeniddictPlusUser> SignInManager
+@inject ILogger<object> Logger
+
 @{
     var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
+    Logger.LogInformation($"Found: ====== {@ManageNavPages.IndexNavClass(ViewContext)}");
+    var indexNavClass = ManageNavPages.IndexNavClass(ViewContext) == "active" ? "active text-white bg-blue-700 dark:bg-blue-600" : "bg-gray-50 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:text-white";
+    var emailNavClass = ManageNavPages.EmailNavClass(ViewContext) == "active" ? "active text-white bg-blue-700 dark:bg-blue-600" : "hover:text-gray-900 bg-gray-50 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:text-white";
+    var passwordNavClass = ManageNavPages.ChangePasswordNavClass(ViewContext) == "active" ? "active text-white bg-blue-700 dark:bg-blue-600" : "hover:text-gray-900 bg-gray-50 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:text-white";
+    var externalNavClass = ManageNavPages.ExternalLoginsNavClass(ViewContext) == "active" ? "active text-white bg-blue-700 dark:bg-blue-600" : "hover:text-gray-900 bg-gray-50 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:text-white";
+    var twoFaNavClass = ManageNavPages.TwoFactorAuthenticationNavClass(ViewContext) == "active" ? "active text-white bg-blue-700 dark:bg-blue-600" : "hover:text-gray-900 bg-gray-50 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:text-white";
+    var personalDataNavClass = ManageNavPages.PersonalDataNavClass(ViewContext) == "active" ? "active text-white bg-blue-700 dark:bg-blue-600" : "hover:text-gray-900 bg-gray-50 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:text-white";
 }
-<ul class="nav nav-pills flex-column">
-    <li class="nav-item"><a class="nav-link @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-page="./Index">Profile</a>
+
+<ul class="flex-column space-y space-y-4 text-sm font-medium text-gray-500 dark:text-gray-400 md:me-4 mb-4 md:mb-0">
+    <li>
+        <a asp-page="./Index" class="inline-flex items-center px-4 py-3  rounded-lg @indexNavClass w-full" aria-current="page">
+            Profile
+        </a>
     </li>
-    <li class="nav-item"><a class="nav-link @ManageNavPages.EmailNavClass(ViewContext)" id="email" asp-page="./Email">Email</a>
+    <li>
+        <a asp-page="./Email" class="inline-flex items-center px-4 py-3 rounded-lg @emailNavClass  w-full">
+            Email
+        </a>
     </li>
-    <li class="nav-item"><a class="nav-link @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password"
-                            asp-page="./ChangePassword">Password</a></li>
+    <li>
+        <a  asp-page="./ChangePassword" class="inline-flex items-center px-4 py-3 rounded-lg @passwordNavClass  w-full">
+
+            Change Password
+        </a>
+    </li>
     @if (hasExternalLogins)
     {
-        <li id="external-logins" class="nav-item"><a id="external-login"
-                                                     class="nav-link @ManageNavPages.ExternalLoginsNavClass(ViewContext)"
-                                                     asp-page="./ExternalLogins">External logins</a></li>
+        <li>
+            <a asp-page="./ExternalLogins" class="inline-flex items-center px-4 py-3 rounded-lg @externalNavClass  w-full">
+                External logins
+            </a>
+        </li>    
     }
-    <li class="nav-item"><a class="nav-link @ManageNavPages.TwoFactorAuthenticationNavClass(ViewContext)"
-                            id="two-factor" asp-page="./TwoFactorAuthentication">Two-factor authentication</a></li>
-    <li class="nav-item"><a class="nav-link @ManageNavPages.PersonalDataNavClass(ViewContext)" id="personal-data"
-                            asp-page="./PersonalData">Personal data</a></li>
+    <li>
+        <a asp-page="./TwoFactorAuthentication" class="inline-flex items-center px-4 py-3 rounded-lg @twoFaNavClass  w-full">
+            Two-factor authentication
+        </a>
+    </li>
+    <li>
+        <a asp-page="./PersonalData" class="inline-flex items-center px-4 py-3 rounded-lg @personalDataNavClass  w-full">
+            Personal data
+        </a>
+    </li>
 </ul>
+

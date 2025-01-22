@@ -20,15 +20,17 @@ public class EmailModel : PageModel
     private readonly IEmailSender _emailSender;
     private readonly SignInManager<OpeniddictPlusUser> _signInManager;
     private readonly UserManager<OpeniddictPlusUser> _userManager;
+    private readonly ILogger<IndexModel> _logger;
 
     public EmailModel(
         UserManager<OpeniddictPlusUser> userManager,
         SignInManager<OpeniddictPlusUser> signInManager,
-        IEmailSender emailSender)
+        IEmailSender emailSender, ILogger<IndexModel> logger)
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _emailSender = emailSender;
+        _logger = logger;
     }
 
     /// <summary>
@@ -73,7 +75,11 @@ public class EmailModel : PageModel
     public async Task<IActionResult> OnGetAsync()
     {
         var user = await _userManager.GetUserAsync(User);
-        if (user == null) return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+        if (user == null)
+        {
+            _logger.LogWarning($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            return Redirect("/Identity/Account/Login");
+        }
 
         await LoadAsync(user);
         return Page();
@@ -82,7 +88,11 @@ public class EmailModel : PageModel
     public async Task<IActionResult> OnPostChangeEmailAsync()
     {
         var user = await _userManager.GetUserAsync(User);
-        if (user == null) return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+        if (user == null)
+        {
+            _logger.LogWarning($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            return Redirect("/Identity/Account/Login");
+        }
 
         if (!ModelState.IsValid)
         {
