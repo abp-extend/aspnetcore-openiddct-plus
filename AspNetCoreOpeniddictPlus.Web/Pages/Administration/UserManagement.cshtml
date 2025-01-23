@@ -1,0 +1,50 @@
+@page
+
+
+@model AspNetCoreOpeniddictPlus.Web.Pages.Administration.UserManagement
+
+<div class="flex flex-col justify-center items-center mx-auto max-w-screen-xl">
+    <div class="w-full bg-white shadow-md rounded-lg p-6">
+        <h1 class="text-2xl font-medium pb-3">User Management</h1>
+
+        @if (Model.Users is not null)
+        {
+            <table class="table-auto border-collapse border border-gray-300 w-full text-left text-sm text-gray-500 dark:text-gray-400">
+                <thead class="bg-gray-200 text-xs  text-gray-700 dark:bg-gray-700 dark:text-gray-300">
+                <tr>
+                    @foreach (var column in Model.Columns)
+                    {
+                        <th class="border border-gray-300 px-4 py-2 dark:border-gray-600">
+                            @column.Header
+                        </th>
+                    }
+                </tr>
+                </thead>
+                <tbody class="bg-white dark:bg-gray-800">
+                @if (Model.Users.TotalCount > 0)
+                {
+                    @foreach (var item in Model.Users.Items)
+                    {
+                        <tr class="hover:bg-gray-100 dark:hover:bg-gray-700">
+                            @foreach (var column in Model.Columns)
+                            {
+                                <td class="border border-gray-300 px-4 py-2 dark:border-gray-600">
+                                    @column.Template(item)
+                                </td>
+                            }
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td class="border border-gray-300 px-4 py-2 text-center text-gray-500 dark:border-gray-600 dark:text-gray-400" colspan="@Model.Columns.Count">
+                            No data available
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>
