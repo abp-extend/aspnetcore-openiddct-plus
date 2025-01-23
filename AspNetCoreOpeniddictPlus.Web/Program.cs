@@ -23,7 +23,9 @@ builder.Services
 
 builder.Services
     .AddOpeniddictPlusServer<OpeniddictPlusDbContext>()
-    .AddEmailSender();
+    .AddEmailSender()
+    .AddUserService<OpeniddictPlusUser, OpeniddictPlusDbContext>();
+
 builder.Services
     .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
@@ -39,6 +41,7 @@ builder.Services
 builder.Services.AddRazorPages();
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddHostedService<ClientSeeder>();
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment()) app.UseDeveloperExceptionPage();
