@@ -58,11 +58,12 @@ public static class OpeniddictPlus
                     options.AddDevelopmentEncryptionCertificate()
                         .AddDevelopmentSigningCertificate();
                 }
-                    
+
 
                 options
                     .UseAspNetCore()
-                    .EnableTokenEndpointPassthrough();
+                    .EnableTokenEndpointPassthrough()
+                    .EnableAuthorizationEndpointPassthrough();
             });
         return services;
     }
