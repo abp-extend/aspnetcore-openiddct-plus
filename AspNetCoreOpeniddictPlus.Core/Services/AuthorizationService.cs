@@ -193,6 +193,13 @@ public class AuthorizationService<IEntity>(
        var request = HttpContext.GetOpenIddictServerRequest() ??
             throw new InvalidOperationException("The OpenID Connect request cannot be retrieved.");
 
+       
+       if (request.IsClientCredentialsGrantType())
+       {
+           return await HandleExchangeClientCredentialsGrantType(request);
+       }
+       
+       
        if (!request.IsAuthorizationCodeGrantType() && !request.IsRefreshTokenGrantType())
            throw new InvalidOperationException("The specified grant type is not supported.");
        
@@ -331,5 +338,49 @@ public class AuthorizationService<IEntity>(
     public virtual IActionResult Deny()
     {
         return Forbid(OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
+    }
+    
+    private async Task<IActionResult> HandleExchangeClientCredentialsGrantType(OpenIddictRequest request)
+    {
+        var application = await applicationManager.FindByClientIdAsync(request.ClientId);
+        if (application == null)
+        {
+            throw new InvalidOperationException("The application details cannot be found in the database.");
+        }
+
+        // Create the claims-based identity that will be used by OpenIddict to generate tokens.
+        var identity = new ClaimsIdentity(
+            authenticationType: TokenValidationParameters.DefaultAuthenticationType,
+            nameType: OpenIddictConstants.Claims.Name,
+            roleType: OpenIddictConstants.Claims.Role);
+
+        // Add the claims that will be persisted in the tokens (use the client_id as the subject identifier).
+        var clientId = await applicationManager.GetClientIdAsync(application) ?? throw new InvalidOperationException("Client Id not found!");
+        identity.AddClaim(OpenIddictConstants.Claims.Subject, clientId);
+        identity.AddClaim(OpenIddictConstants.Claims.Name, await applicationManager.GetDisplayNameAsync(application) ?? "");
+
+        // Note: In the original OAuth 2.0 specification, the client credentials grant
+        // doesn't return an identity token, which is an OpenID Connect concept.
+        //
+        // As a non-standardized extension, OpenIddict allows returning an id_token
+        // to convey information about the client application when the "openid" scope
+        // is granted (i.e specified when calling principal.SetScopes()). When the "openid"
+        // scope is not explicitly set, no identity token is returned to the client application.
+
+        // Set the list of scopes granted to the client application in access_token.
+        var principal = new ClaimsPrincipal(identity);
+        principal.SetScopes(request.GetScopes());
+        var scopes = new List<string>();
+        await foreach (var scope in scopeManager.ListResourcesAsync(identity.GetScopes()))
+        {
+            scopes.Add(scope);
+        }
+        principal.SetResources(scopes);
+
+        foreach (var claim in principal.Claims)
+        {
+            claim.SetDestinations(IncludeDestinationInAccessToken.Get(claim));
+        }
+        return SignIn(principal, OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
     }
 }

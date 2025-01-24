@@ -22,8 +22,10 @@ public class ClientSeeder(IServiceProvider serviceProvider, ILogger<ClientSeeder
                 ClientSecret = "388D45FA-B36B-4988-BA59-B187D329C207",
                 Permissions =
                 {
+                    OpenIddictConstants.Permissions.Endpoints.Authorization,
                     OpenIddictConstants.Permissions.Endpoints.Token,
-                    OpenIddictConstants.Permissions.GrantTypes.ClientCredentials
+                    OpenIddictConstants.Permissions.GrantTypes.ClientCredentials,
+                    OpenIddictConstants.Permissions.Prefixes.Scope + "cc",
                 }
             }, cancellationToken);
         }
