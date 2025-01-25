@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using OpenIddict.Abstractions;
 
 namespace AspNetCoreOpeniddictPlus.Core.Extensions;
 
@@ -47,12 +48,20 @@ public static class OpeniddictPlus
                     .SetRevocationEndpointUris("/connect/revoke")
                     .SetJsonWebKeySetEndpointUris("/.well-known/jwks.json")
                     .SetEndSessionEndpointUris("/connect/endsession")
-                    .SetEndUserVerificationEndpointUris("/connect/enduserverification")
-                    .AllowPasswordFlow()
+                    .SetEndUserVerificationEndpointUris("/connect/enduserverification");
+
+                options.AllowAuthorizationCodeFlow()
                     .AllowClientCredentialsFlow()
-                    .AllowAuthorizationCodeFlow()
-                    .AllowDeviceAuthorizationFlow()
+                    .AllowHybridFlow()
                     .AllowRefreshTokenFlow();
+                
+                options.RegisterScopes(
+                    OpenIddictConstants.Scopes.OpenId, 
+                    OpenIddictConstants.Scopes.Email, 
+                    OpenIddictConstants.Scopes.Profile, 
+                    OpenIddictConstants.Scopes.Roles,
+                    "api");
+                
                 if (env != null && env.IsDevelopment())
                 {
                     options.AddDevelopmentEncryptionCertificate()
@@ -63,7 +72,10 @@ public static class OpeniddictPlus
                 options
                     .UseAspNetCore()
                     .EnableTokenEndpointPassthrough()
-                    .EnableAuthorizationEndpointPassthrough();
+                    .EnableAuthorizationEndpointPassthrough()
+                    .EnableEndSessionEndpointPassthrough()
+                    .EnableUserInfoEndpointPassthrough()
+                    .EnableStatusCodePagesIntegration();
             });
         return services;
     }
