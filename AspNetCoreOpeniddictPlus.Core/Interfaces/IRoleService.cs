@@ -10,11 +10,11 @@ public interface IRoleService<TEntity>
         string? orderBy = null
     );
     
-    Task<TEntity> GetRoleByIdAsync(Guid roleId);
+    Task<TEntity> GetRoleByIdAsync(string roleId);
     
-    Task<Guid> CreateRoleAsync(CreateRoleDto roleDto);
+    Task CreateRoleAsync(TEntity entity);
     
-    Task<Guid> UpdateRoleAsync(Guid roleId, UpdateRoleDto updateRoleDto);
+    Task UpdateRoleAsync(string roleId, TEntity entity);
     
-    Task<Guid> DeleteRoleAsync(Guid roleId);
+    Task DeleteRoleAsync(string roleId);
 }

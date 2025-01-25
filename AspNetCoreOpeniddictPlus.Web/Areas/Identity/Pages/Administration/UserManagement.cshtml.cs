@@ -1,18 +1,13 @@
 using AspNetCoreOpeniddictPlus.Core.Dtos;
 using AspNetCoreOpeniddictPlus.Core.Interfaces;
 using AspNetCoreOpeniddictPlus.Identity.Entities;
-using Microsoft.AspNetCore.Components;
+using AspNetCoreOpeniddictPlus.Web.Areas.Identity.Pages.Administration.Helpers;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace AspNetCoreOpeniddictPlus.Web.Pages.Administration;
+namespace AspNetCoreOpeniddictPlus.Web.Areas.Identity.Pages.Administration;
 
-public class ColumnDefinition<TItem>
-{
-    public string Header { get; set; }
-    public Func<TItem, IHtmlContent> Template { get; set; }
-}
 
 public class UserManagement(IUserService<OpeniddictPlusUser> userService) : PageModel
 {

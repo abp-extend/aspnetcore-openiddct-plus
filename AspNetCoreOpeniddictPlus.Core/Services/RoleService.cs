@@ -26,7 +26,7 @@ public class RoleService<TREntity, TDbContext>(TDbContext dbContext) : IRoleServ
         return await query.ToPagedResultAsync(page, pageSize);
     }
 
-    public async Task<TREntity> GetRoleByIdAsync(Guid roleId)
+    public async Task<TREntity> GetRoleByIdAsync(string roleId)
     {
         var query = dbContext.Set<TREntity>().AsQueryable();
         if (query is null)
@@ -45,20 +45,29 @@ public class RoleService<TREntity, TDbContext>(TDbContext dbContext) : IRoleServ
         return role;
     }
 
-    public async Task<Guid> CreateRoleAsync(CreateRoleDto createRoleDto)
+    public async Task CreateRoleAsync(TREntity entity)
     {
-        var query = dbContext.Set<TREntity>().AsQueryable();
-        if (query is null)
+        try
         {
-            throw new InvalidOperationException(
-                "The provided entity type is not a valid queryable type."
-            );
+            var query = dbContext.Set<TREntity>().AsQueryable();
+            if (query is null)
+            {
+                throw new InvalidOperationException(
+                    "The provided entity type is not a valid queryable type."
+                );
+            }
+
+            await dbContext.AddAsync(entity);
+            await dbContext.SaveChangesAsync();
         }
-        return Guid.NewGuid();
-      
+        catch (Exception e)
+        {
+            throw new Exception($"Failed to process this operation. Message: {e.Message}");
+        }
+     
     }
 
-    public async Task<Guid> UpdateRoleAsync(Guid roleId, UpdateRoleDto updateRoleDto)
+    public async Task UpdateRoleAsync(string roleId, TREntity entity)
     {
         var query = dbContext.Set<TREntity>().AsQueryable();
         if (query is null)
@@ -68,12 +77,36 @@ public class RoleService<TREntity, TDbContext>(TDbContext dbContext) : IRoleServ
             );
         }
         var role = await query.Where(r => EF.Property<object>(r, "Id").Equals(roleId)).FirstOrDefaultAsync();
-        return Guid.NewGuid();
+        if (role is null)
+        {
+            throw new InvalidOperationException(
+                "The provided role id is not valid."
+            );
+        }
+        dbContext.Update(entity); 
+        await dbContext.SaveChangesAsync();
+       
     }
     
 
-    public Task<Guid> DeleteRoleAsync(Guid id)
+    public async Task DeleteRoleAsync(string id)
     {
-        throw new NotImplementedException();
+        var query = dbContext.Set<TREntity>().AsQueryable();
+        if (query is null)
+        {
+            throw new InvalidOperationException(
+                "The provided entity type is not a valid queryable type."
+            );
+        }
+        var role = await query.Where(r => EF.Property<object>(r, "Id").Equals(id)).FirstOrDefaultAsync();
+        if (role is null)
+        {
+            throw new InvalidOperationException(
+                "The provided role id is not valid."
+            );
+        }
+        dbContext.Remove(role);
+        await dbContext.SaveChangesAsync();
+        
     }
 }

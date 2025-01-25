@@ -1,52 +1,59 @@
 using System.Linq;
+using AspNetCoreOpeniddictPlus.Core.Dtos;
+using AspNetCoreOpeniddictPlus.Core.Interfaces;
 using AspNetCoreOpeniddictPlus.Identity.Entities;
+using AspNetCoreOpeniddictPlus.Web.Areas.Identity.Pages.Administration.Helpers;
 using AspNetCoreOpeniddictPlus.Web.Persistence;
 using AspNetCoreOpeniddictPlus.Web.ViewModels;
+using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
 namespace AspNetCoreOpeniddictPlus.Web.Areas.Identity.Pages.Administration
 {
-    public class RoleManagementModel : PageModel
+    public class RoleManagementModel(IRoleService<OpeniddictPlusRole> roleService) : PageModel
     {
-        private readonly OpeniddictPlusDbContext _context;
 
-        public RoleManagementModel(OpeniddictPlusDbContext context)
-        {
-            _context = context;
-            Roles = new List<RoleViewModel>();
-            Role = new RoleViewModel();
-        }
+        public PagedResult<OpeniddictPlusRole>? Roles { get; set; }
+        
+        public List<ColumnDefinition<OpeniddictPlusRole>> Columns { get; set; } =
+        [
+            new ColumnDefinition<OpeniddictPlusRole>
+            {
+                Header = "Name",
+                Template = item => new HtmlString(item.Name),
+            },
 
-        [BindProperty]
-        public IList<RoleViewModel> Roles { get; set; }
+            new ColumnDefinition<OpeniddictPlusRole>
+            {
+                Header = "Action",
+                Template = item => new HtmlString(
+                    $"<a href=\"#\" class=\"font-medium text-blue-600 dark:text-blue-500 hover:underline\">Edit role</a>\n"
+                ),
+            }
 
+        ];
+        
         [BindProperty]
         public RoleViewModel Role { get; set; }
-
+        
         [TempData]
-        public string ErrorMessage { get; set; }
-
-        [TempData]
-        public string StatusMessage { get; set; }
+        public string ErrorMessage { get; set; } = string.Empty;
+        
+        public string StatusMessage { get; set; } = string.Empty;
+     
 
         public async Task OnGetAsync()
         {
-            Roles = await _context
-                .Roles.Select(r => new RoleViewModel { Id = r.Id, Name = r.Name })
-                .ToListAsync();
+            Role = new RoleViewModel();
+            Roles = await roleService.GetRolesAsync();
         }
 
         public async Task<IActionResult> OnGetEditAsync(string id)
         {
-            var role = await _context.Roles.FindAsync(id);
-            if (role == null)
-            {
-                return NotFound();
-            }
-
-            Role = new RoleViewModel { Id = role.Id, Name = role.Name };
+            var role = await roleService.GetRoleByIdAsync(id);
+            Role = new RoleViewModel { Id = role.Id, Name = role.Name  ?? "N/A"};
             await OnGetAsync();
             return Page();
         }
@@ -67,21 +74,24 @@ namespace AspNetCoreOpeniddictPlus.Web.Areas.Identity.Pages.Administration
                 if (string.IsNullOrEmpty(Role.Id))
                 {
                     var role = new OpeniddictPlusRole { Name = Role.Name };
-                    _context.Roles.Add(role);
+                    await roleService.CreateRoleAsync(role);
                     StatusMessage = "Role created successfully.";
                 }
                 else
                 {
-                    var existingRole = await _context.Roles.FindAsync(Role.Id);
-                    if (existingRole == null)
+                    try
                     {
-                        return NotFound();
+                        var existingRole = await roleService.GetRoleByIdAsync(Role.Id);
+                        existingRole.Name = Role.Name;
+                        StatusMessage = "Role updated successfully.";
                     }
-                    existingRole.Name = Role.Name;
-                    StatusMessage = "Role updated successfully.";
+                    catch (Exception e)
+                    {
+                        return NotFound(e.Message);
+                    }
+                    
                 }
                 
-                await _context.SaveChangesAsync();
                 return RedirectToPage();
             }
             catch (Exception ex)
@@ -94,16 +104,9 @@ namespace AspNetCoreOpeniddictPlus.Web.Areas.Identity.Pages.Administration
 
         public async Task<IActionResult> OnPostDeleteAsync(string id)
         {
-            var role = await _context.Roles.FindAsync(id);
-            if (role == null)
-            {
-                return NotFound();
-            }
-
             try
             {
-                _context.Roles.Remove(role);
-                await _context.SaveChangesAsync();
+                await roleService.DeleteRoleAsync(id);
                 StatusMessage = "Role deleted successfully.";
             }
             catch (Exception ex)
@@ -113,7 +116,7 @@ namespace AspNetCoreOpeniddictPlus.Web.Areas.Identity.Pages.Administration
             return RedirectToPage();
         }
 
-        public async Task<IActionResult> OnPostUpdateAsync()
+        public async Task<IActionResult> OnPostUpdateAsync(string id)
         {
             if (!ModelState.IsValid)
             {
@@ -124,11 +127,15 @@ namespace AspNetCoreOpeniddictPlus.Web.Areas.Identity.Pages.Administration
                 return Page();
             }
 
-            var role = await _context.Roles.FindAsync(Role.Id);
-            if (role != null)
+            try
             {
+                var role = await roleService.GetRoleByIdAsync(id);
                 role.Name = Role.Name;
-                await _context.SaveChangesAsync();
+                await roleService.UpdateRoleAsync(id, role);
+            }
+            catch (Exception ex)
+            {
+                StatusMessage = "Error: Unable to update role.";
             }
             return RedirectToPage();
         }
