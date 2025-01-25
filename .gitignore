@@ -50,3 +50,9 @@ dotnet-tools.json
 
 # Local development
 .env
+
+
+client-apps/openiddict-plus-ui/certificates/localhost-key.pem
+client-apps/openiddict-plus-ui/certificates/localhost.pem
+client-apps/openiddict-plus-ui/next-env.d.ts
+client-apps/openiddict-plus-ui/.next/
