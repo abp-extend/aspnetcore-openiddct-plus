@@ -28,6 +28,29 @@ public class AuthorizationService<IEntity>(
         var request = HttpContext.GetOpenIddictServerRequest() ??
                       throw new InvalidOperationException("The OpenID Connect request cannot be retrieved.");
         
+        
+        // If prompt=login was specified by the client application,
+        // immediately return the user agent to the login page.
+        if (request.HasPromptValue(OpenIddictConstants.PromptValues.Login))
+        {
+            // To avoid endless login -> authorization redirects, the prompt=login flag
+            // is removed from the authorization request payload before redirecting the user.
+            var prompt = string.Join(" ", request.GetPromptValues().Remove(OpenIddictConstants.PromptValues.Login));
+
+            var parameters = Request.HasFormContentType ?
+                Request.Form.Where(parameter => parameter.Key != OpenIddictConstants.Parameters.Prompt).ToList() :
+                Request.Query.Where(parameter => parameter.Key != OpenIddictConstants.Parameters.Prompt).ToList();
+
+            parameters.Add(KeyValuePair.Create(OpenIddictConstants.Parameters.Prompt, new StringValues(prompt)));
+
+            return Challenge(
+                authenticationSchemes: IdentityConstants.ApplicationScheme,
+                properties: new AuthenticationProperties
+                {
+                    RedirectUri = Request.PathBase + Request.Path + QueryString.Create(parameters)
+                });
+        }
+        
         // Try to retrieve the user principal stored in the authentication cookie and redirect
         // the user agent to the login page (or to an external provider) in the following cases:
         //
@@ -162,11 +185,12 @@ public class AuthorizationService<IEntity>(
                     }!));
 
             // In every other case, render the consent form.
-            default: return Ok(new AuthorizationServiceResult
-            {
-                ApplicationName = await applicationManager.GetLocalizedDisplayNameAsync(application),
-                Scope = request.Scope
-            });
+            default: 
+                return View(new AuthorizationServiceResult
+                {
+                    ApplicationName = await applicationManager.GetLocalizedDisplayNameAsync(application),
+                    Scope = request.Scope
+                });
         }
     }
 

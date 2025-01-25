@@ -3,6 +3,7 @@ using AspNetCoreOpeniddictPlus.Identity.Entities;
 using AspNetCoreOpeniddictPlus.Web.Persistence;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
+using OpenIddict.Server.AspNetCore;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -27,7 +28,11 @@ builder.Services
     .AddUserService<OpeniddictPlusUser, OpeniddictPlusDbContext>();
 
 builder.Services
-    .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddAuthentication(options =>
+    {
+        options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    })
     .AddCookie(options =>
     {
         options.AccessDeniedPath = "/Identity/Account/AccessDenied";
@@ -37,9 +42,8 @@ builder.Services
         options.ExpireTimeSpan = TimeSpan.FromHours(8);
     });
 
-
-builder.Services.AddRazorPages();
 builder.Services.AddControllersWithViews();
+builder.Services.AddRazorPages();
 
 builder.Services.AddHostedService<ClientSeeder>();
 var app = builder.Build();
@@ -63,6 +67,9 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapStaticAssets();
-app.MapRazorPages();
+
 app.MapControllers();
+app.MapDefaultControllerRoute();
+app.MapRazorPages();
+
 app.Run();

@@ -1,9 +1,12 @@
+using AspNetCoreOpeniddictPlus.Core.Dtos;
 using AspNetCoreOpeniddictPlus.Core.Helpers;
 using AspNetCoreOpeniddictPlus.Core.Services;
 using AspNetCoreOpeniddictPlus.Identity.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using NuGet.ProjectModel;
+using NuGet.Protocol;
 using OpenIddict.Abstractions;
 
 namespace AspNetCoreOpeniddictPlus.Web.Controllers;
@@ -25,7 +28,7 @@ public class AuthorizationController(
     [HttpGet("~/connect/authorize")]
     [HttpPost("~/connect/authorize")]
     [IgnoreAntiforgeryToken]
-    public override Task<IActionResult> AuthorizeAsync()
+    public override  Task<IActionResult> AuthorizeAsync()
     {
         logger.LogInformation("AuthorizeAsync invoked");
         return base.AuthorizeAsync();
