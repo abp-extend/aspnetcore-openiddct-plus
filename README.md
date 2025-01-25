@@ -15,7 +15,25 @@ A comprehensive solution for ASP.NET Core Identity with OpenIddict, featuring ad
 2. Open the solution in Rider or Your choice of an editor.
 3. Run the migrations [initial-migration](initial-migration.ps1)
 4. Run the application.
-4. Navigate to `https://localhost:5001` to access the admin panel.
+4. Navigate to `https://localhost:7006` to access the admin panel.
+
+## NextJS Client
+1. Go to the client-apps/openiddict-plus-ui folder
+2. Run `npm install`
+3. Update the .env file with the correct values for example:
+```bash
+NEXT_AUTHORITY_API_URL=https://localhost:7006
+NEXT_PUBLIC_CLIENT_ID=nextjs-client
+NEXT_PUBLIC_APP_URL=https://localhost:3000
+NEXT_PUBLIC_SCOPE='openid profile email roles api'
+SESSION_PASSWORD=your secrets...
+NODE_TLS_REJECT_UNAUTHORIZED=0
+SERVER_ENV=development
+```
+The client id information can be found in the database in the openiddict applications table or see the `ClientSeeder.cs`
+file.
+4. Run `npm run dev`
+5. `https://localhost:3000/auth/login` to trigger the login flow
 
 
 ## openid configuration
