@@ -30,7 +30,8 @@ public class RegisterModel : PageModel
         IUserStore<OpeniddictPlusUser> userStore,
         SignInManager<OpeniddictPlusUser> signInManager,
         ILogger<RegisterModel> logger,
-        IEmailSender emailSender)
+        IEmailSender emailSender
+    )
     {
         _userManager = userManager;
         _userStore = userStore;
@@ -58,7 +59,6 @@ public class RegisterModel : PageModel
     ///     directly from your code. This API may change or be removed in future releases.
     /// </summary>
     public IList<AuthenticationScheme> ExternalLogins { get; set; }
-
 
     public async Task OnGetAsync(string returnUrl = null)
     {
@@ -88,20 +88,34 @@ public class RegisterModel : PageModel
                 var callbackUrl = Url.Page(
                     "/Account/ConfirmEmail",
                     null,
-                    new { area = "Identity", userId, code, returnUrl },
-                    Request.Scheme);
+                    new
+                    {
+                        area = "Identity",
+                        userId,
+                        code,
+                        returnUrl,
+                    },
+                    Request.Scheme
+                );
 
-                await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                await _emailSender.SendEmailAsync(
+                    Input.Email,
+                    "Confirm your email",
+                    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>."
+                );
 
                 if (_userManager.Options.SignIn.RequireConfirmedAccount)
-                    return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl });
+                    return RedirectToPage(
+                        "RegisterConfirmation",
+                        new { email = Input.Email, returnUrl }
+                    );
 
                 await _signInManager.SignInAsync(user, false);
                 return LocalRedirect(returnUrl);
             }
 
-            foreach (var error in result.Errors) ModelState.AddModelError(string.Empty, error.Description);
+            foreach (var error in result.Errors)
+                ModelState.AddModelError(string.Empty, error.Description);
         }
 
         // If we got this far, something failed, redisplay form
@@ -116,16 +130,20 @@ public class RegisterModel : PageModel
         }
         catch
         {
-            throw new InvalidOperationException($"Can't create an instance of '{nameof(OpeniddictPlusUser)}'. " +
-                                                $"Ensure that '{nameof(OpeniddictPlusUser)}' is not an abstract class and has a parameterless constructor, or alternatively " +
-                                                $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
+            throw new InvalidOperationException(
+                $"Can't create an instance of '{nameof(OpeniddictPlusUser)}'. "
+                    + $"Ensure that '{nameof(OpeniddictPlusUser)}' is not an abstract class and has a parameterless constructor, or alternatively "
+                    + $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml"
+            );
         }
     }
 
     private IUserEmailStore<OpeniddictPlusUser> GetEmailStore()
     {
         if (!_userManager.SupportsUserEmail)
-            throw new NotSupportedException("The default UI requires a user store with email support.");
+            throw new NotSupportedException(
+                "The default UI requires a user store with email support."
+            );
         return (IUserEmailStore<OpeniddictPlusUser>)_userStore;
     }
 
@@ -149,8 +167,11 @@ public class RegisterModel : PageModel
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
         [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.",
-            MinimumLength = 6)]
+        [StringLength(
+            100,
+            ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.",
+            MinimumLength = 6
+        )]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }

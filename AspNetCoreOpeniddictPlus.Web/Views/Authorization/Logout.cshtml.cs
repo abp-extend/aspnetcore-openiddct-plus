@@ -4,8 +4,5 @@ namespace AspNetCoreOpeniddictPlus.Web.Views.Authorization;
 
 public class Logout : PageModel
 {
-    public void OnGet()
-    {
-        
-    }
+    public void OnGet() { }
 }

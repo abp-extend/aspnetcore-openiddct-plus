@@ -17,8 +17,10 @@ public class TwoFactorAuthenticationModel : PageModel
     private readonly UserManager<OpeniddictPlusUser> _userManager;
 
     public TwoFactorAuthenticationModel(
-        UserManager<OpeniddictPlusUser> userManager, SignInManager<OpeniddictPlusUser> signInManager,
-        ILogger<TwoFactorAuthenticationModel> logger)
+        UserManager<OpeniddictPlusUser> userManager,
+        SignInManager<OpeniddictPlusUser> signInManager,
+        ILogger<TwoFactorAuthenticationModel> logger
+    )
     {
         _userManager = userManager;
         _signInManager = signInManager;

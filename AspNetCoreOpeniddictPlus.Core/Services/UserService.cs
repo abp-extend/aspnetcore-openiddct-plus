@@ -5,16 +5,22 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AspNetCoreOpeniddictPlus.Core.Services;
 
-public class UserService<TEntity, TDbContext>(TDbContext dbContext) : IUserService<TEntity> 
-    where TEntity : class 
+public class UserService<TEntity, TDbContext>(TDbContext dbContext) : IUserService<TEntity>
+    where TEntity : class
     where TDbContext : DbContext
 {
-    public async Task<PagedResult<TEntity>> GetUsersAsync(int page, int pageSize, string? orderBy = null)
+    public async Task<PagedResult<TEntity>> GetUsersAsync(
+        int page,
+        int pageSize,
+        string? orderBy = null
+    )
     {
         var query = dbContext.Set<TEntity>().AsQueryable();
-        if(query is null)
+        if (query is null)
         {
-            throw new InvalidOperationException("The provided entity type is not a valid queryable type.");
+            throw new InvalidOperationException(
+                "The provided entity type is not a valid queryable type."
+            );
         }
         if (orderBy is not null)
         {

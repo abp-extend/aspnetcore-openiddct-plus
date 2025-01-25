@@ -19,7 +19,8 @@ public class ResetAuthenticatorModel : PageModel
     public ResetAuthenticatorModel(
         UserManager<OpeniddictPlusUser> userManager,
         SignInManager<OpeniddictPlusUser> signInManager,
-        ILogger<ResetAuthenticatorModel> logger)
+        ILogger<ResetAuthenticatorModel> logger
+    )
     {
         _userManager = userManager;
         _signInManager = signInManager;
@@ -57,7 +58,10 @@ public class ResetAuthenticatorModel : PageModel
         await _userManager.SetTwoFactorEnabledAsync(user, false);
         await _userManager.ResetAuthenticatorKeyAsync(user);
         var userId = await _userManager.GetUserIdAsync(user);
-        _logger.LogInformation("User with ID '{UserId}' has reset their authentication app key.", user.Id);
+        _logger.LogInformation(
+            "User with ID '{UserId}' has reset their authentication app key.",
+            user.Id
+        );
 
         await _signInManager.RefreshSignInAsync(user);
         StatusMessage =

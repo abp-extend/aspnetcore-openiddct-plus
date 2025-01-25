@@ -20,7 +20,8 @@ public class LoginWithRecoveryCodeModel : PageModel
     public LoginWithRecoveryCodeModel(
         SignInManager<OpeniddictPlusUser> signInManager,
         UserManager<OpeniddictPlusUser> userManager,
-        ILogger<LoginWithRecoveryCodeModel> logger)
+        ILogger<LoginWithRecoveryCodeModel> logger
+    )
     {
         _signInManager = signInManager;
         _userManager = userManager;
@@ -44,7 +45,8 @@ public class LoginWithRecoveryCodeModel : PageModel
     {
         // Ensure the user has gone through the username & password screen first
         var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
-        if (user == null) throw new InvalidOperationException("Unable to load two-factor authentication user.");
+        if (user == null)
+            throw new InvalidOperationException("Unable to load two-factor authentication user.");
 
         ReturnUrl = returnUrl;
 
@@ -53,10 +55,12 @@ public class LoginWithRecoveryCodeModel : PageModel
 
     public async Task<IActionResult> OnPostAsync(string returnUrl = null)
     {
-        if (!ModelState.IsValid) return Page();
+        if (!ModelState.IsValid)
+            return Page();
 
         var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
-        if (user == null) throw new InvalidOperationException("Unable to load two-factor authentication user.");
+        if (user == null)
+            throw new InvalidOperationException("Unable to load two-factor authentication user.");
 
         var recoveryCode = Input.RecoveryCode.Replace(" ", string.Empty);
 
@@ -66,7 +70,10 @@ public class LoginWithRecoveryCodeModel : PageModel
 
         if (result.Succeeded)
         {
-            _logger.LogInformation("User with ID '{UserId}' logged in with a recovery code.", user.Id);
+            _logger.LogInformation(
+                "User with ID '{UserId}' logged in with a recovery code.",
+                user.Id
+            );
             return LocalRedirect(returnUrl ?? Url.Content("~/"));
         }
 

@@ -4,7 +4,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AspNetCoreOpeniddictPlus.Web.Persistence;
 
-public class OpeniddictPlusDbContext(DbContextOptions<OpeniddictPlusDbContext> options) : IdentityDbContext(options)
+public class OpeniddictPlusDbContext(DbContextOptions<OpeniddictPlusDbContext> options)
+    : IdentityDbContext(options)
 {
     public DbSet<OpeniddictPlusUser> OpeniddictPlusUsers { get; set; }
     public DbSet<OpeniddictPlusRole> OpeniddictPlusRoles { get; set; }
@@ -14,7 +15,7 @@ public class OpeniddictPlusDbContext(DbContextOptions<OpeniddictPlusDbContext> o
     {
         base.OnModelCreating(modelBuilder);
         modelBuilder.UseOpenIddict();
-        
+
         modelBuilder.Entity<OpeniddictPlusPermission>(entity =>
         {
             entity.ToTable("OpeniddictPlusPermissions");

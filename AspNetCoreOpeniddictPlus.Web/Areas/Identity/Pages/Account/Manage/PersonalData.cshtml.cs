@@ -15,7 +15,8 @@ public class PersonalDataModel : PageModel
 
     public PersonalDataModel(
         UserManager<OpeniddictPlusUser> userManager,
-        ILogger<PersonalDataModel> logger)
+        ILogger<PersonalDataModel> logger
+    )
     {
         _userManager = userManager;
         _logger = logger;

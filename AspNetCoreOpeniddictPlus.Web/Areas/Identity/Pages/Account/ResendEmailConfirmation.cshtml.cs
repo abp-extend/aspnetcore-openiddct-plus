@@ -22,7 +22,10 @@ public class ResendEmailConfirmationModel : PageModel
     private readonly IEmailSender _emailSender;
     private readonly UserManager<OpeniddictPlusUser> _userManager;
 
-    public ResendEmailConfirmationModel(UserManager<OpeniddictPlusUser> userManager, IEmailSender emailSender)
+    public ResendEmailConfirmationModel(
+        UserManager<OpeniddictPlusUser> userManager,
+        IEmailSender emailSender
+    )
     {
         _userManager = userManager;
         _emailSender = emailSender;
@@ -35,18 +38,20 @@ public class ResendEmailConfirmationModel : PageModel
     [BindProperty]
     public InputModel Input { get; set; }
 
-    public void OnGet()
-    {
-    }
+    public void OnGet() { }
 
     public async Task<IActionResult> OnPostAsync()
     {
-        if (!ModelState.IsValid) return Page();
+        if (!ModelState.IsValid)
+            return Page();
 
         var user = await _userManager.FindByEmailAsync(Input.Email);
         if (user == null)
         {
-            ModelState.AddModelError(string.Empty, "Verification email sent. Please check your email.");
+            ModelState.AddModelError(
+                string.Empty,
+                "Verification email sent. Please check your email."
+            );
             return Page();
         }
 
@@ -57,11 +62,13 @@ public class ResendEmailConfirmationModel : PageModel
             "/Account/ConfirmEmail",
             null,
             new { userId, code },
-            Request.Scheme);
+            Request.Scheme
+        );
         await _emailSender.SendEmailAsync(
             Input.Email,
             "Confirm your email",
-            $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+            $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>."
+        );
 
         ModelState.AddModelError(string.Empty, "Verification email sent. Please check your email.");
         return Page();

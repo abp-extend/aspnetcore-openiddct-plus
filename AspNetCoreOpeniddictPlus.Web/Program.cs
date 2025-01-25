@@ -4,17 +4,21 @@ using AspNetCoreOpeniddictPlus.Web.Persistence;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using OpenIddict.Abstractions;
-using OpenIddict.Server.AspNetCore;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Host.UseSerilog((context, configuration) => { configuration.ReadFrom.Configuration(context.Configuration); });
+builder.Host.UseSerilog(
+    (context, configuration) =>
+    {
+        configuration.ReadFrom.Configuration(context.Configuration);
+    }
+);
 
 builder.Services.AddOpeniddictPlusDbContext<OpeniddictPlusDbContext>();
 
-builder.Services
-    .AddIdentity<OpeniddictPlusUser, OpeniddictPlusRole>(options =>
+builder
+    .Services.AddIdentity<OpeniddictPlusUser, OpeniddictPlusRole>(options =>
     {
         options.SignIn.RequireConfirmedAccount = true;
         options.User.RequireUniqueEmail = true;
@@ -27,16 +31,13 @@ builder.Services
     .AddEntityFrameworkStores<OpeniddictPlusDbContext>()
     .AddDefaultTokenProviders();
 
-
-
-builder.Services
-    .AddOpeniddictPlusServer<OpeniddictPlusDbContext>()
+builder
+    .Services.AddOpeniddictPlusServer<OpeniddictPlusDbContext>()
     .AddEmailSender()
-    .AddUserService<OpeniddictPlusUser, OpeniddictPlusDbContext>();
+    .AddUserManagementService<OpeniddictPlusUser, OpeniddictPlusRole, OpeniddictPlusPermission, OpeniddictPlusDbContext>();
 
-
-builder.Services
-    .AddAuthentication(options =>
+builder
+    .Services.AddAuthentication(options =>
     {
         options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
         options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -56,7 +57,9 @@ builder.Services.AddRazorPages();
 builder.Services.AddHostedService<ClientSeeder>();
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment()) app.UseDeveloperExceptionPage();
+if (app.Environment.IsDevelopment())
+    app.UseDeveloperExceptionPage();
+
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {

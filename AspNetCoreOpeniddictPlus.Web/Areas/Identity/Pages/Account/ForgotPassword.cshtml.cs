@@ -20,7 +20,10 @@ public class ForgotPasswordModel : PageModel
     private readonly IEmailSender _emailSender;
     private readonly UserManager<OpeniddictPlusUser> _userManager;
 
-    public ForgotPasswordModel(UserManager<OpeniddictPlusUser> userManager, IEmailSender emailSender)
+    public ForgotPasswordModel(
+        UserManager<OpeniddictPlusUser> userManager,
+        IEmailSender emailSender
+    )
     {
         _userManager = userManager;
         _emailSender = emailSender;
@@ -50,12 +53,14 @@ public class ForgotPasswordModel : PageModel
                 "/Account/ResetPassword",
                 null,
                 new { area = "Identity", code },
-                Request.Scheme);
+                Request.Scheme
+            );
 
             await _emailSender.SendEmailAsync(
                 Input.Email,
                 "Reset Password",
-                $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>."
+            );
 
             return RedirectToPage("./ForgotPasswordConfirmation");
         }

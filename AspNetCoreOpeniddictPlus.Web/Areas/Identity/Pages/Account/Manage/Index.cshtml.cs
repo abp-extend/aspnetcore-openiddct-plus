@@ -21,7 +21,8 @@ public class IndexModel : PageModel
     public IndexModel(
         UserManager<OpeniddictPlusUser> userManager,
         SignInManager<OpeniddictPlusUser> signInManager,
-        ILogger<IndexModel> logger)
+        ILogger<IndexModel> logger
+    )
     {
         _userManager = userManager;
         _signInManager = signInManager;
@@ -55,10 +56,7 @@ public class IndexModel : PageModel
 
         Username = userName;
 
-        Input = new InputModel
-        {
-            PhoneNumber = phoneNumber
-        };
+        Input = new InputModel { PhoneNumber = phoneNumber };
     }
 
     public async Task<IActionResult> OnGetAsync()
