@@ -1,0 +1,129 @@
+﻿@page
+@model AspNetCoreOpeniddictPlus.Web.Areas.Identity.Pages.Administration.RoleManagementModel
+@{
+    ViewData["Title"] = "Role Management";
+}
+
+<div class="min-h-screen bg-gray-50 py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-2xl font-bold text-gray-900 mb-6">Role Management</h2>
+
+        @if (!string.IsNullOrEmpty(Model.StatusMessage))
+        {
+            <div class="rounded-md bg-green-50 p-4 mb-4">
+                <div class="flex">
+                    <div class="flex-shrink-0">
+                        <svg class="h-5 w-5 text-green-400" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                    <div class="ml-3">
+                        <p class="text-sm font-medium text-green-800">@Model.StatusMessage</p>
+                    </div>
+                </div>
+            </div>
+        }
+
+        @if (!ModelState.IsValid)
+        {
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+                <div asp-validation-summary="All" class="text-sm"></div>
+            </div>
+        }
+
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
+            <form method="post">
+                @if (!string.IsNullOrEmpty(Model.Role.Id))
+                {
+                    <input type="hidden" asp-for="Role.Id" />
+                }
+                <div class="mb-4">
+                    <label asp-for="Role.Name" class="block text-gray-700 text-sm font-bold mb-2"></label>
+                    <input asp-for="Role.Name" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+                    <span asp-validation-for="Role.Name" class="text-red-500 text-xs italic"></span>
+                </div>
+                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                    @(string.IsNullOrEmpty(Model.Role.Id) ? "Create Role" : "Update Role")
+                </button>
+                @if (!string.IsNullOrEmpty(Model.Role.Id))
+                {
+                    <a asp-page="./RoleManagement" class="ml-2 inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                        Cancel
+                    </a>
+                }
+            </form>
+        </div>
+
+        <div class="bg-white shadow-sm rounded-lg">
+            <div class="sm:flex sm:items-center px-6 py-4 border-b border-gray-200">
+                <div class="sm:flex-auto">
+                    <h3 class="text-base font-semibold leading-6 text-gray-900">Roles</h3>
+                    <p class="mt-2 text-sm text-gray-700">A list of all roles in the system.</p>
+                </div>
+            </div>
+            <div class="flow-root">
+                <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                    <div class="min-w-full py-2 align-middle sm:px-6 lg:px-8">
+                        <table class="min-w-full divide-y divide-gray-300">
+                            <thead>
+                                <tr>
+                                    <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">Role Name</th>
+                                    <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-0">
+                                        <span class="sr-only">Actions</span>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200">
+                                @if (!Model.Roles.Any())
+                                {
+                                    <tr>
+                                        <td colspan="2" class="py-10 text-center text-gray-500 text-sm">
+                                            <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                                            </svg>
+                                            <p class="mt-2">No roles found. Create your first role using the form above.</p>
+                                        </td>
+                                    </tr>
+                                }
+                                @foreach (var role in Model.Roles)
+                                {
+                                    <tr class="group hover:bg-gray-50">
+                                        <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">
+                                            @role.Name
+                                        </td>
+                                        <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm sm:pr-0">
+                                            <div class="flex items-center justify-end space-x-3">
+                                                <a asp-page="./RoleManagement" asp-page-handler="Edit" asp-route-id="@role.Id"
+                                                   class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-blue-600 hover:text-blue-900 focus:outline-none hover:bg-blue-50 rounded-md transition-colors">
+                                                    <svg class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                                    </svg>
+                                                    Edit
+                                                </a>
+                                                <form asp-page-handler="Delete" method="post" class="inline-flex items-center"
+                                                      onsubmit="return confirm('Are you sure you want to delete this role?');">
+                                                    <input type="hidden" name="id" value="@role.Id" />
+                                                    <button type="submit" 
+                                                        class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-red-600 hover:text-red-900 focus:outline-none hover:bg-red-50 rounded-md transition-colors">
+                                                        <svg class="h-4 w-4 mr-1.5" viewBox="0 0 20 20" fill="currentColor">
+                                                            <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                                        </svg>
+                                                        Delete
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
