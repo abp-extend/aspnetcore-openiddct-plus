@@ -12,5 +12,4 @@ public interface IAuthorizationService
     Task<IActionResult> AcceptAsync();
 
     IActionResult Deny();
-
 }

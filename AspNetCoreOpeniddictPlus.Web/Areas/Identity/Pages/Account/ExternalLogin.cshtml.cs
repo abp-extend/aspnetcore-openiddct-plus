@@ -32,7 +32,8 @@ public class ExternalLoginModel : PageModel
         UserManager<OpeniddictPlusUser> userManager,
         IUserStore<OpeniddictPlusUser> userStore,
         ILogger<ExternalLoginModel> logger,
-        IEmailSender emailSender)
+        IEmailSender emailSender
+    )
     {
         _signInManager = signInManager;
         _userManager = userManager;
@@ -77,11 +78,17 @@ public class ExternalLoginModel : PageModel
     {
         // Request a redirect to the external login provider.
         var redirectUrl = Url.Page("./ExternalLogin", "Callback", new { returnUrl });
-        var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+        var properties = _signInManager.ConfigureExternalAuthenticationProperties(
+            provider,
+            redirectUrl
+        );
         return new ChallengeResult(provider, properties);
     }
 
-    public async Task<IActionResult> OnGetCallbackAsync(string returnUrl = null, string remoteError = null)
+    public async Task<IActionResult> OnGetCallbackAsync(
+        string returnUrl = null,
+        string remoteError = null
+    )
     {
         returnUrl = returnUrl ?? Url.Content("~/");
         if (remoteError != null)
@@ -98,24 +105,30 @@ public class ExternalLoginModel : PageModel
         }
 
         // Sign in the user with this external login provider if the user already has a login.
-        var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false, true);
+        var result = await _signInManager.ExternalLoginSignInAsync(
+            info.LoginProvider,
+            info.ProviderKey,
+            false,
+            true
+        );
         if (result.Succeeded)
         {
-            _logger.LogInformation("{Name} logged in with {LoginProvider} provider.", info.Principal.Identity.Name,
-                info.LoginProvider);
+            _logger.LogInformation(
+                "{Name} logged in with {LoginProvider} provider.",
+                info.Principal.Identity.Name,
+                info.LoginProvider
+            );
             return LocalRedirect(returnUrl);
         }
 
-        if (result.IsLockedOut) return RedirectToPage("./Lockout");
+        if (result.IsLockedOut)
+            return RedirectToPage("./Lockout");
 
         // If the user does not have an account, then ask the user to create an account.
         ReturnUrl = returnUrl;
         ProviderDisplayName = info.ProviderDisplayName;
         if (info.Principal.HasClaim(c => c.Type == ClaimTypes.Email))
-            Input = new InputModel
-            {
-                Email = info.Principal.FindFirstValue(ClaimTypes.Email)
-            };
+            Input = new InputModel { Email = info.Principal.FindFirstValue(ClaimTypes.Email) };
         return Page();
     }
 
@@ -143,7 +156,10 @@ public class ExternalLoginModel : PageModel
                 result = await _userManager.AddLoginAsync(user, info);
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
+                    _logger.LogInformation(
+                        "User created an account using {Name} provider.",
+                        info.LoginProvider
+                    );
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -151,11 +167,20 @@ public class ExternalLoginModel : PageModel
                     var callbackUrl = Url.Page(
                         "/Account/ConfirmEmail",
                         null,
-                        new { area = "Identity", userId, code },
-                        Request.Scheme);
+                        new
+                        {
+                            area = "Identity",
+                            userId,
+                            code,
+                        },
+                        Request.Scheme
+                    );
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    await _emailSender.SendEmailAsync(
+                        Input.Email,
+                        "Confirm your email",
+                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>."
+                    );
 
                     // If account confirmation is required, we need to show the link if we don't have a real email sender
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
@@ -166,7 +191,8 @@ public class ExternalLoginModel : PageModel
                 }
             }
 
-            foreach (var error in result.Errors) ModelState.AddModelError(string.Empty, error.Description);
+            foreach (var error in result.Errors)
+                ModelState.AddModelError(string.Empty, error.Description);
         }
 
         ProviderDisplayName = info.ProviderDisplayName;
@@ -182,16 +208,20 @@ public class ExternalLoginModel : PageModel
         }
         catch
         {
-            throw new InvalidOperationException($"Can't create an instance of '{nameof(OpeniddictPlusUser)}'. " +
-                                                $"Ensure that '{nameof(OpeniddictPlusUser)}' is not an abstract class and has a parameterless constructor, or alternatively " +
-                                                $"override the external login page in /Areas/Identity/Pages/Account/ExternalLogin.cshtml");
+            throw new InvalidOperationException(
+                $"Can't create an instance of '{nameof(OpeniddictPlusUser)}'. "
+                    + $"Ensure that '{nameof(OpeniddictPlusUser)}' is not an abstract class and has a parameterless constructor, or alternatively "
+                    + $"override the external login page in /Areas/Identity/Pages/Account/ExternalLogin.cshtml"
+            );
         }
     }
 
     private IUserEmailStore<OpeniddictPlusUser> GetEmailStore()
     {
         if (!_userManager.SupportsUserEmail)
-            throw new NotSupportedException("The default UI requires a user store with email support.");
+            throw new NotSupportedException(
+                "The default UI requires a user store with email support."
+            );
         return (IUserEmailStore<OpeniddictPlusUser>)_userStore;
     }
 

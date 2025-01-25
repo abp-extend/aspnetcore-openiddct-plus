@@ -16,7 +16,8 @@ namespace AspNetCoreOpeniddictPlus.Web.Areas.Identity.Pages.Account.Manage;
 
 public class EnableAuthenticatorModel : PageModel
 {
-    private const string AuthenticatorUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}&digits=6";
+    private const string AuthenticatorUriFormat =
+        "otpauth://totp/{0}:{1}?secret={2}&issuer={0}&digits=6";
     private readonly ILogger<EnableAuthenticatorModel> _logger;
     private readonly UrlEncoder _urlEncoder;
     private readonly UserManager<OpeniddictPlusUser> _userManager;
@@ -24,7 +25,8 @@ public class EnableAuthenticatorModel : PageModel
     public EnableAuthenticatorModel(
         UserManager<OpeniddictPlusUser> userManager,
         ILogger<EnableAuthenticatorModel> logger,
-        UrlEncoder urlEncoder)
+        UrlEncoder urlEncoder
+    )
     {
         _userManager = userManager;
         _logger = logger;
@@ -97,7 +99,10 @@ public class EnableAuthenticatorModel : PageModel
         var verificationCode = Input.Code.Replace(" ", string.Empty).Replace("-", string.Empty);
 
         var is2faTokenValid = await _userManager.VerifyTwoFactorTokenAsync(
-            user, _userManager.Options.Tokens.AuthenticatorTokenProvider, verificationCode);
+            user,
+            _userManager.Options.Tokens.AuthenticatorTokenProvider,
+            verificationCode
+        );
 
         if (!is2faTokenValid)
         {
@@ -108,7 +113,10 @@ public class EnableAuthenticatorModel : PageModel
 
         await _userManager.SetTwoFactorEnabledAsync(user, true);
         var userId = await _userManager.GetUserIdAsync(user);
-        _logger.LogInformation("User with ID '{UserId}' has enabled 2FA with an authenticator app.", userId);
+        _logger.LogInformation(
+            "User with ID '{UserId}' has enabled 2FA with an authenticator app.",
+            userId
+        );
 
         StatusMessage = "Your authenticator app has been verified.";
 
@@ -148,7 +156,8 @@ public class EnableAuthenticatorModel : PageModel
             currentPosition += 4;
         }
 
-        if (currentPosition < unformattedKey.Length) result.Append(unformattedKey.AsSpan(currentPosition));
+        if (currentPosition < unformattedKey.Length)
+            result.Append(unformattedKey.AsSpan(currentPosition));
 
         return result.ToString().ToLowerInvariant();
     }
@@ -160,7 +169,8 @@ public class EnableAuthenticatorModel : PageModel
             AuthenticatorUriFormat,
             _urlEncoder.Encode("Microsoft.AspNetCore.Identity.UI"),
             _urlEncoder.Encode(email),
-            unformattedKey);
+            unformattedKey
+        );
     }
 
     /// <summary>
@@ -174,8 +184,11 @@ public class EnableAuthenticatorModel : PageModel
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
         [Required]
-        [StringLength(7, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.",
-            MinimumLength = 6)]
+        [StringLength(
+            7,
+            ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.",
+            MinimumLength = 6
+        )]
         [DataType(DataType.Text)]
         [Display(Name = "Verification Code")]
         public string Code { get; set; }

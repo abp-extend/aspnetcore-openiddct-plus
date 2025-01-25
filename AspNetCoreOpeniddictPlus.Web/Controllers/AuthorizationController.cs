@@ -17,18 +17,20 @@ public class AuthorizationController(
     IOpenIddictScopeManager scopeManager,
     SignInManager<OpeniddictPlusUser> signInManager,
     UserManager<OpeniddictPlusUser> userManager,
-    ILogger<AuthorizationController> logger) 
-    : AuthorizationService<OpeniddictPlusUser>
-        (applicationManager,
+    ILogger<AuthorizationController> logger
+)
+    : AuthorizationService<OpeniddictPlusUser>(
+        applicationManager,
         authorizationManager,
-        scopeManager, 
-        signInManager, 
-        userManager)
+        scopeManager,
+        signInManager,
+        userManager
+    )
 {
     [HttpGet("~/connect/authorize")]
     [HttpPost("~/connect/authorize")]
     [IgnoreAntiforgeryToken]
-    public override  Task<IActionResult> AuthorizeAsync()
+    public override Task<IActionResult> AuthorizeAsync()
     {
         logger.LogInformation("AuthorizeAsync invoked");
         return base.AuthorizeAsync();
@@ -56,5 +58,4 @@ public class AuthorizationController(
         logger.LogInformation("ExchangeAsync request invoked");
         return base.ExchangeAsync();
     }
-    
 }

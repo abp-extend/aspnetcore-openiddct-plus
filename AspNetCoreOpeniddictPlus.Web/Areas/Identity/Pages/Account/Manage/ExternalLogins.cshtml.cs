@@ -21,7 +21,9 @@ public class ExternalLoginsModel : PageModel
     public ExternalLoginsModel(
         UserManager<OpeniddictPlusUser> userManager,
         SignInManager<OpeniddictPlusUser> signInManager,
-        IUserStore<OpeniddictPlusUser> userStore, ILogger<ExternalLoginsModel> logger)
+        IUserStore<OpeniddictPlusUser> userStore,
+        ILogger<ExternalLoginsModel> logger
+    )
     {
         _userManager = userManager;
         _signInManager = signInManager;
@@ -57,9 +59,11 @@ public class ExternalLoginsModel : PageModel
     public async Task<IActionResult> OnGetAsync()
     {
         var user = await _userManager.GetUserAsync(User);
-        if (user == null) { 
+        if (user == null)
+        {
             _logger.LogWarning($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-            return Redirect("/Identity/Account/Login");}
+            return Redirect("/Identity/Account/Login");
+        }
 
         CurrentLogins = await _userManager.GetLoginsAsync(user);
         OtherLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync())
@@ -68,13 +72,19 @@ public class ExternalLoginsModel : PageModel
 
         string passwordHash = null;
         if (_userStore is IUserPasswordStore<IdentityUser> userPasswordStore)
-            passwordHash = await userPasswordStore.GetPasswordHashAsync(user, HttpContext.RequestAborted);
+            passwordHash = await userPasswordStore.GetPasswordHashAsync(
+                user,
+                HttpContext.RequestAborted
+            );
 
         ShowRemoveButton = passwordHash != null || CurrentLogins.Count > 1;
         return Page();
     }
 
-    public async Task<IActionResult> OnPostRemoveLoginAsync(string loginProvider, string providerKey)
+    public async Task<IActionResult> OnPostRemoveLoginAsync(
+        string loginProvider,
+        string providerKey
+    )
     {
         var user = await _userManager.GetUserAsync(User);
         if (user == null)
@@ -102,9 +112,11 @@ public class ExternalLoginsModel : PageModel
 
         // Request a redirect to the external login provider to link a login for the current user
         var redirectUrl = Url.Page("./ExternalLogins", "LinkLoginCallback");
-        var properties =
-            _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl,
-                _userManager.GetUserId(User));
+        var properties = _signInManager.ConfigureExternalAuthenticationProperties(
+            provider,
+            redirectUrl,
+            _userManager.GetUserId(User)
+        );
         return new ChallengeResult(provider, properties);
     }
 
@@ -119,7 +131,10 @@ public class ExternalLoginsModel : PageModel
 
         var userId = await _userManager.GetUserIdAsync(user);
         var info = await _signInManager.GetExternalLoginInfoAsync(userId);
-        if (info == null) throw new InvalidOperationException("Unexpected error occurred loading external login info.");
+        if (info == null)
+            throw new InvalidOperationException(
+                "Unexpected error occurred loading external login info."
+            );
 
         var result = await _userManager.AddLoginAsync(user, info);
         if (!result.Succeeded)

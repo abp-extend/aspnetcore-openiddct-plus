@@ -20,7 +20,8 @@ public class LoginWith2faModel : PageModel
     public LoginWith2faModel(
         SignInManager<OpeniddictPlusUser> signInManager,
         UserManager<OpeniddictPlusUser> userManager,
-        ILogger<LoginWith2faModel> logger)
+        ILogger<LoginWith2faModel> logger
+    )
     {
         _signInManager = signInManager;
         _userManager = userManager;
@@ -51,7 +52,8 @@ public class LoginWith2faModel : PageModel
         // Ensure the user has gone through the username & password screen first
         var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
 
-        if (user == null) throw new InvalidOperationException("Unable to load two-factor authentication user.");
+        if (user == null)
+            throw new InvalidOperationException("Unable to load two-factor authentication user.");
 
         ReturnUrl = returnUrl;
         RememberMe = rememberMe;
@@ -61,18 +63,24 @@ public class LoginWith2faModel : PageModel
 
     public async Task<IActionResult> OnPostAsync(bool rememberMe, string returnUrl = null)
     {
-        if (!ModelState.IsValid) return Page();
+        if (!ModelState.IsValid)
+            return Page();
 
         returnUrl = returnUrl ?? Url.Content("~/");
 
         var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
-        if (user == null) throw new InvalidOperationException("Unable to load two-factor authentication user.");
+        if (user == null)
+            throw new InvalidOperationException("Unable to load two-factor authentication user.");
 
-        var authenticatorCode = Input.TwoFactorCode.Replace(" ", string.Empty).Replace("-", string.Empty);
+        var authenticatorCode = Input
+            .TwoFactorCode.Replace(" ", string.Empty)
+            .Replace("-", string.Empty);
 
-        var result =
-            await _signInManager.TwoFactorAuthenticatorSignInAsync(authenticatorCode, rememberMe,
-                Input.RememberMachine);
+        var result = await _signInManager.TwoFactorAuthenticatorSignInAsync(
+            authenticatorCode,
+            rememberMe,
+            Input.RememberMachine
+        );
 
         var userId = await _userManager.GetUserIdAsync(user);
 
@@ -88,7 +96,10 @@ public class LoginWith2faModel : PageModel
             return RedirectToPage("./Lockout");
         }
 
-        _logger.LogWarning("Invalid authenticator code entered for user with ID '{UserId}'.", user.Id);
+        _logger.LogWarning(
+            "Invalid authenticator code entered for user with ID '{UserId}'.",
+            user.Id
+        );
         ModelState.AddModelError(string.Empty, "Invalid authenticator code.");
         return Page();
     }
@@ -104,8 +115,11 @@ public class LoginWith2faModel : PageModel
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
         [Required]
-        [StringLength(7, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.",
-            MinimumLength = 6)]
+        [StringLength(
+            7,
+            ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.",
+            MinimumLength = 6
+        )]
         [DataType(DataType.Text)]
         [Display(Name = "Authenticator code")]
         public string TwoFactorCode { get; set; }

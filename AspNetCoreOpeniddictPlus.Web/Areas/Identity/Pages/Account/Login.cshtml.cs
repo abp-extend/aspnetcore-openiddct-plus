@@ -51,6 +51,8 @@ public class LoginModel : PageModel
 
     public async Task OnGetAsync(string returnUrl = null)
     {
+        if (!string.IsNullOrEmpty(ErrorMessage))
+            ModelState.AddModelError(string.Empty, ErrorMessage);
         
         var user = await _signInManager.UserManager.GetUserAsync(User);
         if (user != null)
@@ -80,7 +82,12 @@ public class LoginModel : PageModel
         {
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-            var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, false);
+            var result = await _signInManager.PasswordSignInAsync(
+                Input.Email,
+                Input.Password,
+                Input.RememberMe,
+                false
+            );
             if (result.Succeeded)
             {
                 _logger.LogInformation("User logged in.");
@@ -88,7 +95,10 @@ public class LoginModel : PageModel
             }
 
             if (result.RequiresTwoFactor)
-                return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, Input.RememberMe });
+                return RedirectToPage(
+                    "./LoginWith2fa",
+                    new { ReturnUrl = returnUrl, Input.RememberMe }
+                );
             if (result.IsLockedOut)
             {
                 _logger.LogWarning("User account locked out.");

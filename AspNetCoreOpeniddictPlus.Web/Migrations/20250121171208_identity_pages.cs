@@ -13,19 +13,17 @@ namespace AspNetCoreOpeniddictPlus.Web.Migrations
         {
             migrationBuilder.DropPrimaryKey(
                 name: "PK_OpeniddictPlusUsers",
-                table: "OpeniddictPlusUsers");
+                table: "OpeniddictPlusUsers"
+            );
 
             migrationBuilder.DropPrimaryKey(
                 name: "PK_OpeniddictPlusRoles",
-                table: "OpeniddictPlusRoles");
+                table: "OpeniddictPlusRoles"
+            );
 
-            migrationBuilder.RenameTable(
-                name: "OpeniddictPlusUsers",
-                newName: "AspNetUsers");
+            migrationBuilder.RenameTable(name: "OpeniddictPlusUsers", newName: "AspNetUsers");
 
-            migrationBuilder.RenameTable(
-                name: "OpeniddictPlusRoles",
-                newName: "AspNetRoles");
+            migrationBuilder.RenameTable(name: "OpeniddictPlusRoles", newName: "AspNetRoles");
 
             migrationBuilder.AlterColumn<string>(
                 name: "UserName",
@@ -35,7 +33,8 @@ namespace AspNetCoreOpeniddictPlus.Web.Migrations
                 nullable: true,
                 oldClrType: typeof(string),
                 oldType: "text",
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "NormalizedUserName",
@@ -45,7 +44,8 @@ namespace AspNetCoreOpeniddictPlus.Web.Migrations
                 nullable: true,
                 oldClrType: typeof(string),
                 oldType: "text",
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "NormalizedEmail",
@@ -55,7 +55,8 @@ namespace AspNetCoreOpeniddictPlus.Web.Migrations
                 nullable: true,
                 oldClrType: typeof(string),
                 oldType: "text",
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "Email",
@@ -65,7 +66,8 @@ namespace AspNetCoreOpeniddictPlus.Web.Migrations
                 nullable: true,
                 oldClrType: typeof(string),
                 oldType: "text",
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AddColumn<string>(
                 name: "Discriminator",
@@ -73,7 +75,8 @@ namespace AspNetCoreOpeniddictPlus.Web.Migrations
                 type: "character varying(21)",
                 maxLength: 21,
                 nullable: false,
-                defaultValue: "");
+                defaultValue: ""
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "NormalizedName",
@@ -83,7 +86,8 @@ namespace AspNetCoreOpeniddictPlus.Web.Migrations
                 nullable: true,
                 oldClrType: typeof(string),
                 oldType: "text",
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "Name",
@@ -93,7 +97,8 @@ namespace AspNetCoreOpeniddictPlus.Web.Migrations
                 nullable: true,
                 oldClrType: typeof(string),
                 oldType: "text",
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AddColumn<string>(
                 name: "Discriminator",
@@ -101,27 +106,34 @@ namespace AspNetCoreOpeniddictPlus.Web.Migrations
                 type: "character varying(21)",
                 maxLength: 21,
                 nullable: false,
-                defaultValue: "");
+                defaultValue: ""
+            );
 
             migrationBuilder.AddPrimaryKey(
                 name: "PK_AspNetUsers",
                 table: "AspNetUsers",
-                column: "Id");
+                column: "Id"
+            );
 
             migrationBuilder.AddPrimaryKey(
                 name: "PK_AspNetRoles",
                 table: "AspNetRoles",
-                column: "Id");
+                column: "Id"
+            );
 
             migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Id = table
+                        .Column<int>(type: "integer", nullable: false)
+                        .Annotation(
+                            "Npgsql:ValueGenerationStrategy",
+                            NpgsqlValueGenerationStrategy.IdentityByDefaultColumn
+                        ),
                     RoleId = table.Column<string>(type: "text", nullable: false),
                     ClaimType = table.Column<string>(type: "text", nullable: true),
-                    ClaimValue = table.Column<string>(type: "text", nullable: true)
+                    ClaimValue = table.Column<string>(type: "text", nullable: true),
                 },
                 constraints: table =>
                 {
@@ -131,18 +143,24 @@ namespace AspNetCoreOpeniddictPlus.Web.Migrations
                         column: x => x.RoleId,
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
+                        onDelete: ReferentialAction.Cascade
+                    );
+                }
+            );
 
             migrationBuilder.CreateTable(
                 name: "AspNetUserClaims",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Id = table
+                        .Column<int>(type: "integer", nullable: false)
+                        .Annotation(
+                            "Npgsql:ValueGenerationStrategy",
+                            NpgsqlValueGenerationStrategy.IdentityByDefaultColumn
+                        ),
                     UserId = table.Column<string>(type: "text", nullable: false),
                     ClaimType = table.Column<string>(type: "text", nullable: true),
-                    ClaimValue = table.Column<string>(type: "text", nullable: true)
+                    ClaimValue = table.Column<string>(type: "text", nullable: true),
                 },
                 constraints: table =>
                 {
@@ -152,8 +170,10 @@ namespace AspNetCoreOpeniddictPlus.Web.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
+                        onDelete: ReferentialAction.Cascade
+                    );
+                }
+            );
 
             migrationBuilder.CreateTable(
                 name: "AspNetUserLogins",
@@ -162,25 +182,30 @@ namespace AspNetCoreOpeniddictPlus.Web.Migrations
                     LoginProvider = table.Column<string>(type: "text", nullable: false),
                     ProviderKey = table.Column<string>(type: "text", nullable: false),
                     ProviderDisplayName = table.Column<string>(type: "text", nullable: true),
-                    UserId = table.Column<string>(type: "text", nullable: false)
+                    UserId = table.Column<string>(type: "text", nullable: false),
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AspNetUserLogins", x => new { x.LoginProvider, x.ProviderKey });
+                    table.PrimaryKey(
+                        "PK_AspNetUserLogins",
+                        x => new { x.LoginProvider, x.ProviderKey }
+                    );
                     table.ForeignKey(
                         name: "FK_AspNetUserLogins_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
+                        onDelete: ReferentialAction.Cascade
+                    );
+                }
+            );
 
             migrationBuilder.CreateTable(
                 name: "AspNetUserRoles",
                 columns: table => new
                 {
                     UserId = table.Column<string>(type: "text", nullable: false),
-                    RoleId = table.Column<string>(type: "text", nullable: false)
+                    RoleId = table.Column<string>(type: "text", nullable: false),
                 },
                 constraints: table =>
                 {
@@ -190,14 +215,17 @@ namespace AspNetCoreOpeniddictPlus.Web.Migrations
                         column: x => x.RoleId,
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Cascade
+                    );
                     table.ForeignKey(
                         name: "FK_AspNetUserRoles_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
+                        onDelete: ReferentialAction.Cascade
+                    );
+                }
+            );
 
             migrationBuilder.CreateTable(
                 name: "AspNetUserTokens",
@@ -206,110 +234,104 @@ namespace AspNetCoreOpeniddictPlus.Web.Migrations
                     UserId = table.Column<string>(type: "text", nullable: false),
                     LoginProvider = table.Column<string>(type: "text", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: false),
-                    Value = table.Column<string>(type: "text", nullable: true)
+                    Value = table.Column<string>(type: "text", nullable: true),
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AspNetUserTokens", x => new { x.UserId, x.LoginProvider, x.Name });
+                    table.PrimaryKey(
+                        "PK_AspNetUserTokens",
+                        x => new
+                        {
+                            x.UserId,
+                            x.LoginProvider,
+                            x.Name,
+                        }
+                    );
                     table.ForeignKey(
                         name: "FK_AspNetUserTokens_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
+                        onDelete: ReferentialAction.Cascade
+                    );
+                }
+            );
 
             migrationBuilder.CreateIndex(
                 name: "EmailIndex",
                 table: "AspNetUsers",
-                column: "NormalizedEmail");
+                column: "NormalizedEmail"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "UserNameIndex",
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
-                unique: true);
+                unique: true
+            );
 
             migrationBuilder.CreateIndex(
                 name: "RoleNameIndex",
                 table: "AspNetRoles",
                 column: "NormalizedName",
-                unique: true);
+                unique: true
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
-                column: "RoleId");
+                column: "RoleId"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetUserClaims_UserId",
                 table: "AspNetUserClaims",
-                column: "UserId");
+                column: "UserId"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetUserLogins_UserId",
                 table: "AspNetUserLogins",
-                column: "UserId");
+                column: "UserId"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetUserRoles_RoleId",
                 table: "AspNetUserRoles",
-                column: "RoleId");
+                column: "RoleId"
+            );
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "AspNetRoleClaims");
+            migrationBuilder.DropTable(name: "AspNetRoleClaims");
 
-            migrationBuilder.DropTable(
-                name: "AspNetUserClaims");
+            migrationBuilder.DropTable(name: "AspNetUserClaims");
 
-            migrationBuilder.DropTable(
-                name: "AspNetUserLogins");
+            migrationBuilder.DropTable(name: "AspNetUserLogins");
 
-            migrationBuilder.DropTable(
-                name: "AspNetUserRoles");
+            migrationBuilder.DropTable(name: "AspNetUserRoles");
 
-            migrationBuilder.DropTable(
-                name: "AspNetUserTokens");
+            migrationBuilder.DropTable(name: "AspNetUserTokens");
 
-            migrationBuilder.DropPrimaryKey(
-                name: "PK_AspNetUsers",
-                table: "AspNetUsers");
+            migrationBuilder.DropPrimaryKey(name: "PK_AspNetUsers", table: "AspNetUsers");
 
-            migrationBuilder.DropIndex(
-                name: "EmailIndex",
-                table: "AspNetUsers");
+            migrationBuilder.DropIndex(name: "EmailIndex", table: "AspNetUsers");
 
-            migrationBuilder.DropIndex(
-                name: "UserNameIndex",
-                table: "AspNetUsers");
+            migrationBuilder.DropIndex(name: "UserNameIndex", table: "AspNetUsers");
 
-            migrationBuilder.DropPrimaryKey(
-                name: "PK_AspNetRoles",
-                table: "AspNetRoles");
+            migrationBuilder.DropPrimaryKey(name: "PK_AspNetRoles", table: "AspNetRoles");
 
-            migrationBuilder.DropIndex(
-                name: "RoleNameIndex",
-                table: "AspNetRoles");
+            migrationBuilder.DropIndex(name: "RoleNameIndex", table: "AspNetRoles");
 
-            migrationBuilder.DropColumn(
-                name: "Discriminator",
-                table: "AspNetUsers");
+            migrationBuilder.DropColumn(name: "Discriminator", table: "AspNetUsers");
 
-            migrationBuilder.DropColumn(
-                name: "Discriminator",
-                table: "AspNetRoles");
+            migrationBuilder.DropColumn(name: "Discriminator", table: "AspNetRoles");
 
-            migrationBuilder.RenameTable(
-                name: "AspNetUsers",
-                newName: "OpeniddictPlusUsers");
+            migrationBuilder.RenameTable(name: "AspNetUsers", newName: "OpeniddictPlusUsers");
 
-            migrationBuilder.RenameTable(
-                name: "AspNetRoles",
-                newName: "OpeniddictPlusRoles");
+            migrationBuilder.RenameTable(name: "AspNetRoles", newName: "OpeniddictPlusRoles");
 
             migrationBuilder.AlterColumn<string>(
                 name: "UserName",
@@ -319,7 +341,8 @@ namespace AspNetCoreOpeniddictPlus.Web.Migrations
                 oldClrType: typeof(string),
                 oldType: "character varying(256)",
                 oldMaxLength: 256,
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "NormalizedUserName",
@@ -329,7 +352,8 @@ namespace AspNetCoreOpeniddictPlus.Web.Migrations
                 oldClrType: typeof(string),
                 oldType: "character varying(256)",
                 oldMaxLength: 256,
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "NormalizedEmail",
@@ -339,7 +363,8 @@ namespace AspNetCoreOpeniddictPlus.Web.Migrations
                 oldClrType: typeof(string),
                 oldType: "character varying(256)",
                 oldMaxLength: 256,
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "Email",
@@ -349,7 +374,8 @@ namespace AspNetCoreOpeniddictPlus.Web.Migrations
                 oldClrType: typeof(string),
                 oldType: "character varying(256)",
                 oldMaxLength: 256,
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "NormalizedName",
@@ -359,7 +385,8 @@ namespace AspNetCoreOpeniddictPlus.Web.Migrations
                 oldClrType: typeof(string),
                 oldType: "character varying(256)",
                 oldMaxLength: 256,
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "Name",
@@ -369,17 +396,20 @@ namespace AspNetCoreOpeniddictPlus.Web.Migrations
                 oldClrType: typeof(string),
                 oldType: "character varying(256)",
                 oldMaxLength: 256,
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AddPrimaryKey(
                 name: "PK_OpeniddictPlusUsers",
                 table: "OpeniddictPlusUsers",
-                column: "Id");
+                column: "Id"
+            );
 
             migrationBuilder.AddPrimaryKey(
                 name: "PK_OpeniddictPlusRoles",
                 table: "OpeniddictPlusRoles",
-                column: "Id");
+                column: "Id"
+            );
         }
     }
 }

@@ -20,7 +20,10 @@ public class RegisterConfirmationModel : PageModel
     private readonly IEmailSender _sender;
     private readonly UserManager<OpeniddictPlusUser> _userManager;
 
-    public RegisterConfirmationModel(UserManager<OpeniddictPlusUser> userManager, IEmailSender sender)
+    public RegisterConfirmationModel(
+        UserManager<OpeniddictPlusUser> userManager,
+        IEmailSender sender
+    )
     {
         _userManager = userManager;
         _sender = sender;
@@ -46,11 +49,13 @@ public class RegisterConfirmationModel : PageModel
 
     public async Task<IActionResult> OnGetAsync(string email, string returnUrl = null)
     {
-        if (email == null) return RedirectToPage("/Index");
+        if (email == null)
+            return RedirectToPage("/Index");
         returnUrl = returnUrl ?? Url.Content("~/");
 
         var user = await _userManager.FindByEmailAsync(email);
-        if (user == null) return NotFound($"Unable to load user with email '{email}'.");
+        if (user == null)
+            return NotFound($"Unable to load user with email '{email}'.");
 
         Email = email;
         // Once you add a real email sender, you should remove this code that lets you confirm the account
@@ -63,8 +68,15 @@ public class RegisterConfirmationModel : PageModel
             EmailConfirmationUrl = Url.Page(
                 "/Account/ConfirmEmail",
                 null,
-                new { area = "Identity", userId, code, returnUrl },
-                Request.Scheme);
+                new
+                {
+                    area = "Identity",
+                    userId,
+                    code,
+                    returnUrl,
+                },
+                Request.Scheme
+            );
         }
 
         return Page();

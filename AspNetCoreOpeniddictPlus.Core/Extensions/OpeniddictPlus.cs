@@ -12,11 +12,14 @@ namespace AspNetCoreOpeniddictPlus.Core.Extensions;
 
 public static class OpeniddictPlus
 {
-    public static IServiceCollection AddOpeniddictPlusDbContext<TDbContext>(this IServiceCollection services)
+    public static IServiceCollection AddOpeniddictPlusDbContext<TDbContext>(
+        this IServiceCollection services
+    )
         where TDbContext : DbContext
     {
         var configuration = services.BuildServiceProvider().GetService<IConfiguration>();
-        if (configuration is null) return services;
+        if (configuration is null)
+            return services;
         var defaultConnectionString = configuration.GetConnectionString("Default");
         services.AddDbContext<TDbContext>(options =>
         {
@@ -27,7 +30,9 @@ public static class OpeniddictPlus
         return services;
     }
 
-    public static IServiceCollection AddOpeniddictPlusServer<TDbContext>(this IServiceCollection services)
+    public static IServiceCollection AddOpeniddictPlusServer<TDbContext>(
+        this IServiceCollection services
+    )
         where TDbContext : DbContext
     {
         var env = services.BuildServiceProvider().GetService<IWebHostEnvironment>();
@@ -35,12 +40,12 @@ public static class OpeniddictPlus
             .AddOpenIddict()
             .AddCore(options =>
             {
-                options.UseEntityFrameworkCore()
-                    .UseDbContext<TDbContext>();
+                options.UseEntityFrameworkCore().UseDbContext<TDbContext>();
             })
             .AddServer(options =>
             {
-                options.SetTokenEndpointUris("/connect/token")
+                options
+                    .SetTokenEndpointUris("/connect/token")
                     .SetAuthorizationEndpointUris("/connect/authorize")
                     .SetIntrospectionEndpointUris("/connect/introspect")
                     .SetUserInfoEndpointUris("/connect/userinfo")
@@ -50,7 +55,8 @@ public static class OpeniddictPlus
                     .SetEndSessionEndpointUris("/connect/endsession")
                     .SetEndUserVerificationEndpointUris("/connect/enduserverification");
 
-                options.AllowAuthorizationCodeFlow()
+                options
+                    .AllowAuthorizationCodeFlow()
                     .AllowClientCredentialsFlow()
                     .AllowHybridFlow()
                     .AllowRefreshTokenFlow()
@@ -61,14 +67,15 @@ public static class OpeniddictPlus
                     OpenIddictConstants.Scopes.Email,
                     OpenIddictConstants.Scopes.Profile,
                     OpenIddictConstants.Scopes.Roles,
-                    "api");
+                    "api"
+                );
 
                 if (env != null && env.IsDevelopment())
                 {
-                    options.AddDevelopmentEncryptionCertificate()
+                    options
+                        .AddDevelopmentEncryptionCertificate()
                         .AddDevelopmentSigningCertificate();
                 }
-
 
                 options
                     .UseAspNetCore()
@@ -86,8 +93,10 @@ public static class OpeniddictPlus
         services.AddTransient<IEmailSender, EmailSender>();
         return services;
     }
-    
-    public static IServiceCollection AddUserService<TEntity, TDbContext>(this IServiceCollection services) 
+
+    public static IServiceCollection AddUserService<TEntity, TDbContext>(
+        this IServiceCollection services
+    )
         where TEntity : class
         where TDbContext : DbContext
     {

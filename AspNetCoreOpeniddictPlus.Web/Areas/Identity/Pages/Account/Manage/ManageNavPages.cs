@@ -139,8 +139,11 @@ public static class ManageNavPages
     /// </summary>
     public static string PageNavClass(ViewContext viewContext, string page)
     {
-        var activePage = viewContext.ViewData["ActivePage"] as string
-                         ?? Path.GetFileNameWithoutExtension(viewContext.ActionDescriptor.DisplayName);
-        return string.Equals(activePage, page, StringComparison.OrdinalIgnoreCase) ? "active" : null;
+        var activePage =
+            viewContext.ViewData["ActivePage"] as string
+            ?? Path.GetFileNameWithoutExtension(viewContext.ActionDescriptor.DisplayName);
+        return string.Equals(activePage, page, StringComparison.OrdinalIgnoreCase)
+            ? "active"
+            : null;
     }
 }
