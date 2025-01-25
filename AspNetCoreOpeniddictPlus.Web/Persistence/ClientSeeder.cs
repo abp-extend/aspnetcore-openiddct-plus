@@ -74,6 +74,77 @@ public class ClientSeeder(IServiceProvider serviceProvider, ILogger<ClientSeeder
             }, cancellationToken);
         }
         
+        if (await manager.FindByClientIdAsync("nextjs-client", cancellationToken) is null)
+        {
+            logger.LogInformation("Creating a new application 'nextjs-client'...");
+            await manager.CreateAsync(new OpenIddictApplicationDescriptor
+            {
+                ClientId = "nextjs-client",
+                ConsentType = OpenIddictConstants.ConsentTypes.Explicit,
+                DisplayName = "Openiddict Plus NextJs UI Client",
+                PostLogoutRedirectUris =
+                {
+                    new Uri("https://localhost:3000"),
+                },
+                RedirectUris =
+                {
+                    new Uri("https://localhost:3000/auth/oidc"),
+                },
+                Permissions =
+                {
+                    OpenIddictConstants.Permissions.Endpoints.Authorization,
+                    OpenIddictConstants.Permissions.Endpoints.Token,
+                    OpenIddictConstants.Permissions.GrantTypes.AuthorizationCode,
+                    OpenIddictConstants.Permissions.GrantTypes.RefreshToken,
+                    OpenIddictConstants.Permissions.Endpoints.EndSession,
+                    OpenIddictConstants.Permissions.Endpoints.Revocation,
+                    OpenIddictConstants.Permissions.ResponseTypes.Code,
+                    OpenIddictConstants.Permissions.Prefixes.Scope + "api",
+                    OpenIddictConstants.Permissions.Scopes.Email,
+                    OpenIddictConstants.Permissions.Scopes.Roles,
+                    OpenIddictConstants.Permissions.Scopes.Profile,
+                },
+                Requirements =
+                {
+                    OpenIddictConstants.Requirements.Features.ProofKeyForCodeExchange
+                }
+                
+            }, cancellationToken);
+        }
+        
+        if (await manager.FindByClientIdAsync("postman-client", cancellationToken) is null)
+        {
+            logger.LogInformation("Creating a new application 'postman-client'...");
+            await manager.CreateAsync(new OpenIddictApplicationDescriptor
+            {
+                ClientId = "postman-client",
+                ClientSecret = "388D45FA-B36B-4988-BA59-B187D329C208",
+                DisplayName = "Postman Client",
+               
+                RedirectUris =
+                {
+                    new Uri("https://oauth.pstmn.io/v1/browser-callback"),
+                    new Uri("https://oauth.pstmn.io/v1/callback")
+                },
+                Permissions =
+                {
+                    OpenIddictConstants.Permissions.Endpoints.Authorization,
+                    OpenIddictConstants.Permissions.Endpoints.Token,
+                    OpenIddictConstants.Permissions.GrantTypes.AuthorizationCode,
+                    OpenIddictConstants.Permissions.ResponseTypes.Code,
+                    OpenIddictConstants.Permissions.Prefixes.Scope + "api",
+                    OpenIddictConstants.Permissions.Scopes.Email,
+                    OpenIddictConstants.Permissions.Scopes.Roles,
+                    OpenIddictConstants.Permissions.Scopes.Profile
+                },
+                Requirements =
+                {
+                    OpenIddictConstants.Requirements.Features.ProofKeyForCodeExchange
+                }
+                
+            }, cancellationToken);
+        }
+        
         if (await scopeManager.FindByNameAsync("api", cancellationToken) is null)
         {
             logger.LogInformation("Creating a new scope 'api'...");

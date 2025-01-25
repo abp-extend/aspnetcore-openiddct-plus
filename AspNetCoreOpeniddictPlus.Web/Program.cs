@@ -3,6 +3,7 @@ using AspNetCoreOpeniddictPlus.Identity.Entities;
 using AspNetCoreOpeniddictPlus.Web.Persistence;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
+using OpenIddict.Abstractions;
 using OpenIddict.Server.AspNetCore;
 using Serilog;
 
@@ -18,14 +19,21 @@ builder.Services
         options.SignIn.RequireConfirmedAccount = true;
         options.User.RequireUniqueEmail = true;
         options.SignIn.RequireConfirmedEmail = true;
+        options.ClaimsIdentity.UserNameClaimType = OpenIddictConstants.Claims.Name;
+        options.ClaimsIdentity.UserIdClaimType = OpenIddictConstants.Claims.Subject;
+        options.ClaimsIdentity.RoleClaimType = OpenIddictConstants.Claims.Role;
+        options.ClaimsIdentity.EmailClaimType = OpenIddictConstants.Claims.Email;
     })
     .AddEntityFrameworkStores<OpeniddictPlusDbContext>()
     .AddDefaultTokenProviders();
+
+
 
 builder.Services
     .AddOpeniddictPlusServer<OpeniddictPlusDbContext>()
     .AddEmailSender()
     .AddUserService<OpeniddictPlusUser, OpeniddictPlusDbContext>();
+
 
 builder.Services
     .AddAuthentication(options =>
