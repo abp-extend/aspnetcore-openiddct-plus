@@ -185,11 +185,12 @@ public class AuthorizationService<IEntity>(
                     }!));
 
             // In every other case, render the consent form.
-            default: return Ok(new AuthorizationServiceResult
-            {
-                ApplicationName = await applicationManager.GetLocalizedDisplayNameAsync(application),
-                Scope = request.Scope
-            });
+            default: 
+                return View(new AuthorizationServiceResult
+                {
+                    ApplicationName = await applicationManager.GetLocalizedDisplayNameAsync(application),
+                    Scope = request.Scope
+                });
         }
     }
 

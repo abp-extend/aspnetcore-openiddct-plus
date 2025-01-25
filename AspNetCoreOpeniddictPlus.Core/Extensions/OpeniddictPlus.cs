@@ -53,7 +53,8 @@ public static class OpeniddictPlus
                 options.AllowAuthorizationCodeFlow()
                     .AllowClientCredentialsFlow()
                     .AllowHybridFlow()
-                    .AllowRefreshTokenFlow();
+                    .AllowRefreshTokenFlow()
+                    .AllowDeviceAuthorizationFlow();
                 
                 options.RegisterScopes(
                     OpenIddictConstants.Scopes.OpenId, 

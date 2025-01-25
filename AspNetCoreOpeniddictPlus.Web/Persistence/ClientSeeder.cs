@@ -43,12 +43,14 @@ public class ClientSeeder(IServiceProvider serviceProvider, ILogger<ClientSeeder
                 {
                     new Uri("https://localhost:4200"),
                     new Uri("https://localhost:3000"),
+                    new Uri("https://localhost:7057")
                 },
                 RedirectUris =
                 {
                     new Uri("https://localhost:4200"),
                     new Uri("https://localhost:3000"),
                     new Uri("https://oauth.pstmn.io/v1/callback"),
+                    new Uri("https://localhost:7057/auth/callback")
                 },
                 Permissions =
                 {
