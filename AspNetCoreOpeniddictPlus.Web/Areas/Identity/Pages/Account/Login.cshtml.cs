@@ -51,6 +51,13 @@ public class LoginModel : PageModel
 
     public async Task OnGetAsync(string returnUrl = null)
     {
+        
+        var user = await _signInManager.UserManager.GetUserAsync(User);
+        if (user != null)
+        {
+            Response.Redirect("/");
+            return;
+        }
         if (!string.IsNullOrEmpty(ErrorMessage)) ModelState.AddModelError(string.Empty, ErrorMessage);
 
         returnUrl ??= Url.Content("~/");

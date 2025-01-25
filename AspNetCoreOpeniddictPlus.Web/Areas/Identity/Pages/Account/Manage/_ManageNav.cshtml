@@ -4,7 +4,6 @@
 
 @{
     var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
-    Logger.LogInformation($"Found: ====== {@ManageNavPages.IndexNavClass(ViewContext)}");
     var indexNavClass = ManageNavPages.IndexNavClass(ViewContext) == "active" ? "active text-white bg-blue-700 dark:bg-blue-600" : "bg-gray-50 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:text-white";
     var emailNavClass = ManageNavPages.EmailNavClass(ViewContext) == "active" ? "active text-white bg-blue-700 dark:bg-blue-600" : "hover:text-gray-900 bg-gray-50 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:text-white";
     var passwordNavClass = ManageNavPages.ChangePasswordNavClass(ViewContext) == "active" ? "active text-white bg-blue-700 dark:bg-blue-600" : "hover:text-gray-900 bg-gray-50 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:text-white";

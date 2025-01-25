@@ -18,17 +18,20 @@
 </head>
 <body class="grid grid-rows-[auto_1fr_auto] h-svh">
 <partial name="_HeaderPartial" />
-<div class="container mx-auto px-4 pt-5">
-    <partial name="_CookieConsentPartial" optional/>
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <div class="md:col-span-1">
-            <partial name="_ManageNav" />
-        </div>
+<partial name="_CookieConsentPartial" optional/>
+
+<div class="mx-auto max-w-screen-xl mt-5">
+    <h1 class="text-2xl font-medium pb-3">Manage your profile</h1>
+    <div class="grid md:grid-cols-12 gap-6 w-full">
         <div class="md:col-span-3">
+            <partial name="_ManageNav"/>
+        </div>
+        <div class="md:col-span-7">
             @RenderBody()
         </div>
     </div>
 </div>
+
 <footer class="border-t py-3 text-gray-500">
     <div class="container mx-auto px-4">
         &copy; 2025 - AspNetCoreOpeniddictPlus.Web

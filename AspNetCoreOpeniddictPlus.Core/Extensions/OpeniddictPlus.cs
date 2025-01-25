@@ -55,14 +55,14 @@ public static class OpeniddictPlus
                     .AllowHybridFlow()
                     .AllowRefreshTokenFlow()
                     .AllowDeviceAuthorizationFlow();
-                
+
                 options.RegisterScopes(
-                    OpenIddictConstants.Scopes.OpenId, 
-                    OpenIddictConstants.Scopes.Email, 
-                    OpenIddictConstants.Scopes.Profile, 
+                    OpenIddictConstants.Scopes.OpenId,
+                    OpenIddictConstants.Scopes.Email,
+                    OpenIddictConstants.Scopes.Profile,
                     OpenIddictConstants.Scopes.Roles,
                     "api");
-                
+
                 if (env != null && env.IsDevelopment())
                 {
                     options.AddDevelopmentEncryptionCertificate()
