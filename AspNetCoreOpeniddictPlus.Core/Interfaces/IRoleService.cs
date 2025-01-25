@@ -9,4 +9,12 @@ public interface IRoleService<TEntity>
         int pageSize = 10,
         string? orderBy = null
     );
+    
+    Task<TEntity> GetRoleByIdAsync(Guid roleId);
+    
+    Task<Guid> CreateRoleAsync(CreateRoleDto roleDto);
+    
+    Task<Guid> UpdateRoleAsync(Guid roleId, UpdateRoleDto updateRoleDto);
+    
+    Task<Guid> DeleteRoleAsync(Guid roleId);
 }

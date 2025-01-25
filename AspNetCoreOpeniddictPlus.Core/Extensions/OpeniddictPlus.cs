@@ -94,13 +94,16 @@ public static class OpeniddictPlus
         return services;
     }
 
-    public static IServiceCollection AddUserService<TEntity, TDbContext>(
+    public static IServiceCollection AddUserManagementService<TUEntity, TREntity, TPEntity, TDbContext>(
         this IServiceCollection services
     )
-        where TEntity : class
+        where TUEntity : class
+        where TREntity : class
+        where TPEntity : class
         where TDbContext : DbContext
     {
-        services.AddScoped<IUserService<TEntity>, UserService<TEntity, TDbContext>>();
+        services.AddScoped<IUserService<TUEntity>, UserService<TUEntity, TDbContext>>();
+        services.AddScoped<IRoleService<TREntity>, RoleService<TREntity, TDbContext>>();
         return services;
     }
 }

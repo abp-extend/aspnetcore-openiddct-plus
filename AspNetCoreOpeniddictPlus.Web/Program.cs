@@ -34,7 +34,7 @@ builder
 builder
     .Services.AddOpeniddictPlusServer<OpeniddictPlusDbContext>()
     .AddEmailSender()
-    .AddUserService<OpeniddictPlusUser, OpeniddictPlusDbContext>();
+    .AddUserManagementService<OpeniddictPlusUser, OpeniddictPlusRole, OpeniddictPlusPermission, OpeniddictPlusDbContext>();
 
 builder
     .Services.AddAuthentication(options =>
