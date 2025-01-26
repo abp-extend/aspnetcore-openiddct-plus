@@ -39,6 +39,14 @@ file.
 ## openid configuration
 https://localhost:7006/.well-known/openid-configuration
 
+## Default Admin credentials
+
+| **Field**   | **Value**               |
+|-------------|-------------------------|
+| **Email**   | admin@openiddictplus.io |
+| **Password** | Admin@123              |
+
+
 
 ## Technologies
 - **ASP.NET Core**: A cross-platform, high-performance framework for building modern, cloud-based, Internet-connected applications.
