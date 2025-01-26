@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace AspNetCoreOpeniddictPlus.Web.ViewModels
+namespace AspNetCoreOpeniddictPlus.Core.ViewModels
 {
-    public class RoleViewModel
+    public sealed class RoleViewModel
     {
         public string? Id { get; set; }
 

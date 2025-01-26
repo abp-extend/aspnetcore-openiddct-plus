@@ -9,4 +9,13 @@ public interface IUserService<TEntity>
         int pageSize = 10,
         string? orderBy = null
     );
+    
+    Task<TEntity> GetUserByIdAsync(string userId);
+    
+    Task CreateUserAsync(TEntity entity);
+    
+    Task UpdateUserAsync(string userId, TEntity entity);
+    
+    Task DeleteUserAsync(string userId);
+    
 }

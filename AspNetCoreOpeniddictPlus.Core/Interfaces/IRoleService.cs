@@ -10,6 +10,8 @@ public interface IRoleService<TEntity>
         string? orderBy = null
     );
     
+    Task<TEntity?> GetRoleByNameAsync(string roleName);
+    
     Task<TEntity> GetRoleByIdAsync(string roleId);
     
     Task CreateRoleAsync(TEntity entity);

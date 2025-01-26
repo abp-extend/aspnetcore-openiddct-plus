@@ -1,12 +1,13 @@
 @page
-
-
 @model AspNetCoreOpeniddictPlus.Web.Areas.Identity.Pages.Administration.UserManagement;
 
 <div class="flex flex-col justify-center items-center mx-auto max-w-screen-xl">
     <div class="w-full bg-white shadow-md rounded-lg p-6">
         <h1 class="text-2xl font-medium pb-3">User Management</h1>
-
+        <partial name="Shared/_CreateUserPartial" />
+      
+        <partial name="Account/Manage/_StatusMessage" model="@Model.StatusMessage" />
+    
         @if (Model.Users is not null)
         {
             <table class="table-auto border-collapse border border-gray-300 w-full text-left text-sm text-gray-500 dark:text-gray-400">
@@ -29,7 +30,9 @@
                             @foreach (var column in Model.Columns)
                             {
                                 <td class="border border-gray-300 px-4 py-2 dark:border-gray-600">
-                                    @column.Template(item)
+                                     <span class="inline-flex items-center space-x-2">
+                                         @column.Template(item)
+                                         </span>
                                 </td>
                             }
                         </tr>
@@ -45,6 +48,11 @@
                 }
                 </tbody>
             </table>
+        }
+        
+        @if (Model.Users is { HasNextPage: true })
+        {
+            await Html.RenderPartialAsync("Shared/_PaginationPartial", Model.Pagination);
         }
     </div>
 </div>

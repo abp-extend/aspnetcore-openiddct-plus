@@ -23,5 +23,12 @@ public class OpeniddictPlusDbContext(DbContextOptions<OpeniddictPlusDbContext> o
             entity.Property(p => p.Name).HasMaxLength(50).IsRequired();
             entity.Property(p => p.Description).HasMaxLength(200);
         });
+        
+        modelBuilder.Entity<OpeniddictPlusRole>(entity =>
+        {
+            entity.ToTable("OpeniddictPlusRoles");
+            entity.Property(r => r.Name).HasMaxLength(50).IsRequired();
+            entity.HasMany(r => r.Permissions).WithOne().HasForeignKey(p => p.RoleId);
+        });
     }
 }
