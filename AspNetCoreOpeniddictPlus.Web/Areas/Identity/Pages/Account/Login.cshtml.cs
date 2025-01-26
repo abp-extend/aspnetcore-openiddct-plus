@@ -93,6 +93,10 @@ public class LoginModel : PageModel
             if (result.Succeeded)
             {
                 _logger.LogInformation("User logged in.");
+                if (user.PasswordChangeRequired)
+                {
+                    return RedirectToPage("/Identity/Account/Manage/ChangePassword", new { returnUrl });
+                }
                 return LocalRedirect(returnUrl);
             }
 

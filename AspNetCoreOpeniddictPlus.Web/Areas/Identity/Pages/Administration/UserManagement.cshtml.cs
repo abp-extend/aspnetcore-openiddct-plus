@@ -59,7 +59,7 @@ public class UserManagement(IUserService<OpeniddictPlusUser> userService,
         {
             Header = "Action",
             Template = item => new HtmlString(
-                $"<a href=\"#\" class=\"font-medium text-blue-600 dark:text-blue-500 hover:underline\">Edit user</a>\n"
+                $"<a href=\"#\" class=\"font-medium text-blue-600 dark:text-blue-500 hover:underline\">Edit</a>\n <a href=\"#\" class=\"font-medium text-red-600 dark:text-red-500 hover:underline\">Delete</a>\n"
             ),
         }
 
@@ -71,12 +71,22 @@ public class UserManagement(IUserService<OpeniddictPlusUser> userService,
     [TempData]
     public string ErrorMessage { get; set; } = string.Empty;
     
+    public PaginationViewModel Pagination { get; set; }
+    
     public string StatusMessage { get; set; } = string.Empty;
 
     public async Task<IActionResult> OnGetAsync()
     {
         User = new UserViewModel();
         Users = await userService.GetUsersAsync();
+        Pagination = new PaginationViewModel
+        {
+            PageSize = Users.PageSize,
+            CurrentPage = Users.CurrentPage,
+            TotalPages = Users.TotalCount,
+            HasNextPage = Users.HasNextPage,
+            HasPreviousPage = Users.HasPreviousPage
+        };
         return Page();
     }
 
@@ -96,11 +106,17 @@ public class UserManagement(IUserService<OpeniddictPlusUser> userService,
             var user = new OpeniddictPlusUser
             {
                 UserName = User.UserName,
-                Email = User.Email
+                Email = User.Email,
+                CreatedByAdmin = true,
+                PasswordChangeRequired = true
             };
             
             var result = await userManager.CreateAsync(user, User.Password);
-            if (result.Succeeded) return RedirectToPage();
+            if (result.Succeeded)
+            {
+                StatusMessage = "Successfully created user";
+                return RedirectToPage();
+            }
             StatusMessage = "Error creating user";
             return Page();
 

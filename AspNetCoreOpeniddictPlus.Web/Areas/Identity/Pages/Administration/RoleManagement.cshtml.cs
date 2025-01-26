@@ -26,7 +26,7 @@ namespace AspNetCoreOpeniddictPlus.Web.Areas.Identity.Pages.Administration
             {
                 Header = "Action",
                 Template = item => new HtmlString(
-                    $"<a href=\"#\" class=\"font-medium text-blue-600 dark:text-blue-500 hover:underline\">Edit role</a>\n"
+                    $"<a href=\"#\" class=\"font-medium text-blue-600 dark:text-blue-500 hover:underline\">Edit</a>\n <a href=\"#\" class=\"font-medium text-red-600 dark:text-red-500 hover:underline\">Delete</a>\n"
                 ),
             }
 
@@ -38,6 +38,7 @@ namespace AspNetCoreOpeniddictPlus.Web.Areas.Identity.Pages.Administration
         [TempData]
         public string ErrorMessage { get; set; } = string.Empty;
         
+        public PaginationViewModel Pagination { get; set; }
         public string StatusMessage { get; set; } = string.Empty;
      
 
@@ -45,6 +46,14 @@ namespace AspNetCoreOpeniddictPlus.Web.Areas.Identity.Pages.Administration
         {
             Role = new RoleViewModel();
             Roles = await roleService.GetRolesAsync();
+            Pagination = new PaginationViewModel
+            {
+                PageSize = Roles.PageSize,
+                CurrentPage = Roles.CurrentPage,
+                TotalPages = Roles.TotalCount,
+                HasNextPage = Roles.HasNextPage,
+                HasPreviousPage = Roles.HasPreviousPage
+            };
         }
 
         public async Task<IActionResult> OnGetEditAsync(string id)
@@ -80,7 +89,7 @@ namespace AspNetCoreOpeniddictPlus.Web.Areas.Identity.Pages.Administration
                     {
                         var existingRole = await roleService.GetRoleByIdAsync(Role.Id);
                         existingRole.Name = Role.Name;
-                        StatusMessage = "Role updated successfully.";
+                        StatusMessage = "Successfully updated role.";
                     }
                     catch (Exception e)
                     {
@@ -104,7 +113,7 @@ namespace AspNetCoreOpeniddictPlus.Web.Areas.Identity.Pages.Administration
             try
             {
                 await roleService.DeleteRoleAsync(id);
-                StatusMessage = "Role deleted successfully.";
+                StatusMessage = "Successfully deleted role.";
             }
             catch (Exception ex)
             {
@@ -129,6 +138,8 @@ namespace AspNetCoreOpeniddictPlus.Web.Areas.Identity.Pages.Administration
                 var role = await roleService.GetRoleByIdAsync(id);
                 role.Name = Role.Name;
                 await roleService.UpdateRoleAsync(id, role);
+                StatusMessage = "Successfully updated role.";
+
             }
             catch (Exception ex)
             {
