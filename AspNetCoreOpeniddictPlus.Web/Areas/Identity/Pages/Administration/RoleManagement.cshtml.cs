@@ -1,14 +1,11 @@
-using System.Linq;
 using AspNetCoreOpeniddictPlus.Core.Dtos;
 using AspNetCoreOpeniddictPlus.Core.Interfaces;
+using AspNetCoreOpeniddictPlus.Core.ViewModels;
 using AspNetCoreOpeniddictPlus.Identity.Entities;
 using AspNetCoreOpeniddictPlus.Web.Areas.Identity.Pages.Administration.Helpers;
-using AspNetCoreOpeniddictPlus.Web.Persistence;
-using AspNetCoreOpeniddictPlus.Web.ViewModels;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 
 namespace AspNetCoreOpeniddictPlus.Web.Areas.Identity.Pages.Administration
 {

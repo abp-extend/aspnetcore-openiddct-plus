@@ -1,12 +1,10 @@
 @page
-
-
 @model AspNetCoreOpeniddictPlus.Web.Areas.Identity.Pages.Administration.UserManagement;
 
 <div class="flex flex-col justify-center items-center mx-auto max-w-screen-xl">
     <div class="w-full bg-white shadow-md rounded-lg p-6">
         <h1 class="text-2xl font-medium pb-3">User Management</h1>
-
+        <partial name="Shared/_CreateUserPartial" />
         @if (Model.Users is not null)
         {
             <table class="table-auto border-collapse border border-gray-300 w-full text-left text-sm text-gray-500 dark:text-gray-400">

@@ -26,6 +26,19 @@ public class RoleService<TREntity, TDbContext>(TDbContext dbContext) : IRoleServ
         return await query.ToPagedResultAsync(page, pageSize);
     }
 
+    public async Task<TREntity?> GetRoleByNameAsync(string roleName)
+    {
+        var query = dbContext.Set<TREntity>().AsQueryable();
+        if (query is null)
+        {
+            throw new InvalidOperationException(
+                "The provided entity type is not a valid queryable type."
+            );
+        }
+        var role = await query.Where(r => EF.Property<object>(r, "Name").Equals(roleName)).FirstOrDefaultAsync();
+        return role;
+    }
+
     public async Task<TREntity> GetRoleByIdAsync(string roleId)
     {
         var query = dbContext.Set<TREntity>().AsQueryable();

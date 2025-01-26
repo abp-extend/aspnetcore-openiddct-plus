@@ -55,6 +55,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
 builder.Services.AddHostedService<ClientSeeder>();
+builder.Services.AddHostedService<ApplicationSeeder>();
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
