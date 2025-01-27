@@ -1,3 +1,4 @@
+using AspNetCoreOpeniddictPlus.Migrator.Persistence;
 using OpenIddict.Abstractions;
 
 namespace AspNetCoreOpeniddictPlus.Web.Persistence;

@@ -2,7 +2,7 @@ using AspNetCoreOpeniddictPlus.Identity.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace AspNetCoreOpeniddictPlus.Web.Persistence;
+namespace AspNetCoreOpeniddictPlus.Migrator.Persistence;
 
 public class OpeniddictPlusDbContext(DbContextOptions<OpeniddictPlusDbContext> options)
     : IdentityDbContext(options)
