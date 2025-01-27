@@ -1,5 +1,6 @@
 using AspNetCoreOpeniddictPlus.Core.Extensions;
 using AspNetCoreOpeniddictPlus.Identity.Entities;
+using AspNetCoreOpeniddictPlus.Migrator.Persistence;
 using AspNetCoreOpeniddictPlus.Web.Persistence;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;

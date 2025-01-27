@@ -23,6 +23,7 @@
     <ItemGroup>
         <ProjectReference Include="..\AspNetCoreOpeniddictPlus.Core\AspNetCoreOpeniddictPlus.Core.csproj"/>
         <ProjectReference Include="..\AspNetCoreOpeniddictPlus.Identity\AspNetCoreOpeniddictPlus.Identity.csproj"/>
+        <ProjectReference Include="..\AspNetCoreOpeniddictPlus.Migrator\AspNetCoreOpeniddictPlus.Migrator.csproj" />
     </ItemGroup>
 
 
@@ -40,12 +41,7 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="9.0.0"/>
-        <PackageReference Include="Serilog.AspNetCore" Version="8.0.3"/>
-    </ItemGroup>
-
-
-    <ItemGroup>
-        <Folder Include="Migrations\"/>
+        <PackageReference Include="Serilog.AspNetCore" Version="9.0.0"/>
     </ItemGroup>
 
 

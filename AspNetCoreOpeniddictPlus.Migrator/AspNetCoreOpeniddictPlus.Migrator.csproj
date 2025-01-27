@@ -1,0 +1,42 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net9.0</TargetFramework>
+        <LangVersion>latestmajor</LangVersion>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.1" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.1" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.1">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+      <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.1" />
+      <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.1" />
+      <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.3" />
+      <PackageReference Include="Serilog.AspNetCore" Version="9.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Update="appsettings.json">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="appsettings.Development.json">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+    <ItemGroup>
+      <None Update="Properties\launchSettings.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\AspNetCoreOpeniddictPlus.Core\AspNetCoreOpeniddictPlus.Core.csproj" />
+      <ProjectReference Include="..\AspNetCoreOpeniddictPlus.Identity\AspNetCoreOpeniddictPlus.Identity.csproj" />
+    </ItemGroup>
+
+</Project>

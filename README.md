@@ -13,7 +13,7 @@ A comprehensive solution for ASP.NET Core Identity with OpenIddict, featuring ad
 ## Getting Started
 1. Clone the repository.
 2. Open the solution in Rider or Your choice of an editor.
-3. Run the migrations [initial-migration](initial-migration.ps1)
+3. Run the migrator project `AspNetCoreOpeniddictPlus.Migrator` to create the database migrations.
 4. Run the application.
 4. Navigate to `https://localhost:7006` to access the admin panel.
 
@@ -30,11 +30,11 @@ SESSION_PASSWORD=your secrets...
 NODE_TLS_REJECT_UNAUTHORIZED=0
 SERVER_ENV=development
 ```
-The client id information can be found in the database in the openiddict applications table or see the `ClientSeeder.cs`
-file.
 4. Run `npm run dev`
 5. `https://localhost:3000/auth/login` to trigger the login flow
 
+The client id information can be found in the database in the openiddict applications table or see the `ClientSeeder.cs`
+file.
 
 ## openid configuration
 https://localhost:7006/.well-known/openid-configuration

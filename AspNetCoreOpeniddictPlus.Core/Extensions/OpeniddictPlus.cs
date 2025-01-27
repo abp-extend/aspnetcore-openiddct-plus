@@ -20,6 +20,7 @@ public static class OpeniddictPlus
         var configuration = services.BuildServiceProvider().GetService<IConfiguration>();
         if (configuration is null)
             return services;
+        
         var defaultConnectionString = configuration.GetConnectionString("Default");
         services.AddDbContext<TDbContext>(options =>
         {
