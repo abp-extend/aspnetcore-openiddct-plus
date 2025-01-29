@@ -8,10 +8,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace AspNetCoreOpeniddictPlus.Web.Areas.Identity.Pages.Administration;
+namespace AspNetCoreOpeniddictPlus.Web.Areas.Identity.Pages.Administration.User;
 
 
-public class UserManagement(IUserService<OpeniddictPlusUser> userService,
+public class Index(IUserService<OpeniddictPlusUser> userService,
     UserManager<OpeniddictPlusUser> userManager) : PageModel
 {
     
@@ -22,7 +22,7 @@ public class UserManagement(IUserService<OpeniddictPlusUser> userService,
         new ColumnDefinition<OpeniddictPlusUser>
         {
             Header = "Name",
-            Template = item => new HtmlString("N/A"),
+            Template = item => new HtmlString($"{item.FirstName} {item.LastName}"),
         },
 
         new ColumnDefinition<OpeniddictPlusUser>
@@ -59,7 +59,7 @@ public class UserManagement(IUserService<OpeniddictPlusUser> userService,
         {
             Header = "Action",
             Template = item => new HtmlString(
-                $"<a href=\"#\" class=\"font-medium text-blue-600 dark:text-blue-500 hover:underline\">Edit</a>\n <a href=\"#\" class=\"font-medium text-red-600 dark:text-red-500 hover:underline\">Delete</a>\n"
+                $"<a  data-user-id={item.Id} class=\"font-medium cursor-pointer text-blue-600 dark:text-blue-500 hover:underline\">Edit</a>\n <a href=\"#\" class=\"font-medium text-red-600 dark:text-red-500 hover:underline\">Delete</a>\n"
             ),
         }
 
@@ -71,13 +71,31 @@ public class UserManagement(IUserService<OpeniddictPlusUser> userService,
     [TempData]
     public string ErrorMessage { get; set; } = string.Empty;
     
+    [FromQuery(Name = "userId")]
+    public string? UserId { get; set; } = null;
+    
+    public bool preserveDialogForm { get; set; } = false;
+    
     public PaginationViewModel Pagination { get; set; }
     
     public string StatusMessage { get; set; } = string.Empty;
 
-    public async Task<IActionResult> OnGetAsync()
+    public async Task<IActionResult> OnGetAsync(string? userId = null)
     {
         User = new UserViewModel();
+        if (UserId is not null)
+        {
+          
+            var user = await userManager.FindByIdAsync(UserId);
+            if (user is not null)
+            {
+                User.UserName = user.UserName;
+                User.Email = user.Email;
+                User.FirstName = user.FirstName;
+                User.LastName = user.LastName;
+            }
+        }
+        
         Users = await userService.GetUsersAsync();
         Pagination = new PaginationViewModel
         {
@@ -90,15 +108,20 @@ public class UserManagement(IUserService<OpeniddictPlusUser> userService,
         return Page();
     }
 
+    public IActionResult RedirectToEdit()
+    {
+        return RedirectToPage("/Identity/Administration/UserManagement",new { userId = UserId });
+    }
     public async Task<IActionResult> OnPostAsync()
     {
         if (!ModelState.IsValid)
         {
+            preserveDialogForm = true;
             ErrorMessage = string.Join(" | ", ModelState.Values
                 .SelectMany(v => v.Errors)
                 .Select(e => e.ErrorMessage));
-            await OnGetAsync();
-            return Page();
+            return await OnGetAsync();
+
         }
         
         try
@@ -108,6 +131,8 @@ public class UserManagement(IUserService<OpeniddictPlusUser> userService,
                 UserName = User.UserName,
                 Email = User.Email,
                 CreatedByAdmin = true,
+                FirstName = User.FirstName,
+                LastName = User.LastName,
                 PasswordChangeRequired = true
             };
             
@@ -117,13 +142,14 @@ public class UserManagement(IUserService<OpeniddictPlusUser> userService,
                 StatusMessage = "Successfully created user";
                 return RedirectToPage();
             }
-            StatusMessage = "Error creating user";
+            ErrorMessage = "Error creating user";
             return Page();
 
         }
         catch (Exception e)
         {
             ErrorMessage = e.Message;
+            preserveDialogForm = true;
             await OnGetAsync();
             return Page();
         }

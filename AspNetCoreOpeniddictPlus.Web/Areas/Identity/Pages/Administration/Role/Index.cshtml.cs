@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace AspNetCoreOpeniddictPlus.Web.Areas.Identity.Pages.Administration
+namespace AspNetCoreOpeniddictPlus.Web.Areas.Identity.Pages.Administration.Role
 {
     public class RoleManagementModel(IRoleService<OpeniddictPlusRole> roleService) : PageModel
     {
@@ -26,7 +26,7 @@ namespace AspNetCoreOpeniddictPlus.Web.Areas.Identity.Pages.Administration
             {
                 Header = "Action",
                 Template = item => new HtmlString(
-                    $"<a href=\"#\" class=\"font-medium text-blue-600 dark:text-blue-500 hover:underline\">Edit</a>\n <a href=\"#\" class=\"font-medium text-red-600 dark:text-red-500 hover:underline\">Delete</a>\n"
+                    $"<span data-edit-user={item.Id} class=\"font-medium cursor-pointer text-blue-600 dark:text-blue-500 hover:underline\">Edit</span>\n <span  data-delete-user-id={item.Id} class=\"font-medium  cursor-pointer text-red-600 dark:text-red-500 hover:underline\">Delete</span>\n"
                 ),
             }
 
@@ -37,6 +37,8 @@ namespace AspNetCoreOpeniddictPlus.Web.Areas.Identity.Pages.Administration
         
         [TempData]
         public string ErrorMessage { get; set; } = string.Empty;
+        
+        public bool preserveDialogForm { get; set; } = false;
         
         public PaginationViewModel Pagination { get; set; }
         public string StatusMessage { get; set; } = string.Empty;
@@ -63,50 +65,7 @@ namespace AspNetCoreOpeniddictPlus.Web.Areas.Identity.Pages.Administration
             await OnGetAsync();
             return Page();
         }
-
-        public async Task<IActionResult> OnPostAsync()
-        {
-            if (!ModelState.IsValid)
-            {
-                ErrorMessage = string.Join(" | ", ModelState.Values
-                    .SelectMany(v => v.Errors)
-                    .Select(e => e.ErrorMessage));
-                await OnGetAsync();
-                return Page();
-            }
-
-            try
-            {
-                if (string.IsNullOrEmpty(Role.Id))
-                {
-                    var role = new OpeniddictPlusRole { Name = Role.Name };
-                    await roleService.CreateRoleAsync(role);
-                    StatusMessage = "Role created successfully.";
-                }
-                else
-                {
-                    try
-                    {
-                        var existingRole = await roleService.GetRoleByIdAsync(Role.Id);
-                        existingRole.Name = Role.Name;
-                        StatusMessage = "Successfully updated role.";
-                    }
-                    catch (Exception e)
-                    {
-                        return NotFound(e.Message);
-                    }
-                    
-                }
-                
-                return RedirectToPage();
-            }
-            catch (Exception ex)
-            {
-                ModelState.AddModelError("", "An error occurred while saving the role.");
-                await OnGetAsync();
-                return Page();
-            }
-        }
+        
 
         public async Task<IActionResult> OnPostDeleteAsync(string id)
         {
@@ -126,6 +85,7 @@ namespace AspNetCoreOpeniddictPlus.Web.Areas.Identity.Pages.Administration
         {
             if (!ModelState.IsValid)
             {
+                preserveDialogForm = true;
                 ErrorMessage = string.Join(" | ", ModelState.Values
                     .SelectMany(v => v.Errors)
                     .Select(e => e.ErrorMessage));
