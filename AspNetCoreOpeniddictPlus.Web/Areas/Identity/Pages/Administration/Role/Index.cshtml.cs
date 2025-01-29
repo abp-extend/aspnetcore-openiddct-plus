@@ -26,7 +26,7 @@ namespace AspNetCoreOpeniddictPlus.Web.Areas.Identity.Pages.Administration.Role
             {
                 Header = "Action",
                 Template = item => new HtmlString(
-                    $"<a href=\"#\" class=\"font-medium text-blue-600 dark:text-blue-500 hover:underline\">Edit</a>\n <a href=\"#\" class=\"font-medium text-red-600 dark:text-red-500 hover:underline\">Delete</a>\n"
+                    $"<span data-edit-user={item.Id} class=\"font-medium cursor-pointer text-blue-600 dark:text-blue-500 hover:underline\">Edit</span>\n <span  data-delete-user-id={item.Id} class=\"font-medium  cursor-pointer text-red-600 dark:text-red-500 hover:underline\">Delete</span>\n"
                 ),
             }
 

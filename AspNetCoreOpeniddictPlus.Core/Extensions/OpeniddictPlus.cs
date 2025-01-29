@@ -105,6 +105,7 @@ public static class OpeniddictPlus
     {
         services.AddScoped<IUserService<TUEntity>, UserService<TUEntity, TDbContext>>();
         services.AddScoped<IRoleService<TREntity>, RoleService<TREntity, TDbContext>>();
+        services.AddScoped<IPermissionService<TPEntity>, PermissionService<TPEntity, TDbContext>>();
         return services;
     }
 }

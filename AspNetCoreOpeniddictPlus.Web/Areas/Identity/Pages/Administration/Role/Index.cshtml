@@ -49,7 +49,7 @@
                     {
                         @foreach (var item in Model.Roles.Items)
                         {
-                            <tr class="hover:bg-gray-100 dark:hover:bg-gray-700">
+                            <tr class="hover:bg-gray-100 dark:hover:bg-gray-700 js-tbody-row">
                                 @foreach (var column in Model.Columns)
                                 {
                                     <td class="border border-gray-300 px-4 py-2 dark:border-gray-600">
@@ -79,19 +79,20 @@
         </div>
 </div>
 
-@if (@Model.preserveDialogForm)
-{
-    @section Scripts
-    {
-        <script type="text/javascript">
-            const createRoleModalBtn = document.getElementById('createRoleModalBtn');
-            if (createRoleModalBtn) {
-                setTimeout(() => {
-                   
-                    createRoleModalBtn.click();
-                }, 300);
-            }
-        </script>
-    }
 
+@section Scripts
+{
+    <script >
+        function toArray(arr) {
+            return Array.prototype.slice.call(arr);
+        }
+        const jsTbodyRows = toArray(document.getElementsByClassName('js-tbody-row'));
+        console.log(jsTbodyRows, "===================")
+ 
+  
+        
+    
+    </script>
 }
+
+
