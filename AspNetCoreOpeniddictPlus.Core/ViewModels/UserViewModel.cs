@@ -18,4 +18,10 @@ public sealed class UserViewModel
         [Display(Name = "Password")]
         public string Password { get; set; }
         
+        [Display(Name = "First Name")]
+        public string FirstName { get; set; }
+        
+        [Display(Name = "Last Name")]
+        public string LastName { get; set; }
+        
 }

@@ -21,9 +21,9 @@ builder.Services.AddOpeniddictPlusDbContext<OpeniddictPlusDbContext>();
 builder
     .Services.AddIdentity<OpeniddictPlusUser, OpeniddictPlusRole>(options =>
     {
-        options.SignIn.RequireConfirmedAccount = true;
+        options.SignIn.RequireConfirmedAccount = false;
         options.User.RequireUniqueEmail = true;
-        options.SignIn.RequireConfirmedEmail = true;
+        options.SignIn.RequireConfirmedEmail = false;
         options.ClaimsIdentity.UserNameClaimType = OpenIddictConstants.Claims.Name;
         options.ClaimsIdentity.UserIdClaimType = OpenIddictConstants.Claims.Subject;
         options.ClaimsIdentity.RoleClaimType = OpenIddictConstants.Claims.Role;
