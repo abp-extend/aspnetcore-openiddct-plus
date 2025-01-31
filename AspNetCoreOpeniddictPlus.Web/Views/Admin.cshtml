@@ -1,0 +1,11 @@
+@using AspNetCoreOpeniddictPlus.InertiaCore
+@using AspNetCoreOpeniddictPlus.InertiaCore.Utils
+
+
+@{
+    Layout = "_Layout";
+}
+
+@Vite.ReactRefresh() @await Inertia.Html(Model) @Vite.Input("src/App.tsx")
+
+<script src="/js/site.js"></script>

@@ -1,0 +1,1 @@
+import{j as e,L as r}from"./App-Cy-QRjES.js";function i(n){return e.jsxs(e.Fragment,{children:[e.jsx("h1",{children:"Home"}),e.jsxs(r,{children:[e.jsx("title",{children:"Your page title"}),e.jsx("meta",{name:"description",content:"Your page description"})]}),e.jsx("p",{children:"Welcome to your Inertia app!"}),e.jsxs("div",{children:["name is ",n.name]})]})}export{i as default};
