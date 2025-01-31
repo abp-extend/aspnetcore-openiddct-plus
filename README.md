@@ -55,6 +55,11 @@ https://localhost:7006/.well-known/openid-configuration
 - **TailwindCss**: A free and open-source CSS utility framework and highly customizable design.
 - **PostgreSQL**: A powerful, open-source object-relational database system.
 
+## Credits
+- **Openiddict**: [OpenIddict](https://documentation.openiddict.com/)
+- **InertiaJs**: [InertiaJs](https://inertiajs.com/)
+- **InertiaCore**: [InertiaCore](https://github.com/kapi2289/InertiaCore)
+
 ## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
