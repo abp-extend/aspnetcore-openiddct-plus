@@ -1,5 +1,6 @@
 using AspNetCoreOpeniddictPlus.Core.Extensions;
 using AspNetCoreOpeniddictPlus.Identity.Entities;
+using AspNetCoreOpeniddictPlus.InertiaCore.Extensions;
 using AspNetCoreOpeniddictPlus.Migrator.Persistence;
 using AspNetCoreOpeniddictPlus.Web.Persistence;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -57,6 +58,19 @@ builder.Services.AddRazorPages();
 
 builder.Services.AddHostedService<ClientSeeder>();
 builder.Services.AddHostedService<ApplicationSeeder>();
+
+builder.Services.AddInertia(options =>
+{
+    options.RootView = "~/Views/Admin.cshtml";
+});
+
+builder.Services.AddViteHelper(options =>
+{
+    options.PublicDirectory = "wwwroot";
+    options.BuildDirectory = "build";
+    options.ManifestFilename = "manifest.json";
+});
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -84,5 +98,5 @@ app.MapStaticAssets();
 app.MapControllers();
 app.MapDefaultControllerRoute();
 app.MapRazorPages();
-
+app.UseInertia();
 app.Run();

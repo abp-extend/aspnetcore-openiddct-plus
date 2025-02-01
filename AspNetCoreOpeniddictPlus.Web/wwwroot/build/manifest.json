@@ -1,0 +1,33 @@
+{
+  "src/App.tsx": {
+    "file": "assets/App-Cy-QRjES.js",
+    "name": "App",
+    "src": "src/App.tsx",
+    "isEntry": true,
+    "dynamicImports": [
+      "src/Pages/Index.tsx",
+      "src/Pages/UserManagement.tsx"
+    ],
+    "css": [
+      "assets/App-C6G_3qQV.css"
+    ]
+  },
+  "src/Pages/Index.tsx": {
+    "file": "assets/Index-LIn7npcQ.js",
+    "name": "Index",
+    "src": "src/Pages/Index.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "src/App.tsx"
+    ]
+  },
+  "src/Pages/UserManagement.tsx": {
+    "file": "assets/UserManagement-DQfQep1m.js",
+    "name": "UserManagement",
+    "src": "src/Pages/UserManagement.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "src/App.tsx"
+    ]
+  }
+}

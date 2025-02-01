@@ -1,0 +1,20 @@
+{
+  "src/App.tsx": {
+    "file": "assets/App-TBUbOUdB.js",
+    "name": "App",
+    "src": "src/App.tsx",
+    "isEntry": true,
+    "dynamicImports": [
+      "src/Pages/Index.tsx"
+    ]
+  },
+  "src/Pages/Index.tsx": {
+    "file": "assets/Index-8QaxGlFU.js",
+    "name": "Index",
+    "src": "src/Pages/Index.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "src/App.tsx"
+    ]
+  }
+}

@@ -5,8 +5,28 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+        <!-- Add this as a part of the  PropertyGroup-->
+        <SpaRoot>..\..\client-apps\openiddict-plus-web\</SpaRoot>
+        <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
+        <!--End of PropertyGroup-->
     </PropertyGroup>
 
+    <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
+        <!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
+        <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
+        <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build" />
+
+        <!-- Include the newly-built files in the publish output -->
+        <ItemGroup>
+            <DistFiles Include="$(SpaRoot)build\**" />
+            <ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
+                <RelativePath>wwwroot\%(RecursiveDir)%(FileName)%(Extension)</RelativePath>
+                <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+                <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+            </ResolvedFileToPublish>
+        </ItemGroup>
+    </Target>
+    
     <ItemGroup>
         <Content Include="..\.dockerignore">
             <Link>.dockerignore</Link>
@@ -23,6 +43,7 @@
     <ItemGroup>
         <ProjectReference Include="..\AspNetCoreOpeniddictPlus.Core\AspNetCoreOpeniddictPlus.Core.csproj"/>
         <ProjectReference Include="..\AspNetCoreOpeniddictPlus.Identity\AspNetCoreOpeniddictPlus.Identity.csproj"/>
+        <ProjectReference Include="..\AspNetCoreOpeniddictPlus.InertiaCore\AspNetCoreOpeniddictPlus.InertiaCore.csproj" />
         <ProjectReference Include="..\AspNetCoreOpeniddictPlus.Migrator\AspNetCoreOpeniddictPlus.Migrator.csproj" />
     </ItemGroup>
 
@@ -51,5 +72,10 @@
       <_ContentIncludedByDefault Remove="Pages\_ViewStart.cshtml" />
       <_ContentIncludedByDefault Remove="Areas\Identity\Pages\Administration\Components\Dialog.cshtml" />
     </ItemGroup>
+
+
+ 
+
+
     
 </Project>
