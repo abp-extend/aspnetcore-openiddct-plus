@@ -1,8 +1,15 @@
 import { Head } from "@inertiajs/react";
 import AdminLayout from "@/Layouts/AdminLayout";
 import { PaginatedResponse, User } from "@/Interfaces";
-import { Table, Button, Pagination } from "flowbite-react";
-import { useState } from "react";
+import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table.tsx";
+import {Button} from "@/components/ui/button.tsx";
+import {
+    Pagination,
+    PaginationContent,
+    PaginationItem,
+    PaginationNext,
+    PaginationPrevious
+} from "@/components/ui/pagination.tsx";
 
 interface Props {
     userResponse: PaginatedResponse<User>;
@@ -10,47 +17,59 @@ interface Props {
 export default function Index(props: Props) {
     const users = props.userResponse.data;
     console.log(props.userResponse);
-    const [currentPage, setCurrentPage] = useState(props.userResponse.currentPage);
 
-    const onPageChange = (page: number) => setCurrentPage(page);
    
     return (
         <>
-            
             <Head>
                 <title>Admin | User Management</title>
             </Head>
             <AdminLayout title="User Management">
                 <div className="overflow-x-auto">
                     <Table>
-                        <Table.Head>
-                            <Table.HeadCell>First name</Table.HeadCell>
-                            <Table.HeadCell>Username</Table.HeadCell>
-                            <Table.HeadCell>Email</Table.HeadCell>
-                            <Table.HeadCell>Email verified</Table.HeadCell>
-                            <Table.HeadCell>Action</Table.HeadCell>
-                        </Table.Head>
-                        <Table.Body className="divide-y text-black divide-gray-200">
+                        <TableHeader>
+                            <TableRow>
+                                <TableHead> First name</TableHead>
+                                <TableHead>Username</TableHead>
+                                <TableHead>Email</TableHead>
+                                <TableHead>Email verified</TableHead>
+                                <TableHead>Action</TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
                             {users.map((user) => (
-                                <Table.Row key={user.id}>
-                                    <Table.Cell>{user.firstName}</Table.Cell>
-                                    <Table.Cell>{user.userName}</Table.Cell>
-                                    <Table.Cell>{user.email}</Table.Cell>
-                                    <Table.Cell>{user.emailConfirmed ? "Yes": "No"}</Table.Cell>
-                                    <Table.Cell>
+                                <TableRow key={user.id}>
+                                    <TableCell>{user.firstName}</TableCell>
+                                    <TableCell>{user.userName}</TableCell>
+                                    <TableCell>{user.email}</TableCell>
+                                    <TableCell>{user.emailConfirmed ? "Yes": "No"}</TableCell>
+                                    <TableCell>
                                         <span className="flex items-center space-x-2">
-                                            <Button color="blue">Edit</Button>
-                                            <Button color="failure">Delete</Button>
+                                            <Button>Edit</Button>
+                                            <Button variant="destructive">Delete</Button>
                                         </span>
-                                    </Table.Cell>
-                                </Table.Row>
+                                    </TableCell>
+                                </TableRow>
                             ))}
-                        </Table.Body>
+                        </TableBody>
                     </Table>
                     {props.userResponse.totalPages > 10 && (
                         <div className="flex overflow-x-auto justify-center pt-5">
-                            <Pagination layout="table" currentPage={currentPage}
-                                        totalPages={props.userResponse.totalPages} onPageChange={onPageChange} showIcons />
+                            <Pagination>
+                                <PaginationContent>
+                                    <PaginationItem>
+                                        <PaginationPrevious href="#"/>
+                                    </PaginationItem>
+                                    <span className="text-sm text-gray-700 dark:text-gray-400">
+                                        Showing <span className="font-semibold text-gray-900 dark:text-white">{props.userResponse.currentPage}</span> to <span
+                                        className="font-semibold text-gray-900 dark:text-white">{props.userResponse.pageSize}</span> of <span
+                                        className="font-semibold text-gray-900 dark:text-white">{props.userResponse.totalPages}</span> Entries
+                                    </span>
+                                    <PaginationItem>
+                                        <PaginationNext href="#"/>
+                                    </PaginationItem>
+                                </PaginationContent>
+                            </Pagination>
                         </div>
                     )}
                 </div>
