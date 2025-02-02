@@ -8,4 +8,12 @@
 
 @Vite.ReactRefresh() @await Inertia.Html(Model) @Vite.Input("src/App.tsx")
 
+@{
+    var token = Html.AntiForgeryToken();
+}
+<script>
+    window.onload = function () {
+        window.__RequestVerificationToken = '@token'
+    };
+</script>
 <script src="/js/site.js"></script>

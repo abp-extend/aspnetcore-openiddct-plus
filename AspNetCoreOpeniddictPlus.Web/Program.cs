@@ -2,6 +2,7 @@ using AspNetCoreOpeniddictPlus.Core.Extensions;
 using AspNetCoreOpeniddictPlus.Identity.Entities;
 using AspNetCoreOpeniddictPlus.InertiaCore.Extensions;
 using AspNetCoreOpeniddictPlus.Migrator.Persistence;
+using AspNetCoreOpeniddictPlus.Web.BackgroundJobs;
 using AspNetCoreOpeniddictPlus.Web.Persistence;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
@@ -58,6 +59,10 @@ builder.Services.AddRazorPages();
 
 builder.Services.AddHostedService<ClientSeeder>();
 builder.Services.AddHostedService<ApplicationSeeder>();
+
+// Use Hangfire for background jobs in production
+builder.Services.AddHostedService<UserDeleteBackgroundJob>();
+builder.Services.AddHostedService<NotifyUserDeletionBackgroundJob>();
 
 builder.Services.AddInertia(options =>
 {

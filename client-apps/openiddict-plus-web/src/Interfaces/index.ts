@@ -11,14 +11,18 @@ export interface User {
     lockoutEnabled: boolean;
     accessFailedCount: number;
     lockoutEnd: string;
-    created: string;
-    updated: string;
+    createdByAdmin: boolean;
+    deletionRequestedAt?: string;
 }
-export interface PaginatedResponse<T> { 
-    data: T[];
+
+export interface PageInfo {
     currentPage: number;
     pageSize: number;
-    totalPages: number;
+    totalCount: number;
     hasNextPage: boolean;
     hasPreviousPage: boolean;
+}
+
+export interface PaginatedResponse<T> extends PageInfo{
+    items: T[];
 }
