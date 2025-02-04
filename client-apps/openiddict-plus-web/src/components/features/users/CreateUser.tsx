@@ -27,7 +27,7 @@ export default function CreateUser() {
                 <DialogHeader>
                     <DialogTitle>Create new user</DialogTitle>
                 </DialogHeader>
-                <form method="post">
+                <form method="post" action="/users/create">
                     <span className="hidden"
                           dangerouslySetInnerHTML={{__html: window.__RequestVerificationToken}}></span>
                     <div className="grid oidc-grid-cols-8 gap-4 py-4">

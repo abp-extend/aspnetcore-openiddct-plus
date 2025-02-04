@@ -1,16 +1,16 @@
 import {Button} from "@/components/ui/button.tsx";
-import {User} from "@/Interfaces";
+import {Role} from "@/Interfaces";
 
 interface Props {
-    user: User
+    role: Role
 }
-export default function DeleteUser({user}: Props) {
+export default function DeleteRole({role}: Props) {
     return (
-        <form method="post" action="/users/delete">
+        <form method="post" action="/roles/delete">
                     <span className="hidden"
                           dangerouslySetInnerHTML={{__html: window.__RequestVerificationToken}}></span>
-            <input type="hidden" name="id" value={user.id}/>
-            <Button variant="destructive" size="icon" type="submit" disabled={!!user.deletionRequestedAt}>
+            <input type="hidden" name="id" value={role.id}/>
+            <Button variant="destructive" size="icon" type="submit" >
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                      className="bi bi-archive-fill" viewBox="0 0 16 16">
                     <path

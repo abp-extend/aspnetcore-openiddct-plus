@@ -5,11 +5,11 @@ import {PageInfo, PaginatedResponse, User} from "@/Interfaces";
 import UserList from "@/components/features/users/UserList.tsx";
 
 interface Props {
-    userResponse: PaginatedResponse<User>;
+    data: PaginatedResponse<User>;
     error: string;
 }
 export default function Index(props: Props) {
-    const {items, currentPage, pageSize, hasPreviousPage, hasNextPage, totalCount} = props.userResponse;
+    const {items, currentPage, pageSize, hasPreviousPage, hasNextPage, totalCount} = props.data;
     const pagination = {
         currentPage,
         pageSize,

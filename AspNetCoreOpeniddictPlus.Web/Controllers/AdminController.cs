@@ -10,18 +10,20 @@ using NuGet.Protocol;
 namespace AspNetCoreOpeniddictPlus.Web.Controllers;
 
 [Authorize(Roles = "Admin")]
+[Route("users")]
 public class AdminController(
     UserManager<OpeniddictPlusUser> userManager,
     RoleManager<OpeniddictPlusRole> roleManager,
     IUserService<OpeniddictPlusUser> userService,
     IHttpContextAccessor httpContextAccessor) : Controller
 {
+    [HttpGet("/")]
     public async Task<IActionResult> Index()
     {
         return Inertia.Render("Index", new { name = "Hello World" });
     }
     
-    [HttpGet("/admin/user-management")]
+    [HttpGet("all")]
     public async Task<IActionResult> UserManagement(string? error = null)
     {
         
@@ -29,7 +31,7 @@ public class AdminController(
       
         return Inertia.Render("UserManagement", new
         {
-            userResponse = new
+            data = new
             {
                 users.Items,
                 users.TotalCount,
@@ -42,7 +44,7 @@ public class AdminController(
         });
     }
     
-    [HttpPost("/admin/user-management"), ValidateAntiForgeryToken]
+    [HttpPost("create"), ValidateAntiForgeryToken]
     public async Task<IActionResult> Create([FromForm] CreateUserDto createUserDto)
     {
         var newUser = new OpeniddictPlusUser
@@ -51,7 +53,8 @@ public class AdminController(
             LastName = createUserDto.LastName,
             Email = createUserDto.Email,
             UserName = createUserDto.UserName,
-            CreatedByAdmin = true
+            CreatedByAdmin = true,
+            CreatedAt = DateTime.UtcNow
         };
         var user = await userManager.CreateAsync(newUser);
         if (!user.Succeeded)
@@ -62,7 +65,7 @@ public class AdminController(
         return RedirectToAction("UserManagement");
     }
     
-    [HttpPost("/admin/user-management/delete"), ValidateAntiForgeryToken]
+    [HttpPost("delete"), ValidateAntiForgeryToken]
     public async Task<IActionResult> Delete([FromForm] DeleteDto dto)
     {
         var user = await userManager.FindByIdAsync(dto.Id);
@@ -85,7 +88,7 @@ public class AdminController(
         return RedirectToAction("UserManagement");
     }
     
-    [HttpPost("/admin/user-management/update"), ValidateAntiForgeryToken]
+    [HttpPost("update"), ValidateAntiForgeryToken]
     public async Task<IActionResult> Update([FromForm] UpdateUserDto dto)
     {
         var user = await userManager.FindByIdAsync(dto.Id);
@@ -96,6 +99,7 @@ public class AdminController(
         user.FirstName = dto.FirstName;
         user.LastName = dto.LastName;
         user.UserName = dto.UserName;
+        user.UpdatedAt = DateTime.UtcNow;
         var result = await userManager.UpdateAsync(user);
         if (!result.Succeeded)
         {

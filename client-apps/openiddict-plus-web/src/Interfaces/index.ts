@@ -13,8 +13,19 @@ export interface User {
     lockoutEnd: string;
     createdByAdmin: boolean;
     deletionRequestedAt?: string;
+    createdAt?: string;
+    updatedAt?: string;
 }
 
+export interface Role {
+    id: string;
+    name: string;
+    description: string;
+    normalizedName: string;
+    createdAt?: string;
+    updatedAt?: string;
+    permissions: string[];
+}
 export interface PageInfo {
     currentPage: number;
     pageSize: number;

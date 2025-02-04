@@ -1,4 +1,4 @@
-import {User} from "@/Interfaces";
+import {Role} from "@/Interfaces";
 import {
     Dialog,
     DialogContent,
@@ -10,15 +10,16 @@ import {
 import {Button} from "@/components/ui/button.tsx";
 import {Label} from "@/components/ui/label.tsx";
 import {Input} from "@/components/ui/input.tsx";
+import {Textarea} from "@/components/ui/textarea.tsx";
 
 interface Props {
-    user: User
+    role: Role
 }
-export default function UpdateUser({user}: Props) {
+export default function UpdateRole({role}: Props) {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button size="icon" variant="secondary" disabled={!!user.deletionRequestedAt}>
+                <Button size="icon" variant="secondary">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                          className="bi bi-pencil-square" viewBox="0 0 16 16">
                         <path
@@ -30,31 +31,26 @@ export default function UpdateUser({user}: Props) {
             </DialogTrigger>
             <DialogContent className="sm:oidc-max-w-screen-md">
                 <DialogHeader>
-                    <DialogTitle className="oidc-capitalize">Edit {user.userName}</DialogTitle>
+                    <DialogTitle className="oidc-capitalize">Edit {role.name}</DialogTitle>
                 </DialogHeader>
-                <form method="post" action="/users/update">
+                <form method="post" action="/roles/update">
                     <span className="hidden"
                           dangerouslySetInnerHTML={{__html: window.__RequestVerificationToken}}></span>
-                    <input type="hidden" name="id" value={user.id}/>
+                    <input type="hidden" name="id" value={role.id}/>
                     <div className="grid oidc-grid-cols-8 gap-4 py-4">
-                        <div className="flex oidc-flex-col oidc-col-span-4 oidc-space-y-1">
-                            <Label htmlFor="firstName">
-                                First Name
+                        <div className="flex oidc-flex-col oidc-col-span-8 oidc-space-y-1">
+                            <Label htmlFor="name">
+                                Role Name
                             </Label>
-                            <Input id="firstName" name="firstName" defaultValue={user.firstName} className="oidc-w-full"/>
-                        </div>
-                        <div className="flex oidc-flex-col oidc-col-span-4 oidc-space-y-1">
-                            <Label htmlFor="lastName">
-                                Last Name
-                            </Label>
-                            <Input id="lastName" name="lastName" defaultValue={user.lastName} className="oidc-w-full"/>
+                            <Input id="name" name="name" defaultValue={role.name} className="oidc-w-full"/>
                         </div>
                         <div className="flex oidc-flex-col oidc-col-span-8 oidc-space-y-1">
-                            <Label htmlFor="username">
-                                Username
+                            <Label htmlFor="description">
+                                Description
                             </Label>
-                            <Input id="username" name="username" defaultValue={user.userName} required/>
+                            <Textarea id="description" name="description" defaultValue={role.description} className="oidc-w-full"/>
                         </div>
+
 
                     </div>
                     <DialogFooter>

@@ -8,4 +8,7 @@ public class OpeniddictPlusPermission
     
     public string RoleId { get; set; } = string.Empty;
     
+    public DateTime? UpdatedAt { get; set; }
+    public DateTime? CreatedAt { get; set; }
+    
 }
