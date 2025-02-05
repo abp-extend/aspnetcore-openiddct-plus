@@ -40,16 +40,14 @@ export default function RoleList(props: Props) {
                 <TableHeader>
                     <TableRow className="oidc-text-lg">
                         <TableHead>Name</TableHead>
-                        <TableHead>Description</TableHead>
                         <TableHead>Assigned permissions</TableHead>
                         <TableHead>Action</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
                     {roles.map((role) => (
-                        <TableRow key={role.id}>
-                            <TableCell>{role.name}</TableCell>
-                            <TableCell>{role.description ?? "N/A"}</TableCell>
+                        <TableRow key={role.roleId}>
+                            <TableCell>{role.roleName}</TableCell>
                             <TableCell>Total permissions ({role.permissions.length})</TableCell>
                             <TableCell className="flex  oidc-space-x-2">
                                 <UpdateRole role={role}/>

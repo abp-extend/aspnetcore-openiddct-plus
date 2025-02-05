@@ -1,11 +1,11 @@
 using AspNetCoreOpeniddictPlus.Core.Dtos;
-using AspNetCoreOpeniddictPlus.Core.Interfaces;
+using AspNetCoreOpeniddictPlus.Core.Extensions;
+
 using AspNetCoreOpeniddictPlus.Identity.Entities;
 using AspNetCoreOpeniddictPlus.InertiaCore;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using NuGet.Protocol;
 
 namespace AspNetCoreOpeniddictPlus.Web.Controllers;
 
@@ -14,7 +14,6 @@ namespace AspNetCoreOpeniddictPlus.Web.Controllers;
 public class AdminController(
     UserManager<OpeniddictPlusUser> userManager,
     RoleManager<OpeniddictPlusRole> roleManager,
-    IUserService<OpeniddictPlusUser> userService,
     IHttpContextAccessor httpContextAccessor) : Controller
 {
     [HttpGet("/")]
@@ -24,16 +23,30 @@ public class AdminController(
     }
     
     [HttpGet("all")]
-    public async Task<IActionResult> UserManagement(string? error = null)
+    public async Task<IActionResult> UserManagement(string? error = null, int currentPage = 1, int pageSize = 10)
     {
         
-        var users = await userService.GetUsersAsync();
+        var users = await userManager
+            .Users
+            .ToPagedResultAsync(currentPage, pageSize);
       
+        var userItems = users.Items.Select(u => new UserDto
+        {
+            Id = u.Id,
+            FirstName = u.FirstName,
+            LastName = u.LastName,
+            UserName = u.UserName,
+            Email = u.Email,
+            CreatedAt = u.CreatedAt,
+            UpdatedAt = u.UpdatedAt,
+            DeletionRequestedAt = u.DeletionRequestedAt
+        }).ToList();
+        
         return Inertia.Render("UserManagement", new
         {
             data = new
             {
-                users.Items,
+                items = userItems,
                 users.TotalCount,
                 users.CurrentPage,
                 users.PageSize,
@@ -109,3 +122,4 @@ public class AdminController(
     }
    
 }
+

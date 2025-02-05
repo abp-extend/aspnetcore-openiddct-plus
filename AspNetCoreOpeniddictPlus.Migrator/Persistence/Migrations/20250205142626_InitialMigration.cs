@@ -34,6 +34,11 @@ namespace AspNetCoreOpeniddictPlus.Migrator.Persistence.Migrations
                     Discriminator = table.Column<string>(type: "character varying(21)", maxLength: 21, nullable: false),
                     CreatedByAdmin = table.Column<bool>(type: "boolean", nullable: true),
                     PasswordChangeRequired = table.Column<bool>(type: "boolean", nullable: true),
+                    FirstName = table.Column<string>(type: "text", nullable: true),
+                    LastName = table.Column<string>(type: "text", nullable: true),
+                    DeletionRequestedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
@@ -81,6 +86,21 @@ namespace AspNetCoreOpeniddictPlus.Migrator.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "OpeniddictPlusPermissions",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    Description = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OpeniddictPlusPermissions", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "OpenIddictScopes",
                 columns: table => new
                 {
@@ -124,7 +144,9 @@ namespace AspNetCoreOpeniddictPlus.Migrator.Persistence.Migrations
                 name: "OpeniddictPlusRoles",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "text", nullable: false)
+                    Id = table.Column<string>(type: "text", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -247,19 +269,23 @@ namespace AspNetCoreOpeniddictPlus.Migrator.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "OpeniddictPlusPermissions",
+                name: "OpeniddictPlusRolePermissions",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    Description = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: true),
-                    RoleId = table.Column<string>(type: "text", nullable: false)
+                    RoleId = table.Column<string>(type: "text", nullable: false),
+                    PermissionId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OpeniddictPlusPermissions", x => x.Id);
+                    table.PrimaryKey("PK_OpeniddictPlusRolePermissions", x => new { x.RoleId, x.PermissionId });
                     table.ForeignKey(
-                        name: "FK_OpeniddictPlusPermissions_OpeniddictPlusRoles_RoleId",
+                        name: "FK_OpeniddictPlusRolePermissions_OpeniddictPlusPermissions_Per~",
+                        column: x => x.PermissionId,
+                        principalTable: "OpeniddictPlusPermissions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_OpeniddictPlusRolePermissions_OpeniddictPlusRoles_RoleId",
                         column: x => x.RoleId,
                         principalTable: "OpeniddictPlusRoles",
                         principalColumn: "Id",
@@ -348,9 +374,9 @@ namespace AspNetCoreOpeniddictPlus.Migrator.Persistence.Migrations
                 columns: new[] { "ApplicationId", "Status", "Subject", "Type" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_OpeniddictPlusPermissions_RoleId",
-                table: "OpeniddictPlusPermissions",
-                column: "RoleId");
+                name: "IX_OpeniddictPlusRolePermissions_PermissionId",
+                table: "OpeniddictPlusRolePermissions",
+                column: "PermissionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OpenIddictScopes_Name",
@@ -394,7 +420,7 @@ namespace AspNetCoreOpeniddictPlus.Migrator.Persistence.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "OpeniddictPlusPermissions");
+                name: "OpeniddictPlusRolePermissions");
 
             migrationBuilder.DropTable(
                 name: "OpenIddictScopes");
@@ -404,6 +430,9 @@ namespace AspNetCoreOpeniddictPlus.Migrator.Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "OpeniddictPlusPermissions");
 
             migrationBuilder.DropTable(
                 name: "OpeniddictPlusRoles");

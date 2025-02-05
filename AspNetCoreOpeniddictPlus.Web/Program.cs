@@ -1,10 +1,13 @@
 using AspNetCoreOpeniddictPlus.Core.Extensions;
+using AspNetCoreOpeniddictPlus.Core.Services;
 using AspNetCoreOpeniddictPlus.Identity.Entities;
 using AspNetCoreOpeniddictPlus.InertiaCore.Extensions;
 using AspNetCoreOpeniddictPlus.Migrator.Persistence;
 using AspNetCoreOpeniddictPlus.Web.BackgroundJobs;
+using AspNetCoreOpeniddictPlus.Web.Permissions;
 using AspNetCoreOpeniddictPlus.Web.Persistence;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using OpenIddict.Abstractions;
 using Serilog;
@@ -37,7 +40,7 @@ builder
 builder
     .Services.AddOpeniddictPlusServer<OpeniddictPlusDbContext>()
     .AddEmailSender()
-    .AddUserManagementService<OpeniddictPlusUser, OpeniddictPlusRole, OpeniddictPlusPermission, OpeniddictPlusDbContext>();
+    .AddPermissionManagementService<OpeniddictPlusPermission, OpeniddictPlusDbContext>();
 
 builder
     .Services.AddAuthentication(options =>
@@ -75,6 +78,23 @@ builder.Services.AddViteHelper(options =>
     options.BuildDirectory = "build";
     options.ManifestFilename = "manifest.json";
 });
+
+
+builder.Services.AddAuthorization(options =>
+{
+    using var scope = builder.Services.BuildServiceProvider().CreateScope();
+    var dbContext = scope.ServiceProvider.GetRequiredService<OpeniddictPlusDbContext>();
+    var permissions = dbContext.OpeniddictPlusPermissions.ToList();
+
+    foreach (var permission in permissions)
+    {
+        options.AddPolicy(permission.Name, policy =>
+            policy.Requirements.Add(new PermissionRequirement<string>(permission.Name)));
+    }
+});
+
+ builder.Services.AddTransient<IAuthorizationHandler, PermissionHandler>();
+
 
 var app = builder.Build();
 

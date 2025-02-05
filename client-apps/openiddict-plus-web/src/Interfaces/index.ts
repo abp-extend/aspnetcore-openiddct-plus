@@ -18,14 +18,19 @@ export interface User {
 }
 
 export interface Role {
-    id: string;
-    name: string;
-    description: string;
-    normalizedName: string;
+    roleId: string;
+    roleName: string;
     createdAt?: string;
     updatedAt?: string;
-    permissions: string[];
+    permissions: Array<Permission>;
 }
+
+export interface Permission {
+    permissionId: string;
+    name: string;
+    description?: string;
+}
+
 export interface PageInfo {
     currentPage: number;
     pageSize: number;

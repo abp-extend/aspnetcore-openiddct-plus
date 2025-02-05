@@ -40,18 +40,27 @@ namespace AspNetCoreOpeniddictPlus.Migrator.Persistence.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
-                    b.Property<string>("RoleId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RoleId");
-
                     b.ToTable("OpeniddictPlusPermissions", (string)null);
+                });
+
+            modelBuilder.Entity("AspNetCoreOpeniddictPlus.Identity.Entities.OpeniddictPlusRolePermission", b =>
+                {
+                    b.Property<string>("RoleId")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("PermissionId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("RoleId", "PermissionId");
+
+                    b.HasIndex("PermissionId");
+
+                    b.ToTable("OpeniddictPlusRolePermissions", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -511,13 +520,23 @@ namespace AspNetCoreOpeniddictPlus.Migrator.Persistence.Migrations
                     b.HasDiscriminator().HasValue("OpeniddictPlusUser");
                 });
 
-            modelBuilder.Entity("AspNetCoreOpeniddictPlus.Identity.Entities.OpeniddictPlusPermission", b =>
+            modelBuilder.Entity("AspNetCoreOpeniddictPlus.Identity.Entities.OpeniddictPlusRolePermission", b =>
                 {
-                    b.HasOne("AspNetCoreOpeniddictPlus.Identity.Entities.OpeniddictPlusRole", null)
-                        .WithMany("Permissions")
+                    b.HasOne("AspNetCoreOpeniddictPlus.Identity.Entities.OpeniddictPlusPermission", "Permission")
+                        .WithMany("RolePermissions")
+                        .HasForeignKey("PermissionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AspNetCoreOpeniddictPlus.Identity.Entities.OpeniddictPlusRole", "Role")
+                        .WithMany("RolePermissions")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Permission");
+
+                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -604,6 +623,11 @@ namespace AspNetCoreOpeniddictPlus.Migrator.Persistence.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("AspNetCoreOpeniddictPlus.Identity.Entities.OpeniddictPlusPermission", b =>
+                {
+                    b.Navigation("RolePermissions");
+                });
+
             modelBuilder.Entity("OpenIddict.EntityFrameworkCore.Models.OpenIddictEntityFrameworkCoreApplication", b =>
                 {
                     b.Navigation("Authorizations");
@@ -618,7 +642,7 @@ namespace AspNetCoreOpeniddictPlus.Migrator.Persistence.Migrations
 
             modelBuilder.Entity("AspNetCoreOpeniddictPlus.Identity.Entities.OpeniddictPlusRole", b =>
                 {
-                    b.Navigation("Permissions");
+                    b.Navigation("RolePermissions");
                 });
 #pragma warning restore 612, 618
         }

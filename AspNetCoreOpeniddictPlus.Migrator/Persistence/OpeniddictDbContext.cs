@@ -23,12 +23,26 @@ public class OpeniddictPlusDbContext(DbContextOptions<OpeniddictPlusDbContext> o
             entity.Property(p => p.Name).HasMaxLength(50).IsRequired();
             entity.Property(p => p.Description).HasMaxLength(200);
         });
-        
+
         modelBuilder.Entity<OpeniddictPlusRole>(entity =>
         {
             entity.ToTable("OpeniddictPlusRoles");
             entity.Property(r => r.Name).HasMaxLength(50).IsRequired();
-            entity.HasMany(r => r.Permissions).WithOne().HasForeignKey(p => p.RoleId);
         });
+
+        // Configure Many-to-Many Relationship
+        modelBuilder.Entity<OpeniddictPlusRolePermission>()
+            .ToTable("OpeniddictPlusRolePermissions")
+            .HasKey(rp => new { rp.RoleId, rp.PermissionId });
+
+        modelBuilder.Entity<OpeniddictPlusRolePermission>()
+            .HasOne(rp => rp.Role)
+            .WithMany(r => r.RolePermissions)
+            .HasForeignKey(rp => rp.RoleId);
+
+        modelBuilder.Entity<OpeniddictPlusRolePermission>()
+            .HasOne(rp => rp.Permission)
+            .WithMany(p => p.RolePermissions)
+            .HasForeignKey(rp => rp.PermissionId);
     }
 }

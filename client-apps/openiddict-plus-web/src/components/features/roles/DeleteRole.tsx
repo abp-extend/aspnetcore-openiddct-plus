@@ -9,7 +9,7 @@ export default function DeleteRole({role}: Props) {
         <form method="post" action="/roles/delete">
                     <span className="hidden"
                           dangerouslySetInnerHTML={{__html: window.__RequestVerificationToken}}></span>
-            <input type="hidden" name="id" value={role.id}/>
+            <input type="hidden" name="id" value={role.roleId}/>
             <Button variant="destructive" size="icon" type="submit" >
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                      className="bi bi-archive-fill" viewBox="0 0 16 16">
