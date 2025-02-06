@@ -4,5 +4,5 @@ public sealed class RolePermissionDto
 {
     public string RoleId { get; set; } = string.Empty;
     public string RoleName { get; set; } = string.Empty;
-    public IReadOnlyList<PermissionDto> Permissions { get; set; } = [];
+    public List<PermissionDto> Permissions { get; set; } = [];
 }

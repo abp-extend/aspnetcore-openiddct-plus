@@ -9,12 +9,17 @@ import {
 } from "@/components/ui/dialog"
 import {Input} from "@/components/ui/input"
 import {Label} from "@/components/ui/label"
+import usePermission from "@/hooks/usePermission.ts";
 
 export default function CreateUser() {
+    const { can, isAdminUser } = usePermission();
+    const canCreatePolicy = can('create policy');
+    const currentUserIsAdmin = isAdminUser();
+    const canCreateUser = canCreatePolicy || currentUserIsAdmin;
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button>
+                <Button disabled={!canCreateUser}>
                     <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor"
                          className="bi bi-plus-lg" viewBox="0 0 16 16">
                         <path fill-rule="evenodd"

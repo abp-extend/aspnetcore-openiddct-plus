@@ -39,7 +39,10 @@ public class AdminController(
             Email = u.Email,
             CreatedAt = u.CreatedAt,
             UpdatedAt = u.UpdatedAt,
-            DeletionRequestedAt = u.DeletionRequestedAt
+            DeletionRequestedAt = u.DeletionRequestedAt,
+            CreatedByAdmin = u.CreatedByAdmin,
+            EmailConfirmed = u.EmailConfirmed,
+            Roles = userManager.GetRolesAsync(u).Result.ToList()
         }).ToList();
         
         return Inertia.Render("UserManagement", new

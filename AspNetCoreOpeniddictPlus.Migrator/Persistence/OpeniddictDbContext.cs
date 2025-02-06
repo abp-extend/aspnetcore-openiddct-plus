@@ -10,6 +10,7 @@ public class OpeniddictPlusDbContext(DbContextOptions<OpeniddictPlusDbContext> o
     public DbSet<OpeniddictPlusUser> OpeniddictPlusUsers { get; set; }
     public DbSet<OpeniddictPlusRole> OpeniddictPlusRoles { get; set; }
     public DbSet<OpeniddictPlusPermission> OpeniddictPlusPermissions { get; set; }
+    public DbSet<OpeniddictPlusRolePermission> OpeniddictPlusRolePermissions { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

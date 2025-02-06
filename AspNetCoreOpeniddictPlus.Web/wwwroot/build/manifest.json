@@ -1,13 +1,13 @@
 {
-  "_useError-DwYUvx16.js": {
-    "file": "assets/useError-DwYUvx16.js",
+  "_useError-CaRTd7CK.js": {
+    "file": "assets/useError-CaRTd7CK.js",
     "name": "useError",
     "imports": [
       "src/App.tsx"
     ]
   },
   "src/App.tsx": {
-    "file": "assets/App-C_R1tlV6.js",
+    "file": "assets/App-_4Dsq98a.js",
     "name": "App",
     "src": "src/App.tsx",
     "isEntry": true,
@@ -17,11 +17,11 @@
       "src/Pages/UserManagement.tsx"
     ],
     "css": [
-      "assets/App-Bk2kZa2t.css"
+      "assets/App-Bu_oUl8H.css"
     ]
   },
   "src/Pages/Index.tsx": {
-    "file": "assets/Index-DxW-lTxJ.js",
+    "file": "assets/Index-C8jQOh8g.js",
     "name": "Index",
     "src": "src/Pages/Index.tsx",
     "isDynamicEntry": true,
@@ -30,23 +30,23 @@
     ]
   },
   "src/Pages/RoleManagement.tsx": {
-    "file": "assets/RoleManagement-BnL_9WG7.js",
+    "file": "assets/RoleManagement-6fNU-c-_.js",
     "name": "RoleManagement",
     "src": "src/Pages/RoleManagement.tsx",
     "isDynamicEntry": true,
     "imports": [
       "src/App.tsx",
-      "_useError-DwYUvx16.js"
+      "_useError-CaRTd7CK.js"
     ]
   },
   "src/Pages/UserManagement.tsx": {
-    "file": "assets/UserManagement-BwanIfGx.js",
+    "file": "assets/UserManagement-DdDydQsW.js",
     "name": "UserManagement",
     "src": "src/Pages/UserManagement.tsx",
     "isDynamicEntry": true,
     "imports": [
       "src/App.tsx",
-      "_useError-DwYUvx16.js"
+      "_useError-CaRTd7CK.js"
     ]
   }
 }

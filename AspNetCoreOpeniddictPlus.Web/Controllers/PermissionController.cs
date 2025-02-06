@@ -16,7 +16,7 @@ public class PermissionWithRoleAssignedDto
 }
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/permissions")]
 public class PermissionController(IPermissionService<OpeniddictPlusPermission> permissionService) : Controller
 {
     [HttpGet]

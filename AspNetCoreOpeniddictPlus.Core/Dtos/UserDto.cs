@@ -8,8 +8,11 @@ public sealed class UserDto
     public string UserName { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
     
+    public bool EmailConfirmed { get; set; } = false; 
+    public bool CreatedByAdmin { get; set; } = false;
     public DateTime? CreatedAt { get; set; }
     public DateTime? UpdatedAt { get; set; }
 
+    public List<string> Roles { get; set; } = [];
     public DateTime? DeletionRequestedAt { get; set; }
 }

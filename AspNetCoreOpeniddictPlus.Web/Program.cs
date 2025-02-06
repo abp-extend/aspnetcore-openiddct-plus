@@ -94,6 +94,7 @@ builder.Services.AddAuthorization(options =>
 });
 
  builder.Services.AddTransient<IAuthorizationHandler, PermissionHandler>();
+ builder.Services.AddHttpContextAccessor();
 
 
 var app = builder.Build();

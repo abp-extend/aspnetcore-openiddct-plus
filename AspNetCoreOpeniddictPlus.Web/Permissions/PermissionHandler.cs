@@ -2,6 +2,7 @@ using AspNetCoreOpeniddictPlus.Core.Services;
 using AspNetCoreOpeniddictPlus.Identity.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace AspNetCoreOpeniddictPlus.Web.Permissions;
 
@@ -32,10 +33,14 @@ public class PermissionHandler(
             return;
         }
         
-        var permissions = userRoles
-            .Select(roleManager.FindByNameAsync)
-            .SelectMany(u => u.Result!.RolePermissions
-                .Select(openiddictPlusRolePermission => openiddictPlusRolePermission.Permission.Name)).ToList();
+        var permissions = await roleManager
+            .Roles
+            .Include(r => r.RolePermissions)
+            .ThenInclude(rp => rp.Permission)
+            .Where(r => userRoles.Contains(r.Name))
+            .SelectMany(r => r.RolePermissions)
+            .Select(rp => rp.Permission.Name)
+            .ToListAsync();
 
         if (!permissions.Contains(requirement.Permission))
         {

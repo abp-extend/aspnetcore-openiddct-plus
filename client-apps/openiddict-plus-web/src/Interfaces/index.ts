@@ -4,17 +4,12 @@ export interface User {
     firstName?: string;
     lastName?: string;
     email: string;
-    phoneNumber?: string;
-    emailConfirmed: boolean;
-    phoneNumberConfirmed?: boolean;
-    twoFactorEnabled?: boolean;
-    lockoutEnabled: boolean;
-    accessFailedCount: number;
-    lockoutEnd: string;
     createdByAdmin: boolean;
     deletionRequestedAt?: string;
     createdAt?: string;
     updatedAt?: string;
+    roles: Array<string>;
+    emailConfirmed: boolean;
 }
 
 export interface Role {
@@ -31,6 +26,10 @@ export interface Permission {
     description?: string;
 }
 
+export interface RolePermission extends Permission {
+    roleIds: Array<string>;
+}
+
 export interface PageInfo {
     currentPage: number;
     pageSize: number;
@@ -41,4 +40,18 @@ export interface PageInfo {
 
 export interface PaginatedResponse<T> extends PageInfo{
     items: T[];
+}
+
+
+export interface UserSettings {
+    id: string;
+    userName: string
+    email: string;
+    createdByAdmin: boolean;
+    roles: Array<{id: string; name: string}>;
+    permissions: Array<{id: string; name: string, description?: string, roleId: string}>;
+}
+
+export interface CurrentUser extends UserSettings {
+    isAuthenticated: boolean;
 }

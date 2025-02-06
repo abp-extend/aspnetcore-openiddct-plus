@@ -18,7 +18,7 @@ public class ApplicationSeeder(
         var permissionService = scope.ServiceProvider.GetRequiredService<IPermissionService<OpeniddictPlusPermission>>();
 
         await SeedRolesAndUsers(userManager, roleManager);
-       // await SeedPermissions(permissionService, roleManager);
+        await SeedPermissions(permissionService, roleManager);
     }
 
     public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;
@@ -33,6 +33,9 @@ public class ApplicationSeeder(
             "Delete Policy",
             "View  Policy",
         };
+        var queryable = await permissionService.GetPermissions();
+        var count = await queryable.CountAsync();
+        if (count > 0) return;
         
         foreach (var permission in permissions)
         {

@@ -10,6 +10,7 @@ import {
 import {Button} from "@/components/ui/button.tsx";
 import {Label} from "@/components/ui/label.tsx";
 import {Input} from "@/components/ui/input.tsx";
+import Permissions from "@/components/shared/Permissions.tsx";
 
 interface Props {
     role: Role
@@ -35,13 +36,16 @@ export default function UpdateRole({role}: Props) {
                 <form method="post" action="/roles/update">
                     <span className="hidden"
                           dangerouslySetInnerHTML={{__html: window.__RequestVerificationToken}}></span>
-                    <input type="hidden" name="id" value={role.roleId}/>
+                    <input type="hidden" name="roleId" value={role.roleId}/>
                     <div className="grid oidc-grid-cols-8 gap-4 py-4">
                         <div className="flex oidc-flex-col oidc-col-span-8 oidc-space-y-1">
-                            <Label htmlFor="name">
+                            <Label htmlFor="roleName">
                                 Role Name
                             </Label>
-                            <Input id="name" name="name" defaultValue={role.roleName} className="oidc-w-full"/>
+                            <Input id="roleName" name="roleName" defaultValue={role.roleName} className="oidc-w-full"/>
+                        </div>
+                        <div className="flex oidc-flex-col oidc-col-span-8 oidc-space-y-1">
+                            <Permissions currentRoleId={role.roleId} />
                         </div>
                     </div>
                     <DialogFooter>

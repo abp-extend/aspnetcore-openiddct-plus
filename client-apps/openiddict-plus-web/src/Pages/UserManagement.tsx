@@ -17,7 +17,7 @@ export default function Index(props: Props) {
         hasNextPage,
         hasPreviousPage
     } satisfies PageInfo;
-
+    console.log(items, "items")
     return (
         <>
             <Head>
