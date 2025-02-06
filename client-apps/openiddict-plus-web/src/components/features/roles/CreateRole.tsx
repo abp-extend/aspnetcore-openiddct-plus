@@ -1,17 +1,19 @@
-import {Button} from "@/components/ui/button"
 import {
     Dialog,
     DialogContent,
     DialogFooter,
     DialogHeader,
     DialogTitle,
-    DialogTrigger,
-} from "@/components/ui/dialog"
-import {Input} from "@/components/ui/input"
-import {Label} from "@/components/ui/label"
+    DialogTrigger
+} from "@/components/ui/dialog.tsx";
+import {Button} from "@/components/ui/button.tsx";
+import {Label} from "@/components/ui/label.tsx";
+import {Input} from "@/components/ui/input.tsx";
+import {Textarea} from "@/components/ui/textarea.tsx";
 import usePermission from "@/hooks/usePermission.ts";
 
-export default function CreateUser() {
+
+export default function CreateRole() {
     const { can, isAdminUser } = usePermission();
     const canCreatePolicy = can('create policy');
     const currentUserIsAdmin = isAdminUser();
@@ -30,41 +32,23 @@ export default function CreateUser() {
             </DialogTrigger>
             <DialogContent className="sm:oidc-max-w-screen-md">
                 <DialogHeader>
-                    <DialogTitle>Create new user</DialogTitle>
+                    <DialogTitle className="oidc-capitalize">Create new role</DialogTitle>
                 </DialogHeader>
-                <form method="post" action="/users/create">
+                <form method="post" action="/roles/create">
                     <span className="hidden"
                           dangerouslySetInnerHTML={{__html: window.__RequestVerificationToken}}></span>
                     <div className="grid oidc-grid-cols-8 gap-4 py-4">
-                        <div className="flex oidc-flex-col oidc-col-span-4 oidc-space-y-1">
-                            <Label htmlFor="firstName">
-                                First Name
+                        <div className="flex oidc-flex-col oidc-col-span-8 oidc-space-y-1">
+                            <Label htmlFor="name">
+                                Role Name
                             </Label>
-                            <Input id="firstName" name="firstName" className="oidc-w-full"/>
-                        </div>
-                        <div className="flex oidc-flex-col oidc-col-span-4 oidc-space-y-1">
-                            <Label htmlFor="lastName">
-                                Last Name
-                            </Label>
-                            <Input id="lastName" name="lastName" className="oidc-w-full"/>
+                            <Input id="name" name="name"  className="oidc-w-full"/>
                         </div>
                         <div className="flex oidc-flex-col oidc-col-span-8 oidc-space-y-1">
-                            <Label htmlFor="username">
-                                Username
+                            <Label htmlFor="description">
+                                Description
                             </Label>
-                            <Input id="username" name="username" required/>
-                        </div>
-                        <div className="flex oidc-flex-col oidc-col-span-8 oidc-space-y-1">
-                            <Label htmlFor="email">
-                                Email
-                            </Label>
-                            <Input id="email" name="email" required/>
-                        </div>
-                        <div className="flex oidc-flex-col oidc-col-span-8 oidc-space-y-1">
-                            <Label htmlFor="password">
-                                Password
-                            </Label>
-                            <Input id="password" name="password" required/>
+                            <Textarea id="description" name="description" className="oidc-w-full"/>
                         </div>
                     </div>
                     <DialogFooter>

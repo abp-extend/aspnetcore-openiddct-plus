@@ -12,5 +12,8 @@ public class OpeniddictPlusUser : IdentityUser
     public string? LastName { get; set; }
     
     public DateTime? DeletionRequestedAt { get; set; }
+    
+    public DateTime? UpdatedAt { get; set; }
+    public DateTime? CreatedAt { get; set; }
 
 }

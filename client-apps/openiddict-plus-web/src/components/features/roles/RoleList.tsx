@@ -1,4 +1,4 @@
-import {PageInfo, User} from "@/Interfaces";
+import {PageInfo, Role} from "@/Interfaces";
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table.tsx";
 
 import {
@@ -11,19 +11,19 @@ import {
 import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert.tsx";
 import {AlertCircle} from "lucide-react";
 import useError from "@/hooks/useError.ts";
-import DeleteUser from "@/components/features/users/DeleteUser.tsx";
-import {cn} from "@/lib/utils.ts";
-import UpdateUser from "@/components/features/users/UpdateUser.tsx";
+import DeleteRole from "@/components/features/roles/DeleteRole.tsx";
+import UpdateRole from "@/components/features/roles/UpdateRole.tsx";
+
 
 interface Props {
-    users: Array<User>;
+    roles: Array<Role>;
     pageInfo: PageInfo;
     error?: string;
 }
 
-export default function UserList(props: Props) {
-    const {users, pageInfo, error} = props;
-    console.log(users);
+export default function RoleList(props: Props) {
+    const {roles, pageInfo, error} = props;
+    console.log(roles);
     const errorMessage = useError({error, autoHide: true});
     return (
         <div className="overflow-x-auto">
@@ -39,26 +39,19 @@ export default function UserList(props: Props) {
             <Table className="mt-5">
                 <TableHeader>
                     <TableRow className="oidc-text-lg">
-                        <TableHead> First name</TableHead>
-                        <TableHead>Username</TableHead>
-                        <TableHead>Email</TableHead>
-                        <TableHead>Email verified</TableHead>
+                        <TableHead>Name</TableHead>
+                        <TableHead>Assigned permissions</TableHead>
                         <TableHead>Action</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {users.map((user) => (
-                        <TableRow key={user.id} className={cn({
-                            "oidc-bg-amber-100 hover:oidc-bg-amber-100 hover:oidc-cursor-not-allowed": user.deletionRequestedAt,
-                        })}
-                                  title={user.deletionRequestedAt ? "Deletion requested and it will be deleted in 30 days." : ""}>
-                            <TableCell>{user.firstName ?? "N/A"}</TableCell>
-                            <TableCell>{user.userName}</TableCell>
-                            <TableCell>{user.email}</TableCell>
-                            <TableCell>{user.emailConfirmed ? "Yes" : "No"}</TableCell>
+                    {roles.map((role) => (
+                        <TableRow key={role.roleId}>
+                            <TableCell>{role.roleName}</TableCell>
+                            <TableCell>Total permissions ({role.permissions.length})</TableCell>
                             <TableCell className="flex  oidc-space-x-2">
-                                <UpdateUser user={user}/>
-                                <DeleteUser user={user}/>
+                                <UpdateRole role={role}/>
+                                <DeleteRole role={role}/>
                             </TableCell>
                         </TableRow>
                     ))}

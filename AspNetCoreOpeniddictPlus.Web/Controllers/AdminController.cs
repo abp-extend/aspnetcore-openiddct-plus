@@ -1,37 +1,55 @@
 using AspNetCoreOpeniddictPlus.Core.Dtos;
-using AspNetCoreOpeniddictPlus.Core.Interfaces;
+using AspNetCoreOpeniddictPlus.Core.Extensions;
+
 using AspNetCoreOpeniddictPlus.Identity.Entities;
 using AspNetCoreOpeniddictPlus.InertiaCore;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using NuGet.Protocol;
 
 namespace AspNetCoreOpeniddictPlus.Web.Controllers;
 
 [Authorize(Roles = "Admin")]
+[Route("users")]
 public class AdminController(
     UserManager<OpeniddictPlusUser> userManager,
     RoleManager<OpeniddictPlusRole> roleManager,
-    IUserService<OpeniddictPlusUser> userService,
     IHttpContextAccessor httpContextAccessor) : Controller
 {
+    [HttpGet("/")]
     public async Task<IActionResult> Index()
     {
         return Inertia.Render("Index", new { name = "Hello World" });
     }
     
-    [HttpGet("/admin/user-management")]
-    public async Task<IActionResult> UserManagement(string? error = null)
+    [HttpGet("all")]
+    public async Task<IActionResult> UserManagement(string? error = null, int currentPage = 1, int pageSize = 10)
     {
         
-        var users = await userService.GetUsersAsync();
+        var users = await userManager
+            .Users
+            .ToPagedResultAsync(currentPage, pageSize);
       
+        var userItems = users.Items.Select(u => new UserDto
+        {
+            Id = u.Id,
+            FirstName = u.FirstName,
+            LastName = u.LastName,
+            UserName = u.UserName,
+            Email = u.Email,
+            CreatedAt = u.CreatedAt,
+            UpdatedAt = u.UpdatedAt,
+            DeletionRequestedAt = u.DeletionRequestedAt,
+            CreatedByAdmin = u.CreatedByAdmin,
+            EmailConfirmed = u.EmailConfirmed,
+            Roles = userManager.GetRolesAsync(u).Result.ToList()
+        }).ToList();
+        
         return Inertia.Render("UserManagement", new
         {
-            userResponse = new
+            data = new
             {
-                users.Items,
+                items = userItems,
                 users.TotalCount,
                 users.CurrentPage,
                 users.PageSize,
@@ -42,7 +60,7 @@ public class AdminController(
         });
     }
     
-    [HttpPost("/admin/user-management"), ValidateAntiForgeryToken]
+    [HttpPost("create"), ValidateAntiForgeryToken]
     public async Task<IActionResult> Create([FromForm] CreateUserDto createUserDto)
     {
         var newUser = new OpeniddictPlusUser
@@ -51,7 +69,8 @@ public class AdminController(
             LastName = createUserDto.LastName,
             Email = createUserDto.Email,
             UserName = createUserDto.UserName,
-            CreatedByAdmin = true
+            CreatedByAdmin = true,
+            CreatedAt = DateTime.UtcNow
         };
         var user = await userManager.CreateAsync(newUser);
         if (!user.Succeeded)
@@ -62,7 +81,7 @@ public class AdminController(
         return RedirectToAction("UserManagement");
     }
     
-    [HttpPost("/admin/user-management/delete"), ValidateAntiForgeryToken]
+    [HttpPost("delete"), ValidateAntiForgeryToken]
     public async Task<IActionResult> Delete([FromForm] DeleteDto dto)
     {
         var user = await userManager.FindByIdAsync(dto.Id);
@@ -85,7 +104,7 @@ public class AdminController(
         return RedirectToAction("UserManagement");
     }
     
-    [HttpPost("/admin/user-management/update"), ValidateAntiForgeryToken]
+    [HttpPost("update"), ValidateAntiForgeryToken]
     public async Task<IActionResult> Update([FromForm] UpdateUserDto dto)
     {
         var user = await userManager.FindByIdAsync(dto.Id);
@@ -96,6 +115,7 @@ public class AdminController(
         user.FirstName = dto.FirstName;
         user.LastName = dto.LastName;
         user.UserName = dto.UserName;
+        user.UpdatedAt = DateTime.UtcNow;
         var result = await userManager.UpdateAsync(user);
         if (!result.Succeeded)
         {
@@ -105,3 +125,4 @@ public class AdminController(
     }
    
 }
+

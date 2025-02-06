@@ -1,14 +1,9 @@
-using AspNetCoreOpeniddictPlus.Core.Dtos;
 
 namespace AspNetCoreOpeniddictPlus.Core.Interfaces;
 
 public interface IPermissionService<PEntity>
 {
-    Task<PagedResult<PEntity>> GetRolesAsync(
-        int page = 1,
-        int pageSize = 10,
-        string? orderBy = null
-    );
+    Task<IQueryable<PEntity>> GetPermissions();
     
     Task<PEntity?> GetPermissionByNameAsync(string permissionName);
     

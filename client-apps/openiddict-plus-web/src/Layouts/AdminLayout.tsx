@@ -1,3 +1,4 @@
+import CreateRole from "@/components/features/roles/CreateRole.tsx";
 
 declare global {
     interface Window {
@@ -38,6 +39,7 @@ export default function AdminLayout({children, title, createType}: Props) {
                             </div>
                         </form>
                         {createType === "user" && <CreateUser />}
+                        {createType === "role" && <CreateRole />}
                     </div>
                     <div>
                         {children}
