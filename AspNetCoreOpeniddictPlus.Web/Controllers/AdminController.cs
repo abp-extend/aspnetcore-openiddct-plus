@@ -6,6 +6,7 @@ using AspNetCoreOpeniddictPlus.InertiaCore;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Hybrid;
 
 namespace AspNetCoreOpeniddictPlus.Web.Controllers;
 
@@ -14,7 +15,8 @@ namespace AspNetCoreOpeniddictPlus.Web.Controllers;
 public class AdminController(
     UserManager<OpeniddictPlusUser> userManager,
     RoleManager<OpeniddictPlusRole> roleManager,
-    IHttpContextAccessor httpContextAccessor) : Controller
+    IHttpContextAccessor httpContextAccessor,
+    HybridCache cache) : Controller
 {
     [HttpGet("/")]
     public async Task<IActionResult> Index()
@@ -25,10 +27,13 @@ public class AdminController(
     [HttpGet("all")]
     public async Task<IActionResult> UserManagement(string? error = null, int currentPage = 1, int pageSize = 10)
     {
-        
-        var users = await userManager
+        if (currentPage > 1 || pageSize != 10)
+        {
+            await cache.RemoveByTagAsync("users:all");
+        }
+        var users = await cache.GetOrCreateAsync<PagedResult<OpeniddictPlusUser>>("users:all", async _ => await userManager
             .Users
-            .ToPagedResultAsync(currentPage, pageSize);
+            .ToPagedResultAsync(currentPage, pageSize), tags:["users:all"]);
       
         var userItems = users.Items.Select(u => new UserDto
         {
@@ -78,6 +83,7 @@ public class AdminController(
           return await UserManagement("Failed to create user");
         }
         await userManager.AddPasswordAsync(newUser, createUserDto.Password);
+        await cache.RemoveByTagAsync("users:all");
         return RedirectToAction("UserManagement");
     }
     
@@ -101,6 +107,8 @@ public class AdminController(
         {
             return await UserManagement("Failed to delete user");
         }
+
+        await cache.RemoveByTagAsync("users:all");
         return RedirectToAction("UserManagement");
     }
     
@@ -121,6 +129,7 @@ public class AdminController(
         {
             return await UserManagement("Failed to update user");
         }
+        await cache.RemoveByTagAsync("users:all");
         return RedirectToAction("UserManagement");
     }
    

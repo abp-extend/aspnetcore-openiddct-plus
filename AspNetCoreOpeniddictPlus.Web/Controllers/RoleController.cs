@@ -7,6 +7,7 @@ using AspNetCoreOpeniddictPlus.Migrator.Persistence;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Hybrid;
 
 namespace AspNetCoreOpeniddictPlus.Web.Controllers;
 
@@ -14,7 +15,7 @@ namespace AspNetCoreOpeniddictPlus.Web.Controllers;
 public class RoleController(
     RoleManager<OpeniddictPlusRole> roleManager,
     OpeniddictPlusDbContext dbContext,
-    IPermissionService<OpeniddictPlusPermission> permissionService) : Controller
+    HybridCache cache) : Controller
 {
     public async Task<IActionResult> Index()
     {
@@ -24,11 +25,15 @@ public class RoleController(
     [HttpGet("all")]
     public async Task<IActionResult> RoleManagement(string? error = null, int currentPage = 1, int pageSize = 10)
     {
-        var roles = await roleManager
+        if (currentPage > 1 || pageSize != 10)
+        {
+            await cache.RemoveByTagAsync("roles:all");
+        }
+        var roles = await cache.GetOrCreateAsync("roles:all", async _ => await roleManager
             .Roles
             .Include(r => r.RolePermissions)
             .ThenInclude(rp => rp.Permission)
-            .ToPagedResultAsync(currentPage, pageSize);
+            .ToPagedResultAsync(currentPage, pageSize), tags: ["roles:all"]);
 
         var result = roles.Items.Select(role => new RolePermissionDto
         {
@@ -76,6 +81,7 @@ public class RoleController(
         {
             return await RoleManagement("Failed to create user");
         }
+        await cache.RemoveByTagAsync("roles:all");
 
         return RedirectToAction("RoleManagement");
     }
@@ -100,6 +106,7 @@ public class RoleController(
         {
             return await RoleManagement("Failed to delete role.");
         }
+        await cache.RemoveByTagAsync("roles:all");
 
         return RedirectToAction("RoleManagement");
     }
@@ -156,6 +163,7 @@ public class RoleController(
         {
             return await RoleManagement("Failed to update user");
         }
+        await cache.RemoveByTagAsync("roles:all");
 
         return RedirectToAction("RoleManagement");
     }

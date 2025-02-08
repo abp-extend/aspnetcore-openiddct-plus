@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using OpenIddict.Abstractions;
 using Serilog;
+using ZiggyCreatures.Caching.Fusion;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -67,6 +68,9 @@ builder.Services.AddHostedService<ApplicationSeeder>();
 builder.Services.AddHostedService<UserDeleteBackgroundJob>();
 builder.Services.AddHostedService<NotifyUserDeletionBackgroundJob>();
 
+builder.Services.AddFusionCache()
+    .WithDefaultEntryOptions(options => options.Duration = TimeSpan.FromMinutes(5))
+    .AsHybridCache();
 builder.Services.AddInertia(options =>
 {
     options.RootView = "~/Views/Admin.cshtml";
